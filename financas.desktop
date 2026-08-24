@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Finanças de Casa
+GenericName=Gestor Financeiro
+Comment=Gestão e Controle Financeiro Doméstico Inteligente
+Exec=/home/sandra/financas-casa/iniciar.sh
+Icon=financas
+Terminal=false
+Categories=Office;Finance;Utility;
+StartupWMClass=financas
+StartupNotify=true
+X-GNOME-UsesNotifications=true
