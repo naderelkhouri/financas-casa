@@ -40,6 +40,18 @@
           <span class="nav-label">Contas Fixas</span>
           <span class="badge-counter" id="recurring-badge" style="display:none;">0</span>
         </button>
+        <button class="nav-item" data-tab="accounts-cards" id="nav-accounts">
+          <span class="nav-icon">🏦</span>
+          <span class="nav-label">Contas & Cartões</span>
+        </button>
+        <button class="nav-item" data-tab="import-ofx" id="nav-ofx">
+          <span class="nav-icon">📥</span>
+          <span class="nav-label">Importar OFX</span>
+        </button>
+        <button class="nav-item" data-tab="bunkerpay-sub" id="nav-bunkerpay">
+          <span class="nav-icon">⚡</span>
+          <span class="nav-label">Plano Pro (BunkerPay)</span>
+        </button>
         <button class="nav-item" data-tab="reports" id="nav-reports">
           <span class="nav-icon">⚙️</span>
           <span class="nav-label">Relatórios & Backup</span>
@@ -630,7 +642,183 @@
     </div>
   </div>
 
-  <!-- Toast Notification Container -->
+      <!-- ABA: CONTAS E CARTÕES -->
+      <section class="tab-content" id="tab-accounts-cards" style="display:none;">
+        <div class="content-header-row">
+          <div>
+            <h2>Contas Bancárias & Cartões de Crédito</h2>
+            <p>Gerencie suas instituições financeiras, carteiras e limites</p>
+          </div>
+          <div class="header-btns">
+            <button class="btn-primary" onclick="openModal('modal-account')">+ Nova Conta</button>
+            <button class="btn-secondary" onclick="openModal('modal-card')">+ Novo Cartão</button>
+          </div>
+        </div>
+
+        <div class="cards-grid mt-4">
+          <div class="card">
+            <div class="card-header">
+              <h3>Contas Bancárias & Saldos</h3>
+            </div>
+            <div class="card-body" id="accounts-list">
+              <!-- Lista dinâmica de contas -->
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Cartões de Crédito</h3>
+            </div>
+            <div class="card-body" id="cards-list">
+              <!-- Lista dinâmica de cartões -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA: IMPORTADOR OFX -->
+      <section class="tab-content" id="tab-import-ofx" style="display:none;">
+        <div class="content-header-row">
+          <div>
+            <h2>Importação de Extrato Bancário (.OFX)</h2>
+            <p>Importe faturas e extratos de bancos brasileiros (Nubank, Itaú, Inter, Bradesco) em segundos</p>
+          </div>
+        </div>
+
+        <div class="card mt-4" style="max-width: 700px; margin: 24px auto;">
+          <div class="card-body text-center" style="padding: 40px 24px;">
+            <div style="font-size: 3rem; margin-bottom: 16px;">📄</div>
+            <h3>Selecione seu arquivo .OFX</h3>
+            <p style="color: var(--text-muted); margin-bottom: 24px;">Exporte o extrato no app do seu banco ou internet banking e faça upload aqui.</p>
+            <input type="file" id="ofx-file-input" accept=".ofx" style="display: none;" onchange="handleOfxFileSelected(event)">
+            <button class="btn-primary" style="padding: 12px 28px; font-size: 1rem;" onclick="document.getElementById('ofx-file-input').click()">
+              Selecionar Arquivo .OFX
+            </button>
+            <div id="ofx-result" style="margin-top: 24px; display: none;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA: BUNKERPAY ASSINATURA -->
+      <section class="tab-content" id="tab-bunkerpay-sub" style="display:none;">
+        <div class="content-header-row">
+          <div>
+            <h2>Plano Pro com BunkerPay</h2>
+            <p>Liquidação instantânea via PIX, privacidade e recursos ilimitados</p>
+          </div>
+        </div>
+
+        <div class="pricing-grid mt-4" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 800px; margin: 24px auto;">
+          <div class="card" style="border: 2px solid var(--accent); padding: 24px;">
+            <h3>Plano Pro Mensal</h3>
+            <div style="font-size: 2.2rem; font-weight: 700; margin: 16px 0; color: var(--accent);">R$ 19,90<span style="font-size: 1rem; color: var(--text-muted);">/mês</span></div>
+            <ul style="list-style: none; padding: 0; margin-bottom: 24px; line-height: 2;">
+              <li>✓ Importação OFX ilimitada</li>
+              <li>✓ Múltiplas Contas & Cartões</li>
+              <li>✓ Metas e Tetos de Gastos</li>
+              <li>✓ Pagamento PIX via BunkerPay</li>
+            </ul>
+            <button class="btn-primary" style="width: 100%;" onclick="startBunkerpayCheckout('pro_monthly')">Assinar Mensal</button>
+          </div>
+
+          <div class="card" style="padding: 24px;">
+            <span style="background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">Melhor Custo-Benefício</span>
+            <h3 style="margin-top: 8px;">Plano Pro Anual</h3>
+            <div style="font-size: 2.2rem; font-weight: 700; margin: 16px 0; color: var(--accent);">R$ 179,00<span style="font-size: 1rem; color: var(--text-muted);">/ano</span></div>
+            <ul style="list-style: none; padding: 0; margin-bottom: 24px; line-height: 2;">
+              <li>✓ 25% de Economia</li>
+              <li>✓ Todos os recursos do Pro</li>
+              <li>✓ Suporte VIP Prioritário</li>
+              <li>✓ Pagamento PIX via BunkerPay</li>
+            </ul>
+            <button class="btn-secondary" style="width: 100%;" onclick="startBunkerpayCheckout('pro_annual')">Assinar Anual</button>
+          </div>
+        </div>
+
+        <div id="bunkerpay-pix-modal" class="modal-overlay" style="display:none;">
+          <div class="modal-card modal-sm">
+            <div class="modal-header">
+              <h3>Pagar Assinatura com PIX</h3>
+              <button class="btn-close-modal" onclick="closeModal('bunkerpay-pix-modal')">✕</button>
+            </div>
+            <div class="modal-body text-center" id="bunkerpay-pix-content">
+              <!-- Conteúdo do PIX -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODAL: NOVA CONTA -->
+      <div class="modal-overlay" id="modal-account" style="display:none;">
+        <div class="modal-card modal-sm">
+          <div class="modal-header">
+            <h3>Nova Conta Bancária</h3>
+            <button class="btn-close-modal" onclick="closeModal('modal-account')">✕</button>
+          </div>
+          <form id="form-account">
+            <div class="modal-body">
+              <div class="form-group">
+                <label class="form-label">Nome da Conta / Banco *</label>
+                <input type="text" id="acc-name" class="form-input" placeholder="Ex: Nubank, Itaú, Carteira" required>
+              </div>
+              <div class="form-group mt-3">
+                <label class="form-label">Tipo de Conta</label>
+                <select id="acc-type" class="form-select">
+                  <option value="checking">Conta Corrente</option>
+                  <option value="savings">Poupança</option>
+                  <option value="investment">Investimentos</option>
+                  <option value="cash">Dinheiro em Espécie</option>
+                </select>
+              </div>
+              <div class="form-group mt-3">
+                <label class="form-label">Saldo Inicial (R$)</label>
+                <input type="number" step="0.01" id="acc-balance" class="form-input" placeholder="0,00" value="0.00">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn-ghost" onclick="closeModal('modal-account')">Cancelar</button>
+              <button type="submit" class="btn-primary">Criar Conta</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- MODAL: NOVO CARTÃO -->
+      <div class="modal-overlay" id="modal-card" style="display:none;">
+        <div class="modal-card modal-sm">
+          <div class="modal-header">
+            <h3>Novo Cartão de Crédito</h3>
+            <button class="btn-close-modal" onclick="closeModal('modal-card')">✕</button>
+          </div>
+          <form id="form-card">
+            <div class="modal-body">
+              <div class="form-group">
+                <label class="form-label">Nome do Cartão *</label>
+                <input type="text" id="card-name" class="form-input" placeholder="Ex: Nubank Ultravioleta, C6 Carbon" required>
+              </div>
+              <div class="form-group mt-3">
+                <label class="form-label">Limite de Crédito (R$) *</label>
+                <input type="number" step="0.01" min="1" id="card-limit" class="form-input" placeholder="5000.00" required>
+              </div>
+              <div class="form-row mt-3">
+                <div class="form-group col-6">
+                  <label class="form-label">Dia Fechamento *</label>
+                  <input type="number" min="1" max="31" id="card-closing" class="form-input" value="25" required>
+                </div>
+                <div class="form-group col-6">
+                  <label class="form-label">Dia Vencimento *</label>
+                  <input type="number" min="1" max="31" id="card-due" class="form-input" value="5" required>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn-ghost" onclick="closeModal('modal-card')">Cancelar</button>
+              <button type="submit" class="btn-primary">Criar Cartão</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Toast Notification Container -->
   <div class="toast-container" id="toast-container"></div>
 
   <script src="app.js"></script>

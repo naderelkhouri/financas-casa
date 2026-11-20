@@ -232,8 +232,10 @@ function switchTab(tabId) {
   });
 
   // Atualizar painéis visíveis
-  document.querySelectorAll('.tab-pane').forEach(pane => {
-    pane.classList.toggle('active', pane.id === `pane-${tabId}`);
+  document.querySelectorAll('.tab-pane, .tab-content').forEach(pane => {
+    const isTarget = pane.id === `pane-${tabId}` || pane.id === `tab-${tabId}`;
+    pane.classList.toggle('active', isTarget);
+    pane.style.display = isTarget ? 'block' : 'none';
   });
 
   // Atualizar títulos
@@ -242,6 +244,9 @@ function switchTab(tabId) {
     'transactions': { title: 'Extrato de Transações', sub: 'Controle detalhado de entradas e saídas' },
     'budgets-goals': { title: 'Orçamentos & Metas', sub: 'Tetos de gastos e objetivos de poupança' },
     'recurring': { title: 'Contas Recorrentes', sub: 'Lembretes de vencimento e contas fixas' },
+    'accounts-cards': { title: 'Contas & Cartões', sub: 'Gestão de bancos, saldos e faturas de cartões' },
+    'import-ofx': { title: 'Importação OFX', sub: 'Conciliação automática de extratos bancários brasileiros' },
+    'bunkerpay-sub': { title: 'Assinatura BunkerPay', sub: 'Planos Pro com liquidação direta em PIX' },
     'reports': { title: 'Relatórios & Backup', sub: 'Importação, exportação e impressão consolidada' }
   };
 
@@ -266,6 +271,8 @@ function refreshCurrentView() {
       loadBudgetsAndGoals();
     } else if (state.activeTab === 'recurring') {
       loadRecurringBills();
+    } else if (state.activeTab === 'accounts-cards') {
+      loadAccountsAndCards();
     }
   });
 }
@@ -1208,3 +1215,179 @@ function debounce(func, wait) {
     timeout = setTimeout(() => func.apply(this, args), wait);
   };
 }
+
+// ==========================================================================
+// MÓDULOS SAAS: CONTAS, CARTÕES, OFX E BUNKERPAY
+// ==========================================================================
+
+async function loadAccountsAndCards() {
+  try {
+    const [accRes, cardRes] = await Promise.all([
+      fetch('/api/accounts'),
+      fetch('/api/credit-cards')
+    ]);
+    const accounts = await accRes.json();
+    const cards = await cardRes.json();
+
+    const accContainer = document.getElementById('accounts-list');
+    if (accContainer) {
+      if (accounts.length === 0) {
+        accContainer.innerHTML = '<p class="text-muted">Nenhuma conta cadastrada.</p>';
+      } else {
+        accContainer.innerHTML = accounts.map(a => `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--border); margin-bottom: 8px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: ${a.color};"></span>
+              <div>
+                <strong>${escapeHtml(a.name)}</strong>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">${a.account_type}</div>
+              </div>
+            </div>
+            <strong style="color: var(--accent);">${formatCurrency(a.current_balance)}</strong>
+          </div>
+        `).join('');
+      }
+    }
+
+    const cardsContainer = document.getElementById('cards-list');
+    if (cardsContainer) {
+      if (cards.length === 0) {
+        cardsContainer.innerHTML = '<p class="text-muted">Nenhum cartão cadastrado.</p>';
+      } else {
+        cardsContainer.innerHTML = cards.map(c => `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--border); margin-bottom: 8px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: ${c.color};"></span>
+              <div>
+                <strong>${escapeHtml(c.name)}</strong>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Fecha dia ${c.closing_day} | Vence dia ${c.due_day}</div>
+              </div>
+            </div>
+            <span style="font-size: 0.9rem;">Limite: <strong>${formatCurrency(c.credit_limit)}</strong></span>
+          </div>
+        `).join('');
+      }
+    }
+  } catch (err) {
+    console.error('Erro ao carregar contas/cartões:', err);
+  }
+}
+
+// Criação de Conta
+document.getElementById('form-account')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('acc-name').value;
+  const account_type = document.getElementById('acc-type').value;
+  const initial_balance = parseFloat(document.getElementById('acc-balance').value) || 0;
+
+  try {
+    const res = await fetch('/api/accounts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, account_type, initial_balance })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Conta criada com sucesso!');
+      closeModal('modal-account');
+      loadAccountsAndCards();
+    } else {
+      showToast(data.error || 'Erro ao criar conta', 'error');
+    }
+  } catch (err) {
+    showToast('Erro de rede ao criar conta', 'error');
+  }
+});
+
+// Criação de Cartão
+document.getElementById('form-card')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('card-name').value;
+  const credit_limit = parseFloat(document.getElementById('card-limit').value) || 0;
+  const closing_day = parseInt(document.getElementById('card-closing').value) || 25;
+  const due_day = parseInt(document.getElementById('card-due').value) || 5;
+
+  try {
+    const res = await fetch('/api/credit-cards', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, credit_limit, closing_day, due_day })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Cartão cadastrado com sucesso!');
+      closeModal('modal-card');
+      loadAccountsAndCards();
+    } else {
+      showToast(data.error || 'Erro ao cadastrar cartão', 'error');
+    }
+  } catch (err) {
+    showToast('Erro de rede ao cadastrar cartão', 'error');
+  }
+});
+
+// Processamento de OFX
+async function handleOfxFileSelected(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const content = e.target.result;
+    const resultDiv = document.getElementById('ofx-result');
+    resultDiv.style.display = 'block';
+    resultDiv.innerHTML = '<p class="text-muted">Processando extrato bancário...</p>';
+
+    try {
+      const res = await fetch('/api/import/ofx', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content })
+      });
+      const data = await res.json();
+      if (data.success) {
+        resultDiv.innerHTML = `
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; padding: 16px; border-radius: 8px; color: #10b981;">
+            <h4>✓ Extrato Importado com Sucesso!</h4>
+            <p style="margin-top: 8px; color: var(--text);">Foram importadas <strong>${data.imported_count}</strong> transações do Banco (${data.bank_id || 'Brasileiro'}).</p>
+          </div>
+        `;
+        showToast(`${data.imported_count} lançamentos adicionados via OFX!`);
+        if (typeof loadTransactions === 'function') loadTransactions();
+      } else {
+        resultDiv.innerHTML = `<p style="color: #ef4444;">Erro: ${data.error}</p>`;
+      }
+    } catch (err) {
+      resultDiv.innerHTML = `<p style="color: #ef4444;">Erro ao enviar arquivo para o servidor.</p>`;
+    }
+  };
+  reader.readAsText(file);
+}
+
+// Checkout BunkerPay
+async function startBunkerpayCheckout(planKey) {
+  try {
+    const res = await fetch('/api/bunkerpay/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan: planKey })
+    });
+    const charge = await res.json();
+    const contentDiv = document.getElementById('bunkerpay-pix-content');
+
+    contentDiv.innerHTML = `
+      <div style="font-size: 1.1rem; margin-bottom: 12px;">Valor: <strong>R$ ${charge.amount.toFixed(2)}</strong></div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Escaneie o QR Code ou copie a chave Pix abaixo para liquidação direta via BunkerPay:</p>
+      <textarea readonly style="width: 100%; height: 90px; padding: 8px; font-family: monospace; font-size: 0.75rem; background: var(--bg-card); color: var(--text); border: 1px solid var(--border); border-radius: 4px; resize: none;">${charge.pix_copy_paste}</textarea>
+      <button class="btn-primary mt-3" style="width: 100%;" onclick="navigator.clipboard.writeText('${charge.pix_copy_paste}'); showToast('Código Pix copiado!');">
+        Copiar Código Pix
+      </button>
+      <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 12px;">Liquidação instantânea & privacidade patrimonial garantida.</div>
+    `;
+
+    openModal('bunkerpay-pix-modal');
+  } catch (err) {
+    showToast('Erro ao gerar cobrança BunkerPay', 'error');
+  }
+}
+

@@ -1,16 +1,16 @@
 # Graph Report - financas-casa  (2026-11-19)
 
 ## Corpus Check
-- 9 files · ~12,464 words
+- 9 files · ~13,832 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 150 nodes · 256 edges · 12 communities (11 shown, 1 thin omitted)
+- 153 nodes · 261 edges · 9 communities (8 shown, 1 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `2d7c1653`
+- Built from commit: `d09c03d1`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -23,22 +23,19 @@
 - [[_COMMUNITY_Community 5|Community 5]]
 - [[_COMMUNITY_Community 6|Community 6]]
 - [[_COMMUNITY_Community 7|Community 7]]
-- [[_COMMUNITY_Community 8|Community 8]]
-- [[_COMMUNITY_Community 9|Community 9]]
-- [[_COMMUNITY_Community 10|Community 10]]
 - [[_COMMUNITY_Community 11|Community 11]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `get_connection()` - 31 edges
 2. `refreshCurrentView()` - 15 edges
-3. `FinanceRequestHandler` - 13 edges
-4. `showToast()` - 13 edges
+3. `showToast()` - 14 edges
+4. `FinanceRequestHandler` - 13 edges
 5. `ThreadedHTTPServer` - 8 edges
 6. `FinanceWindow` - 7 edges
 7. `loadDashboard()` - 7 edges
 8. `FinanceApp` - 6 edges
-9. `seed_sample_data()` - 5 edges
-10. `applyZoom()` - 5 edges
+9. `openModal()` - 6 edges
+10. `seed_sample_data()` - 5 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `FinanceApp` --uses--> `ThreadedHTTPServer`  [INFERRED]
@@ -55,7 +52,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (12 total, 1 thin omitted)
+## Communities (9 total, 1 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.11
@@ -66,8 +63,8 @@ Cohesion: 0.14
 Nodes (11): FinanceRequestHandler, run_server(), ThreadedHTTPServer, FinanceApp, FinanceWindow, find_free_port(), main(), start_backend_server() (+3 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.14
-Nodes (13): debounce(), formatCurrency(), initEventListeners(), initTheme(), loadDashboard(), loadDashboardRecentTx(), renderCategoryDonut(), renderDashboardBudgetsMini() (+5 more)
+Cohesion: 0.09
+Nodes (29): applyZoom(), debounce(), editGoal(), editTransaction(), formatCurrency(), initEventListeners(), initTheme(), initZoom() (+21 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.21
@@ -89,18 +86,6 @@ Nodes (6): create_pix_charge(), handle_bunkerpay_webhook(), Any, Integração co
 Cohesion: 0.33
 Nodes (6): parse_ofx_content(), parse_ofx_date(), Any, Parser Nativo de Extratos Bancários OFX (Open Financial Exchange). Lê extratos p, Converte datas OFX (ex: 20261115120000[-03:EST] ou 20261115) para YYYY-MM-DD., Analisa o conteúdo de um arquivo .OFX (SGML ou XML) e extrai metadados da conta
 
-### Community 8 - "Community 8"
-Cohesion: 0.40
-Nodes (6): editGoal(), editTransaction(), openGoalModal(), openModal(), openTransactionModal(), populateCategorySelect()
-
-### Community 9 - "Community 9"
-Cohesion: 0.40
-Nodes (5): applyZoom(), initZoom(), zoomIn(), zoomOut(), zoomReset()
-
-### Community 10 - "Community 10"
-Cohesion: 0.50
-Nodes (4): loadCategories(), loadInitialData(), loadRecurringBills(), updateRecurringBadge()
-
 ## Knowledge Gaps
 - **10 isolated node(s):** `Any`, `iniciar.sh script`, `Any`, `state`, `ZOOM_LEVELS` (+5 more)
   These have ≤1 connection - possible missing edges or undocumented components.
@@ -120,4 +105,4 @@ _Questions this graph is uniquely positioned to answer:_
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.13538461538461538 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
-  _Cohesion score 0.14210526315789473 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08677098150782361 - nodes in this community are weakly interconnected._
