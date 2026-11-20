@@ -16,6 +16,9 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 from socketserver import ThreadingMixIn
 from urllib.parse import urlparse, parse_qs
 import database
+import auth
+import ofx_parser
+import bunkerpay_gateway
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 
@@ -60,7 +63,30 @@ class FinanceRequestHandler(SimpleHTTPRequestHandler):
         query = parse_qs(parsed.query)
 
         # Roteamento da API REST
-        if path == "/api/dashboard":
+        if path == "/api/auth/me":
+            token = self.headers.get("Authorization", "").replace("Bearer ", "")
+            user_data = auth.verify_token(token)
+            if not user_data:
+                return self._send_json({"error": "Não autenticado ou token expirado"}, status=401)
+            user = database.get_user_by_id(user_data["user_id"])
+            return self._send_json({"user": user})
+
+        elif path == "/api/accounts":
+            token = self.headers.get("Authorization", "").replace("Bearer ", "")
+            user_data = auth.verify_token(token)
+            user_id = user_data["user_id"] if user_data else 1
+            return self._send_json(database.get_accounts(user_id))
+
+        elif path == "/api/credit-cards":
+            token = self.headers.get("Authorization", "").replace("Bearer ", "")
+            user_data = auth.verify_token(token)
+            user_id = user_data["user_id"] if user_data else 1
+            return self._send_json(database.get_credit_cards(user_id))
+
+        elif path == "/api/bunkerpay/plans":
+            return self._send_json(bunkerpay_gateway.SAAS_PLANS)
+
+        elif path == "/api/dashboard":
             month = query.get("month", [None])[0]
             summary = database.get_dashboard_summary(month)
             return self._send_json(summary)
@@ -142,7 +168,123 @@ class FinanceRequestHandler(SimpleHTTPRequestHandler):
         query = parse_qs(parsed.query)
         data = self._read_json_body()
 
-        if path == "/api/transactions":
+        # Rotas de Autenticação (SaaS)
+        if path == "/api/auth/register":
+            name = data.get("name", "").strip()
+            email = data.get("email", "").strip()
+            password = data.get("password", "").strip()
+            if not name or not email or not password:
+                return self._send_json({"error": "Nome, e-mail e senha são obrigatórios"}, status=400)
+            
+            existing = database.get_user_by_email(email)
+            if existing:
+                return self._send_json({"error": "E-mail já cadastrado"}, status=409)
+
+            pw_hash = auth.hash_password(password)
+            user_id = database.create_user(name, email, pw_hash)
+            token = auth.generate_token(user_id, email, plan="free")
+            return self._send_json({"success": True, "token": token, "user": {"id": user_id, "name": name, "email": email, "plan": "free"}}, status=201)
+
+        elif path == "/api/auth/login":
+            email = data.get("email", "").strip()
+            password = data.get("password", "").strip()
+            user = database.get_user_by_email(email)
+            if not user or not auth.verify_password(user["password_hash"], password):
+                return self._send_json({"error": "E-mail ou senha inválidos"}, status=401)
+
+            token = auth.generate_token(user["id"], user["email"], plan=user.get("plan", "free"))
+            return self._send_json({
+                "success": True,
+                "token": token,
+                "user": {"id": user["id"], "name": user["name"], "email": user["email"], "plan": user.get("plan", "free")}
+            })
+
+        # Rotas de Contas Bancárias e Cartões
+        elif path == "/api/accounts":
+            token = self.headers.get("Authorization", "").replace("Bearer ", "")
+            user_data = auth.verify_token(token)
+            user_id = user_data["user_id"] if user_data else 1
+            acc_id = database.create_account(
+                user_id=user_id,
+                name=data.get("name", "Nova Conta"),
+                account_type=data.get("account_type", "checking"),
+                initial_balance=float(data.get("initial_balance", 0.0)),
+                color=data.get("color", "#10b981")
+            )
+            return self._send_json({"success": True, "id": acc_id}, status=201)
+
+        elif path == "/api/credit-cards":
+            token = self.headers.get("Authorization", "").replace("Bearer ", "")
+            user_data = auth.verify_token(token)
+            user_id = user_data["user_id"] if user_data else 1
+            card_id = database.create_credit_card(
+                user_id=user_id,
+                name=data.get("name", "Novo Cartão"),
+                credit_limit=float(data.get("credit_limit", 1000.0)),
+                closing_day=int(data.get("closing_day", 25)),
+                due_day=int(data.get("due_day", 5)),
+                color=data.get("color", "#6366f1")
+            )
+            return self._send_json({"success": True, "id": card_id}, status=201)
+
+        # Importador Bancário .OFX
+        elif path == "/api/import/ofx":
+            try:
+                ofx_content = data.get("content", "")
+                if not ofx_content:
+                    return self._send_json({"error": "Conteúdo OFX não fornecido"}, status=400)
+
+                parsed = ofx_parser.parse_ofx_content(ofx_content)
+                transactions = parsed.get("transactions", [])
+                
+                # Obter categoria padrão 'Outras Despesas' ou 'Outras Receitas'
+                cats = database.get_categories()
+                cat_expense_default = next((c["id"] for c in cats if c["name"] == "Outras Despesas"), None)
+                cat_income_default = next((c["id"] for c in cats if c["name"] == "Outras Receitas"), None)
+
+                imported_count = 0
+                for tx in transactions:
+                    cat_id = cat_income_default if tx["type"] == "income" else cat_expense_default
+                    database.add_transaction(
+                        description=tx["description"],
+                        amount=tx["amount"],
+                        tx_type=tx["type"],
+                        category_id=cat_id,
+                        payment_method="Extrato Bancário",
+                        tx_date=tx["date"],
+                        status="paid",
+                        notes=f"OFX FITID: {tx.get('fitid', '')}",
+                        tags="ofx,importado"
+                    )
+                    imported_count += 1
+
+                return self._send_json({
+                    "success": True,
+                    "imported_count": imported_count,
+                    "bank_id": parsed.get("bank_id"),
+                    "account_id": parsed.get("account_id")
+                })
+            except Exception as e:
+                return self._send_json({"error": str(e)}, status=400)
+
+        # BunkerPay Checkout e Webhook
+        elif path == "/api/bunkerpay/checkout":
+            token = self.headers.get("Authorization", "").replace("Bearer ", "")
+            user_data = auth.verify_token(token)
+            user_id = user_data["user_id"] if user_data else 1
+            user_email = user_data["email"] if user_data else "demo@bunkerpay.io"
+            plan_key = data.get("plan", "pro_monthly")
+            
+            charge = bunkerpay_gateway.create_pix_charge(user_id, user_email, plan_key)
+            return self._send_json(charge)
+
+        elif path == "/api/bunkerpay/webhook":
+            result = bunkerpay_gateway.handle_bunkerpay_webhook(data)
+            if result.get("success") and result.get("user_id"):
+                database.update_user_plan(result["user_id"], result["plan"])
+            return self._send_json({"received": True, "result": result})
+
+        elif path == "/api/transactions":
             try:
                 tx_id = database.add_transaction(
                     description=data.get("description", ""),

@@ -1,0 +1,62 @@
+{
+  "app.py": {
+    "mtime": 1795139707.35674,
+    "ast_hash": "bce45bd3459e1489e8076e4ebc8b118f",
+    "semantic_hash": ""
+  },
+  "auth.py": {
+    "mtime": 1795139630.663336,
+    "ast_hash": "f17a68eea1547cc472558d23217eb3bf",
+    "semantic_hash": ""
+  },
+  "bunkerpay_gateway.py": {
+    "mtime": 1795139653.5251584,
+    "ast_hash": "2d8f3cddb8a647ddbd19260ee13da05e",
+    "semantic_hash": ""
+  },
+  "database.py": {
+    "mtime": 1795139678.2799659,
+    "ast_hash": "429a7ad7b993ccbc0f55cbd8457a0c07",
+    "semantic_hash": ""
+  },
+  "gui.py": {
+    "mtime": 1795139299.001765,
+    "ast_hash": "ab4e74f586e18ff94bf0b0cba75991fc",
+    "semantic_hash": ""
+  },
+  "iniciar.sh": {
+    "mtime": 1795139299.001765,
+    "ast_hash": "dd626a2588c0ab803a2642fe23606403",
+    "semantic_hash": ""
+  },
+  "ofx_parser.py": {
+    "mtime": 1795139641.6322508,
+    "ast_hash": "8dcdd2b259ec6fe55566824e4355422f",
+    "semantic_hash": ""
+  },
+  "static/app.js": {
+    "mtime": 1795139299.001765,
+    "ast_hash": "bb6c36afeabcd1991fe72887b097bcd3",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1795139299.001765,
+    "ast_hash": "f7d302e8688670c6de39623b03f5a6c3",
+    "semantic_hash": ""
+  },
+  "static/index.html": {
+    "mtime": 1795139299.0027232,
+    "ast_hash": "d684375113b4ccf869dfb1619d7d7ad9",
+    "semantic_hash": ""
+  },
+  "static/icon.png": {
+    "mtime": 1795139299.0027232,
+    "ast_hash": "f62807b217f0406bd7d628d6edaa749d",
+    "semantic_hash": ""
+  },
+  "static/icon.svg": {
+    "mtime": 1795139299.0027232,
+    "ast_hash": "780177fbba5822999f1a690245ac9ee0",
+    "semantic_hash": ""
+  }
+}

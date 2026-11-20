@@ -40,6 +40,51 @@ def init_db():
     conn = get_connection()
     cursor = conn.cursor()
 
+    # Tabela de Usuários (SaaS)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        plan TEXT NOT NULL DEFAULT 'free',
+        plan_expires_at TEXT,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+    """)
+
+    # Tabela de Contas Bancárias (SaaS PF)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS accounts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL DEFAULT 1,
+        name TEXT NOT NULL,
+        account_type TEXT NOT NULL DEFAULT 'checking',
+        initial_balance REAL NOT NULL DEFAULT 0.0,
+        current_balance REAL NOT NULL DEFAULT 0.0,
+        color TEXT DEFAULT '#10b981',
+        is_active INTEGER DEFAULT 1,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+    """)
+
+    # Tabela de Cartões de Crédito (SaaS PF)
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS credit_cards (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL DEFAULT 1,
+        name TEXT NOT NULL,
+        credit_limit REAL NOT NULL DEFAULT 0.0,
+        closing_day INTEGER NOT NULL DEFAULT 25,
+        due_day INTEGER NOT NULL DEFAULT 5,
+        color TEXT DEFAULT '#6366f1',
+        is_active INTEGER DEFAULT 1,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+    """)
+
     # Tabela de Categorias
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS categories (
@@ -609,7 +654,95 @@ def reset_to_demo_data():
     seed_sample_data(conn)
     conn.close()
 
-def export_all_data() -> Dict[str, Any]:
+# -------------------------------------------------------------
+# MÉTODOS SAAS: USUÁRIOS, CONTAS BANCÁRIAS E CARTÕES
+# -------------------------------------------------------------
+
+def create_user(name: str, email: str, password_hash: str) -> Optional[int]:
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)",
+            (name, email.strip().lower(), password_hash)
+        )
+        conn.commit()
+        user_id = cursor.lastrowid
+        # Criar conta padrão 'Carteira' para o novo usuário
+        cursor.execute(
+            "INSERT INTO accounts (user_id, name, account_type, color) VALUES (?, 'Carteira Principal', 'checking', '#10b981')",
+            (user_id,)
+        )
+        conn.commit()
+        return user_id
+    except sqlite3.IntegrityError:
+        return None
+    finally:
+        conn.close()
+
+def get_user_by_email(email: str) -> Optional[Dict[str, Any]]:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users WHERE email = ?", (email.strip().lower(),))
+    row = cursor.fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+def get_user_by_id(user_id: int) -> Optional[Dict[str, Any]]:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name, email, plan, plan_expires_at, created_at FROM users WHERE id = ?", (user_id,))
+    row = cursor.fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+def update_user_plan(user_id: int, plan: str, expires_at: Optional[str] = None):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET plan = ?, plan_expires_at = ? WHERE id = ?", (plan, expires_at, user_id))
+    conn.commit()
+    conn.close()
+
+def get_accounts(user_id: int = 1) -> List[Dict[str, Any]]:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM accounts WHERE user_id = ? AND is_active = 1 ORDER BY name ASC", (user_id,))
+    rows = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+    return rows
+
+def create_account(user_id: int, name: str, account_type: str = "checking", initial_balance: float = 0.0, color: str = "#10b981") -> int:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO accounts (user_id, name, account_type, initial_balance, current_balance, color)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (user_id, name, account_type, initial_balance, initial_balance, color))
+    conn.commit()
+    acc_id = cursor.lastrowid
+    conn.close()
+    return acc_id
+
+def get_credit_cards(user_id: int = 1) -> List[Dict[str, Any]]:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM credit_cards WHERE user_id = ? AND is_active = 1 ORDER BY name ASC", (user_id,))
+    rows = [dict(r) for r in cursor.fetchall()]
+    conn.close()
+    return rows
+
+def create_credit_card(user_id: int, name: str, credit_limit: float, closing_day: int = 25, due_day: int = 5, color: str = "#6366f1") -> int:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO credit_cards (user_id, name, credit_limit, closing_day, due_day, color)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (user_id, name, credit_limit, closing_day, due_day, color))
+    conn.commit()
+    card_id = cursor.lastrowid
+    conn.close()
+    return card_id
+
     conn = get_connection()
     cursor = conn.cursor()
     
