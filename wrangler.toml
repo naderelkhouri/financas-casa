@@ -1,0 +1,12 @@
+name = "financas-casa"
+pages_build_output_dir = "static"
+compatibility_date = "2024-09-23"
+
+[vars]
+ENVIRONMENT = "production"
+SAAS_NAME = "Finanças de Casa SaaS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "financas_d1"
+database_id = "financas-d1-placeholder"

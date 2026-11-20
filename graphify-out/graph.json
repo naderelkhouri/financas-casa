@@ -50,7 +50,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "app_financerequesthandler",
-      "community": 1,
+      "community": 8,
       "norm_label": "financerequesthandler"
     },
     {
@@ -60,7 +60,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "simplehttprequesthandler",
-      "community": 1,
+      "community": 8,
       "norm_label": "simplehttprequesthandler"
     },
     {
@@ -70,7 +70,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "app_financerequesthandler_init",
-      "community": 1,
+      "community": 8,
       "norm_label": ".__init__()"
     },
     {
@@ -80,7 +80,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "app_financerequesthandler_send_json",
-      "community": 1,
+      "community": 8,
       "norm_label": "._send_json()"
     },
     {
@@ -90,7 +90,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "app_financerequesthandler_read_json_body",
-      "community": 1,
+      "community": 8,
       "norm_label": "._read_json_body()"
     },
     {
@@ -100,7 +100,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "app_financerequesthandler_do_options",
-      "community": 1,
+      "community": 8,
       "norm_label": ".do_options()"
     },
     {
@@ -110,7 +110,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "app_financerequesthandler_do_get",
-      "community": 1,
+      "community": 8,
       "norm_label": ".do_get()"
     },
     {
@@ -120,7 +120,7 @@
       "source_location": "L165",
       "_origin": "ast",
       "id": "app_financerequesthandler_do_post",
-      "community": 1,
+      "community": 8,
       "norm_label": ".do_post()"
     },
     {
@@ -130,7 +130,7 @@
       "source_location": "L427",
       "_origin": "ast",
       "id": "app_financerequesthandler_do_put",
-      "community": 1,
+      "community": 8,
       "norm_label": ".do_put()"
     },
     {
@@ -140,7 +140,7 @@
       "source_location": "L470",
       "_origin": "ast",
       "id": "app_financerequesthandler_do_delete",
-      "community": 1,
+      "community": 8,
       "norm_label": ".do_delete()"
     },
     {
@@ -702,6 +702,76 @@
       "id": "database_rationale_637",
       "community": 0,
       "norm_label": "limpa e recarrega os dados de demonstracao."
+    },
+    {
+      "label": "webhook.js",
+      "file_type": "code",
+      "source_file": "functions/api/bunkerpay/webhook.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "bunkerpay_webhook",
+      "community": 12,
+      "norm_label": "webhook.js"
+    },
+    {
+      "label": "onRequestPost()",
+      "file_type": "code",
+      "source_file": "functions/api/bunkerpay/webhook.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "bunkerpay_webhook_onrequestpost",
+      "community": 12,
+      "norm_label": "onrequestpost()"
+    },
+    {
+      "label": "dashboard.js",
+      "file_type": "code",
+      "source_file": "functions/api/dashboard.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "api_dashboard",
+      "community": 10,
+      "norm_label": "dashboard.js"
+    },
+    {
+      "label": "onRequestGet()",
+      "file_type": "code",
+      "source_file": "functions/api/dashboard.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "api_dashboard_onrequestget",
+      "community": 10,
+      "norm_label": "onrequestget()"
+    },
+    {
+      "label": "transactions.js",
+      "file_type": "code",
+      "source_file": "functions/api/transactions.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "api_transactions",
+      "community": 9,
+      "norm_label": "transactions.js"
+    },
+    {
+      "label": "onRequestGet()",
+      "file_type": "code",
+      "source_file": "functions/api/transactions.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "api_transactions_onrequestget",
+      "community": 9,
+      "norm_label": "onrequestget()"
+    },
+    {
+      "label": "onRequestPost()",
+      "file_type": "code",
+      "source_file": "functions/api/transactions.js",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "api_transactions_onrequestpost",
+      "community": 9,
+      "norm_label": "onrequestpost()"
     },
     {
       "label": "gui.py",
@@ -2822,6 +2892,46 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "functions/api/bunkerpay/webhook.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "bunkerpay_webhook",
+      "target": "bunkerpay_webhook_onrequestpost",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/api/dashboard.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "api_dashboard",
+      "target": "api_dashboard_onrequestget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/api/transactions.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "api_transactions",
+      "target": "api_transactions_onrequestget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/api/transactions.js",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "api_transactions",
+      "target": "api_transactions_onrequestpost",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "gui.py",
       "source_location": "L116",
       "weight": 1.0,
@@ -3232,9 +3342,9 @@
       "source_file": "static/app.js",
       "source_location": "L1330",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app",
-      "target": "static_app_handleofxfileselected",
-      "confidence_score": 1.0
+      "target": "static_app_handleofxfileselected"
     },
     {
       "relation": "contains",
@@ -3302,9 +3412,9 @@
       "source_file": "static/app.js",
       "source_location": "L1223",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app",
-      "target": "static_app_loadaccountsandcards",
-      "confidence_score": 1.0
+      "target": "static_app_loadaccountsandcards"
     },
     {
       "relation": "contains",
@@ -3492,9 +3602,9 @@
       "source_file": "static/app.js",
       "source_location": "L1368",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app",
-      "target": "static_app_startbunkerpaycheckout",
-      "confidence_score": 1.0
+      "target": "static_app_startbunkerpaycheckout"
     },
     {
       "relation": "contains",
@@ -4175,9 +4285,9 @@
       "source_file": "static/app.js",
       "source_location": "L1388",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app_startbunkerpaycheckout",
-      "target": "static_app_openmodal",
-      "confidence_score": 1.0
+      "target": "static_app_openmodal"
     },
     {
       "relation": "calls",
@@ -4197,9 +4307,9 @@
       "source_file": "static/app.js",
       "source_location": "L1390",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app_startbunkerpaycheckout",
-      "target": "static_app_showtoast",
-      "confidence_score": 1.0
+      "target": "static_app_showtoast"
     },
     {
       "relation": "contains",
@@ -4273,5 +4383,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "d09c03d1252aed0a0aa8076e45836a1f5b915f8b"
+  "built_at_commit": "dc34f18d598c23bf91ca55484cdd1920d8f7f181"
 }
