@@ -257,6 +257,7 @@ function switchTab(tabId) {
     'budgets-goals': { title: 'Orçamentos & Metas', sub: 'Tetos de gastos e objetivos de poupança' },
     'recurring': { title: 'Contas Recorrentes', sub: 'Lembretes de vencimento e contas fixas' },
     'accounts-cards': { title: 'Contas & Cartões', sub: 'Gestão de bancos, saldos e faturas de cartões' },
+    'saas-admin': { title: 'Painel do Administrador', sub: 'Governança do SaaS, MRR e usuários da plataforma' },
     'import-ofx': { title: 'Importação OFX', sub: 'Conciliação automática de extratos bancários brasileiros' },
     'bunkerpay-sub': { title: 'Assinatura BunkerPay', sub: 'Planos Pro com liquidação direta em PIX' },
     'reports': { title: 'Relatórios & Backup', sub: 'Importação, exportação e impressão consolidada' }
@@ -285,6 +286,8 @@ function refreshCurrentView() {
       loadRecurringBills();
     } else if (state.activeTab === 'accounts-cards') {
       loadAccountsAndCards();
+    } else if (state.activeTab === 'saas-admin') {
+      loadAdminDashboard();
     }
   });
 }
@@ -1434,14 +1437,19 @@ function updateUserUI(user) {
   const planEl = document.getElementById('user-display-plan');
   const avatarEl = document.getElementById('user-avatar');
   const btnAuth = document.getElementById('btn-auth-action');
+  const adminNav = document.getElementById('nav-saas-admin');
 
   if (user) {
     if (nameEl) nameEl.textContent = user.name || user.email.split('@')[0];
-    if (planEl) planEl.textContent = user.plan || 'Free';
+    if (planEl) planEl.textContent = (user.role === 'admin' ? '🛡️ Admin • ' : '') + (user.plan || 'Free');
     if (avatarEl) avatarEl.textContent = (user.name || user.email)[0].toUpperCase();
     if (btnAuth) {
       btnAuth.textContent = '🚪';
       btnAuth.title = 'Sair da Conta (Logout)';
+    }
+    // Exibe o botão de Admin caso tenha role admin
+    if (adminNav) {
+      adminNav.style.display = user.role === 'admin' ? 'flex' : 'none';
     }
   } else {
     if (nameEl) nameEl.textContent = 'Visitante';
@@ -1451,6 +1459,97 @@ function updateUserUI(user) {
       btnAuth.textContent = '🔑';
       btnAuth.title = 'Entrar / Cadastrar';
     }
+    if (adminNav) adminNav.style.display = 'none';
+  }
+}
+
+// ==========================================================================
+// PAINEL ADMINISTRATIVO DO SAAS (CARREGAMENTO & GESTÃO)
+// ==========================================================================
+
+async function loadAdminDashboard() {
+  try {
+    const res = await fetch('/api/admin/overview');
+    if (!res.ok) {
+      showToast('Acesso restrito a administradores.', 'error');
+      return;
+    }
+
+    const data = await res.json();
+    const m = data.metrics || {};
+
+    // Atualizar Métricas
+    document.getElementById('admin-total-users').textContent = m.total_users || 0;
+    document.getElementById('admin-free-users').textContent = `${m.free_users || 0} no plano gratuito`;
+    document.getElementById('admin-pro-users').textContent = m.pro_subscribers || 0;
+    document.getElementById('admin-mrr').textContent = formatCurrency(m.estimated_mrr || 0);
+    document.getElementById('admin-tx-count').textContent = m.total_transactions || 0;
+    document.getElementById('admin-volume').textContent = `${formatCurrency(m.total_financial_volume || 0)} movimentados`;
+
+    // Renderizar Tabela de Usuários
+    const tbody = document.getElementById('admin-users-table-body');
+    if (tbody) {
+      if (!data.users || data.users.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="padding: 24px; text-align: center; color: var(--text-muted);">Nenhum usuário cadastrado.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = data.users.map(u => `
+        <tr style="border-bottom: 1px solid var(--border-color); font-size: 0.85rem;">
+          <td style="padding: 12px 16px; font-weight: 600;">#${u.id}</td>
+          <td style="padding: 12px 16px;">
+            <strong>${escapeHtml(u.name)}</strong>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">${escapeHtml(u.email)}</div>
+          </td>
+          <td style="padding: 12px 16px;">
+            <span style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; background: ${u.plan.startsWith('pro') ? 'rgba(16, 185, 129, 0.2)' : 'rgba(148, 163, 184, 0.15)'}; color: ${u.plan.startsWith('pro') ? '#10b981' : 'var(--text-muted)'};">
+              ${u.plan.toUpperCase()}
+            </span>
+          </td>
+          <td style="padding: 12px 16px;">
+            <span style="font-weight: 600; color: ${u.role === 'admin' ? 'var(--accent-warning)' : 'inherit'};">
+              ${u.role === 'admin' ? '🛡️ Admin' : 'Usuário'}
+            </span>
+          </td>
+          <td style="padding: 12px 16px;">
+            <span>${u.tx_count || 0} lançamentos</span>
+            <div style="font-size: 0.72rem; color: var(--text-muted);">${u.accounts_count || 0} contas</div>
+          </td>
+          <td style="padding: 12px 16px; color: var(--text-muted); font-size: 0.78rem;">
+            ${formatDate(String(u.created_at || '').slice(0, 10))}
+          </td>
+          <td style="padding: 12px 16px; text-align: right;">
+            <button class="btn-ghost" style="padding: 4px 8px; font-size: 0.75rem;" onclick="adminTogglePlan(${u.id}, '${u.plan}')">
+              ${u.plan.startsWith('pro') ? 'Rebaixar p/ Free' : 'Promover p/ Pro'}
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+  } catch (err) {
+    showToast('Erro ao carregar dados administrativos.', 'error');
+  }
+}
+
+async function adminTogglePlan(userId, currentPlan) {
+  const newPlan = currentPlan.startsWith('pro') ? 'free' : 'pro_monthly';
+  if (!confirm(`Alterar plano do usuário #${userId} para ${newPlan.toUpperCase()}?`)) return;
+
+  try {
+    const res = await fetch('/api/admin/overview', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: userId, plan: newPlan })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast('Plano do usuário atualizado com sucesso!');
+      loadAdminDashboard();
+    } else {
+      showToast(data.error || 'Erro ao alterar plano.', 'error');
+    }
+  } catch (err) {
+    showToast('Erro de rede ao atualizar usuário.', 'error');
   }
 }
 

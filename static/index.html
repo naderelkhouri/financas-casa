@@ -63,6 +63,10 @@
           <span class="nav-icon">⚙️</span>
           <span class="nav-label">Relatórios & Backup</span>
         </button>
+        <button class="nav-item" data-tab="saas-admin" id="nav-saas-admin" style="display: none; border: 1px dashed var(--accent-warning); color: var(--accent-warning);">
+          <span class="nav-icon">🛡️</span>
+          <span class="nav-label">Painel Admin</span>
+        </button>
       </nav>
 
       <div class="sidebar-footer">
@@ -695,6 +699,69 @@
             <div class="card-body" id="cards-list">
               <!-- Lista dinâmica de cartões -->
             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABA: PAINEL ADMIN DO SAAS -->
+      <section class="tab-content" id="tab-saas-admin" style="display:none;">
+        <div class="content-header-row">
+          <div>
+            <h2>🛡️ Painel Administrativo do SaaS</h2>
+            <p>Métricas globais, receita recorrente (MRR), usuários cadastrados e controle de planos</p>
+          </div>
+          <button class="btn-secondary" onclick="loadAdminDashboard()">↻ Atualizar Métricas</button>
+        </div>
+
+        <!-- Cards de Métricas SaaS -->
+        <div class="stats-grid mt-4" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+          <div class="stat-card">
+            <span class="stat-label">Total de Usuários</span>
+            <div class="stat-value tabular-nums" id="admin-total-users">0</div>
+            <span class="stat-sub" id="admin-free-users">0 no plano gratuito</span>
+          </div>
+
+          <div class="stat-card" style="border-color: var(--accent-success);">
+            <span class="stat-label">Assinantes Pro</span>
+            <div class="stat-value tabular-nums" style="color: var(--accent-success);" id="admin-pro-users">0</div>
+            <span class="stat-sub">BunkerPay & Pix</span>
+          </div>
+
+          <div class="stat-card" style="border-color: var(--accent-warning);">
+            <span class="stat-label">MRR Estimado</span>
+            <div class="stat-value tabular-nums" style="color: var(--accent-warning);" id="admin-mrr">R$ 0,00</div>
+            <span class="stat-sub">Receita Mensal Recorrente</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="stat-label">Volume de Transações</span>
+            <div class="stat-value tabular-nums" id="admin-tx-count">0</div>
+            <span class="stat-sub" id="admin-volume">R$ 0,00 transacionados</span>
+          </div>
+        </div>
+
+        <!-- Tabela de Gestão de Usuários -->
+        <div class="card mt-4">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <h3>Usuários da Base (Cloudflare D1)</h3>
+          </div>
+          <div class="card-body" style="overflow-x: auto; padding: 0;">
+            <table class="data-table" style="width: 100%; border-collapse: collapse;">
+              <thead>
+                <tr style="border-bottom: 1px solid var(--border-color); text-align: left; font-size: 0.8rem; color: var(--text-muted);">
+                  <th style="padding: 12px 16px;">ID</th>
+                  <th style="padding: 12px 16px;">NOME / E-MAIL</th>
+                  <th style="padding: 12px 16px;">PLANO</th>
+                  <th style="padding: 12px 16px;">PAPEL (ROLE)</th>
+                  <th style="padding: 12px 16px;">TRANSAÇÕES</th>
+                  <th style="padding: 12px 16px;">CADASTRO</th>
+                  <th style="padding: 12px 16px; text-align: right;">AÇÕES</th>
+                </tr>
+              </thead>
+              <tbody id="admin-users-table-body">
+                <!-- Linhas dinâmicas -->
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
