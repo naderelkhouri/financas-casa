@@ -1269,18 +1269,52 @@ async function loadAccountsAndCards() {
       if (cards.length === 0) {
         cardsContainer.innerHTML = '<p class="text-muted">Nenhum cartão cadastrado.</p>';
       } else {
-        cardsContainer.innerHTML = cards.map(c => `
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--border); margin-bottom: 8px;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: ${c.color};"></span>
-              <div>
-                <strong>${escapeHtml(c.name)}</strong>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">Fecha dia ${c.closing_day} | Vence dia ${c.due_day}</div>
+        const today = new Date().getDate();
+        cardsContainer.innerHTML = cards.map(c => {
+          const limit = Number(c.credit_limit) || 0;
+          const closing = Number(c.closing_day) || 25;
+          const due = Number(c.due_day) || 5;
+          const bestDay = closing === 1 ? 28 : (closing + 1 > 31 ? 1 : closing + 1);
+          const isBestDayPeriod = today >= closing || today <= (closing + 3);
+
+          return `
+          <div class="credit-card-glass">
+            <div class="credit-card-header">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: ${c.color || 'var(--accent-primary)'}; box-shadow: 0 0 8px ${c.color || 'var(--accent-primary)'};"></span>
+                <div>
+                  <div class="credit-card-name">${escapeHtml(c.name)}</div>
+                  <div style="font-size: 0.8rem; color: var(--text-muted);">Mastercard / Visa / Platinum</div>
+                </div>
+              </div>
+              <div class="best-purchase-day-badge" title="Compras feitas a partir deste dia caem na fatura do mês seguinte!">
+                ⭐ Melhor dia: ${bestDay}
               </div>
             </div>
-            <span style="font-size: 0.9rem;">Limite: <strong>${formatCurrency(c.credit_limit)}</strong></span>
+
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 14px;">
+              <div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Limite Total</div>
+                <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums;">${formatCurrency(limit)}</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Status do Ciclo</div>
+                <div style="font-size: 0.82rem; font-weight: 600; color: ${isBestDayPeriod ? 'var(--accent-success)' : 'var(--text-secondary)'};">
+                  ${isBestDayPeriod ? '🟢 Período Ouro (Fatura Seguinte)' : '🟡 Fatura Atual Aberta'}
+                </div>
+              </div>
+            </div>
+
+            <div class="credit-limit-bar-bg">
+              <div class="credit-limit-bar-fill" style="width: 15%; background: var(--accent-primary);"></div>
+            </div>
+
+            <div class="credit-card-dates">
+              <div>📅 Fecha todo dia <strong>${closing}</strong></div>
+              <div>💳 Vence todo dia <strong>${due}</strong></div>
+            </div>
           </div>
-        `).join('');
+        `}).join('');
       }
     }
   } catch (err) {
@@ -1622,5 +1656,56 @@ async function logoutUser() {
     showToast('Erro ao sair da conta.', 'error');
   }
 }
+
+// Quick Capture - Lançamento Rápido em 3 Segundos
+function openQuickTransaction() {
+  const modal = document.getElementById('modal-transaction');
+  if (!modal) return;
+  
+  // Limpa formulário e prepara para entrada ultra-rápida
+  const form = document.getElementById('form-transaction');
+  if (form) form.reset();
+  
+  const idField = document.getElementById('tx-id');
+  if (idField) idField.value = '';
+
+  const titleField = document.getElementById('modal-tx-title');
+  if (titleField) titleField.textContent = '⚡ Lançamento Rápido';
+
+  const dateField = document.getElementById('tx-date');
+  if (dateField) dateField.value = new Date().toISOString().split('T')[0];
+
+  const expenseBtn = document.getElementById('type-btn-expense');
+  if (expenseBtn) {
+    document.querySelectorAll('.tx-type-toggle-group .type-btn').forEach(b => b.classList.remove('active'));
+    expenseBtn.classList.add('active');
+    const radio = expenseBtn.querySelector('input');
+    if (radio) radio.checked = true;
+  }
+
+  modal.style.display = 'flex';
+
+  // Foco imediato no campo de valor para digitação sem clique extra
+  setTimeout(() => {
+    const amountField = document.getElementById('tx-amount');
+    if (amountField) {
+      amountField.focus();
+      amountField.select();
+    }
+  }, 100);
+}
+
+// Atalho de teclado: Pressionar 'N' abre o lançamento rápido (quando não estiver digitando em inputs)
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'n' || e.key === 'N') {
+    const activeEl = document.activeElement;
+    if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'SELECT')) {
+      return;
+    }
+    e.preventDefault();
+    openQuickTransaction();
+  }
+});
+
 
 
