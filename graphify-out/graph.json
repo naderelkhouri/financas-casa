@@ -1830,74 +1830,84 @@
       "norm_label": "readme.md"
     },
     {
-      "label": "\ud83d\udcb0 Finan\u00e7as de Casa - Aplicativo Desktop Nativo para Linux",
+      "label": "\ud83d\udcb0 Finan\u00e7as Pessoais ADMX \u2014 Plataforma SaaS Serverless",
       "file_type": "document",
       "source_file": "README.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "readme_finan\u00e7as_de_casa_aplicativo_desktop_nativo_para_linux",
+      "id": "readme_finan\u00e7as_pessoais_admx_plataforma_saas_serverless",
       "community": 5,
-      "norm_label": "\ud83d\udcb0 financas de casa - aplicativo desktop nativo para linux"
+      "norm_label": "\ud83d\udcb0 financas pessoais admx \u2014 plataforma saas serverless"
     },
     {
-      "label": "\ud83d\udda5\ufe0f Janela Pr\u00f3pria de Desktop (Sem abas de navegador)",
+      "label": "\ud83c\udf1f Vis\u00e3o Geral",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L7",
+      "source_location": "L10",
       "_origin": "ast",
-      "id": "readme_janela_pr\u00f3pria_de_desktop_sem_abas_de_navegador",
+      "id": "readme_vis\u00e3o_geral",
       "community": 5,
-      "norm_label": "\ud83d\udda5\ufe0f janela propria de desktop (sem abas de navegador)"
+      "norm_label": "\ud83c\udf1f visao geral"
     },
     {
-      "label": "\u2728 Funcionalidades",
+      "label": "\ud83c\udfd7\ufe0f Stack Tecnol\u00f3gica",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L15",
+      "source_location": "L21",
       "_origin": "ast",
-      "id": "readme_funcionalidades",
+      "id": "readme_stack_tecnol\u00f3gica",
       "community": 5,
-      "norm_label": "\u2728 funcionalidades"
+      "norm_label": "\ud83c\udfd7\ufe0f stack tecnologica"
     },
     {
-      "label": "\ud83d\ude80 Como Iniciar",
+      "label": "\ud83d\udcc1 Estrutura do Projeto",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L47",
+      "source_location": "L31",
       "_origin": "ast",
-      "id": "readme_como_iniciar",
+      "id": "readme_estrutura_do_projeto",
       "community": 5,
-      "norm_label": "\ud83d\ude80 como iniciar"
+      "norm_label": "\ud83d\udcc1 estrutura do projeto"
     },
     {
-      "label": "1. Pelo Menu de Aplicativos do Linux",
+      "label": "\ud83d\ude80 Como Fazer o Deploy",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L49",
+      "source_location": "L62",
       "_origin": "ast",
-      "id": "readme_1_pelo_menu_de_aplicativos_do_linux",
+      "id": "readme_como_fazer_o_deploy",
       "community": 5,
-      "norm_label": "1. pelo menu de aplicativos do linux"
+      "norm_label": "\ud83d\ude80 como fazer o deploy"
     },
     {
-      "label": "2. Pelo Terminal",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": "L52",
-      "_origin": "ast",
-      "id": "readme_2_pelo_terminal",
-      "community": 5,
-      "norm_label": "2. pelo terminal"
-    },
-    {
-      "label": "\ud83d\udd12 Dados e Privacidade",
+      "label": "Op\u00e7\u00e3o 1: Via Script Automatizado (Terminal)",
       "file_type": "document",
       "source_file": "README.md",
       "source_location": "L64",
       "_origin": "ast",
-      "id": "readme_dados_e_privacidade",
+      "id": "readme_op\u00e7\u00e3o_1_via_script_automatizado_terminal",
       "community": 5,
-      "norm_label": "\ud83d\udd12 dados e privacidade"
+      "norm_label": "opcao 1: via script automatizado (terminal)"
+    },
+    {
+      "label": "Op\u00e7\u00e3o 2: Via GitHub Actions (CI/CD Autom\u00e1tico)",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L70",
+      "_origin": "ast",
+      "id": "readme_op\u00e7\u00e3o_2_via_github_actions_ci_cd_autom\u00e1tico",
+      "community": 5,
+      "norm_label": "opcao 2: via github actions (ci/cd automatico)"
+    },
+    {
+      "label": "\ud83d\udd12 Dados e Seguran\u00e7a",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L75",
+      "_origin": "ast",
+      "id": "readme_dados_e_seguran\u00e7a",
+      "community": 5,
+      "norm_label": "\ud83d\udd12 dados e seguranca"
     }
   ],
   "links": [
@@ -3930,9 +3940,9 @@
       "source_file": "static/app.js",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app",
-      "target": "static_app_registerserviceworker",
-      "confidence_score": 1.0
+      "target": "static_app_registerserviceworker"
     },
     {
       "relation": "contains",
@@ -4705,9 +4715,9 @@
       "source_file": "static/manifest.json",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_manifest",
-      "target": "static_manifest_background_color",
-      "confidence_score": 1.0
+      "target": "static_manifest_background_color"
     },
     {
       "relation": "contains",
@@ -4715,9 +4725,9 @@
       "source_file": "static/manifest.json",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_manifest",
-      "target": "static_manifest_description",
-      "confidence_score": 1.0
+      "target": "static_manifest_description"
     },
     {
       "relation": "contains",
@@ -4725,9 +4735,9 @@
       "source_file": "static/manifest.json",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_manifest",
-      "target": "static_manifest_display",
-      "confidence_score": 1.0
+      "target": "static_manifest_display"
     },
     {
       "relation": "contains",
@@ -4735,9 +4745,9 @@
       "source_file": "static/manifest.json",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_manifest",
-      "target": "static_manifest_icons",
-      "confidence_score": 1.0
+      "target": "static_manifest_icons"
     },
     {
       "relation": "contains",
@@ -4745,9 +4755,9 @@
       "source_file": "static/manifest.json",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_manifest",
-      "target": "static_manifest_name",
-      "confidence_score": 1.0
+      "target": "static_manifest_name"
     },
     {
       "relation": "contains",
@@ -4755,9 +4765,9 @@
       "source_file": "static/manifest.json",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_manifest",
-      "target": "static_manifest_orientation",
-      "confidence_score": 1.0
+      "target": "static_manifest_orientation"
     },
     {
       "relation": "contains",
@@ -4765,9 +4775,9 @@
       "source_file": "static/manifest.json",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_manifest",
-      "target": "static_manifest_short_name",
-      "confidence_score": 1.0
+      "target": "static_manifest_short_name"
     },
     {
       "relation": "contains",
@@ -4775,9 +4785,9 @@
       "source_file": "static/manifest.json",
       "source_location": "L5",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_manifest",
-      "target": "static_manifest_start_url",
-      "confidence_score": 1.0
+      "target": "static_manifest_start_url"
     },
     {
       "relation": "contains",
@@ -4785,9 +4795,9 @@
       "source_file": "static/manifest.json",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_manifest",
-      "target": "static_manifest_theme_color",
-      "confidence_score": 1.0
+      "target": "static_manifest_theme_color"
     },
     {
       "relation": "contains",
@@ -4795,9 +4805,9 @@
       "source_file": "static/sw.js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_sw",
-      "target": "static_sw_assets_to_cache",
-      "confidence_score": 1.0
+      "target": "static_sw_assets_to_cache"
     },
     {
       "relation": "contains",
@@ -4805,19 +4815,59 @@
       "source_file": "README.md",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "readme",
-      "target": "readme_finan\u00e7as_de_casa_aplicativo_desktop_nativo_para_linux"
+      "target": "readme_finan\u00e7as_pessoais_admx_plataforma_saas_serverless",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L47",
+      "source_location": "L62",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "readme_finan\u00e7as_de_casa_aplicativo_desktop_nativo_para_linux",
-      "target": "readme_como_iniciar"
+      "source": "readme_finan\u00e7as_pessoais_admx_plataforma_saas_serverless",
+      "target": "readme_como_fazer_o_deploy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L75",
+      "weight": 1.0,
+      "source": "readme_finan\u00e7as_pessoais_admx_plataforma_saas_serverless",
+      "target": "readme_dados_e_seguran\u00e7a",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "readme_finan\u00e7as_pessoais_admx_plataforma_saas_serverless",
+      "target": "readme_estrutura_do_projeto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "readme_finan\u00e7as_pessoais_admx_plataforma_saas_serverless",
+      "target": "readme_stack_tecnol\u00f3gica",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "readme_finan\u00e7as_pessoais_admx_plataforma_saas_serverless",
+      "target": "readme_vis\u00e3o_geral",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -4825,51 +4875,21 @@
       "source_file": "README.md",
       "source_location": "L64",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "readme_finan\u00e7as_de_casa_aplicativo_desktop_nativo_para_linux",
-      "target": "readme_dados_e_privacidade"
+      "source": "readme_como_fazer_o_deploy",
+      "target": "readme_op\u00e7\u00e3o_1_via_script_automatizado_terminal",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L15",
+      "source_location": "L70",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "readme_finan\u00e7as_de_casa_aplicativo_desktop_nativo_para_linux",
-      "target": "readme_funcionalidades"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L7",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "readme_finan\u00e7as_de_casa_aplicativo_desktop_nativo_para_linux",
-      "target": "readme_janela_pr\u00f3pria_de_desktop_sem_abas_de_navegador"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L49",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "readme_como_iniciar",
-      "target": "readme_1_pelo_menu_de_aplicativos_do_linux"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "README.md",
-      "source_location": "L52",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "readme_como_iniciar",
-      "target": "readme_2_pelo_terminal"
+      "source": "readme_como_fazer_o_deploy",
+      "target": "readme_op\u00e7\u00e3o_2_via_github_actions_ci_cd_autom\u00e1tico",
+      "confidence_score": 1.0
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "3f717c55a01eea42e6a5ab89e373da94fafde21b"
+  "built_at_commit": "c4ccec3e71e22ce7de9efe498a9e1738cbdd2ba7"
 }

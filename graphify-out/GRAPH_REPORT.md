@@ -1,16 +1,16 @@
 # Graph Report - financas-casa  (2026-11-21)
 
 ## Corpus Check
-- 21 files · ~16,460 words
+- 21 files · ~16,723 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 188 nodes · 285 edges · 23 communities (20 shown, 3 thin omitted)
+- 189 nodes · 286 edges · 23 communities (20 shown, 3 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `3f717c55`
+- Built from commit: `c4ccec3e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -41,7 +41,7 @@
 7. `loadDashboard()` - 7 edges
 8. `FinanceApp` - 6 edges
 9. `openModal()` - 6 edges
-10. `seed_sample_data()` - 5 edges
+10. `💰 Finanças Pessoais ADMX — Plataforma SaaS Serverless` - 6 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `FinanceApp` --uses--> `ThreadedHTTPServer`  [INFERRED]
@@ -81,8 +81,8 @@ Cohesion: 0.18
 Nodes (10): generate_token(), hash_password(), Any, Módulo de Autenticação e Gestão de Usuários (SaaS). Implementa Hash seguro (PBKD, Gera hash PBKDF2 com salt aleatório de 16 bytes., Valida a senha contra o hash armazenado., Gera token JWT-like assinado (Header.Payload.Signature)., Valida o token e retorna o payload caso seja válido. (+2 more)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.25
-Nodes (7): 1. Pelo Menu de Aplicativos do Linux, 2. Pelo Terminal, 🚀 Como Iniciar, 🔒 Dados e Privacidade, 💰 Finanças de Casa - Aplicativo Desktop Nativo para Linux, ✨ Funcionalidades, 🖥️ Janela Própria de Desktop (Sem abas de navegador)
+Cohesion: 0.22
+Nodes (8): 🚀 Como Fazer o Deploy, 🔒 Dados e Segurança, 📁 Estrutura do Projeto, 💰 Finanças Pessoais ADMX — Plataforma SaaS Serverless, Opção 1: Via Script Automatizado (Terminal), Opção 2: Via GitHub Actions (CI/CD Automático), 🏗️ Stack Tecnológica, 🌟 Visão Geral
 
 ### Community 6 - "Community 6"
 Cohesion: 0.33
@@ -109,7 +109,7 @@ Cohesion: 0.50
 Nodes (4): loadCategories(), loadInitialData(), loadRecurringBills(), updateRecurringBadge()
 
 ## Knowledge Gaps
-- **21 isolated node(s):** `Any`, `deploy-cloudflare.sh script`, `iniciar.sh script`, `Any`, `state` (+16 more)
+- **22 isolated node(s):** `Any`, `deploy-cloudflare.sh script`, `iniciar.sh script`, `Any`, `state` (+17 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -121,7 +121,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Are the 2 inferred relationships involving `ThreadedHTTPServer` (e.g. with `FinanceApp` and `FinanceWindow`) actually correct?**
   _`ThreadedHTTPServer` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Any`, `Módulo de Autenticação e Gestão de Usuários (SaaS). Implementa Hash seguro (PBKD`, `Gera hash PBKDF2 com salt aleatório de 16 bytes.` to the rest of the system?**
-  _35 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _36 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.1066066066066066 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

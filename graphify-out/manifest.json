@@ -40,8 +40,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1795139299.001765,
-    "ast_hash": "f7d302e8688670c6de39623b03f5a6c3",
+    "mtime": 1795270863.4207282,
+    "ast_hash": "555dffef4dedd03cee2da511045d0ab9",
     "semantic_hash": ""
   },
   "static/index.html": {
@@ -117,6 +117,11 @@
   "static/sw.js": {
     "mtime": 1795270424.3275967,
     "ast_hash": "4743c83d331aee3d2300c9b296f4a69f",
+    "semantic_hash": ""
+  },
+  ".github/workflows/deploy.yml": {
+    "mtime": 1795270849.697792,
+    "ast_hash": "46f4dd7efc04c84cceabc41f64f176f8",
     "semantic_hash": ""
   }
 }

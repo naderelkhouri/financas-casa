@@ -1,66 +1,78 @@
-# 💰 Finanças de Casa - Aplicativo Desktop Nativo para Linux
+# 💰 Finanças Pessoais ADMX — Plataforma SaaS Serverless
 
-Aplicativo desktop independente para **Linux** em **Python (GTK3 + WebKitGTK)** para controle financeiro doméstico, organização de receitas e despesas, metas de economia, tetos de gastos e contas fixas recorrentes.
-
----
-
-## 🖥️ Janela Própria de Desktop (Sem abas de navegador)
-O aplicativo abre em sua **própria janela nativa Linux**:
-- Janela independente com ícone personalizado, controles de maximizar/minimizar/fechar.
-- Não depende de abas ou barras de endereço do navegador.
-- Encerramento automático dos processos em segundo plano ao fechar a janela.
+> **Domínio de Produção:** `https://financaspessoais.admx.tech`  
+> **Status:** Pronto para Produção & Deploy Automático (CI/CD)  
+> **Arquitetura:** Cloudflare Pages + Edge Functions + Cloudflare D1 + PWA + BunkerPay  
+> **Repositório:** [https://github.com/naderelkhouri/financas-casa](https://github.com/naderelkhouri/financas-casa)  
 
 ---
 
-## ✨ Funcionalidades
+## 🌟 Visão Geral
 
-1. 📊 **Dashboard Financeiro Consolidado**:
-   - Saldo líquido, receitas, despesas e taxa de poupança do mês.
-   - **Gráfico Donut** interativo de despesas por categoria.
-   - **Gráfico de Barras** comparativo dos últimos 6 meses.
-
-2. 💳 **Extrato de Transações**:
-   - Cadastro ágil com categorias, tags, notas e formas de pagamento (PIX, Cartões, Boleto, Dinheiro).
-   - Filtros instantâneos e busca textual em tempo real.
-
-3. 🎯 **Orçamentos & Metas de Economia**:
-   - Tetos de gastos mensais por categoria com avisos visuais.
-   - Metas de economia (Reserva de Emergência, Viagens, Projetos) com barras de progresso.
-
-4. 📅 **Contas Fixas & Recorrentes**:
-   - Acompanhamento de vencimentos do mês com alertas de dias restantes.
-   - Botão de **1 clique para pagar**, gerando a transação automaticamente.
-
-5. ⚙️ **Relatórios, Importação & Backup**:
-   - Exportação para **CSV** e **JSON**.
-   - Importação de extratos bancários em CSV.
-   - Otimizado para **Impressão e PDF**.
-   - Tema Claro e Escuro.
-   - 🔍 **Controle de Zoom Persistente**:
-     - Botões visuais no topo (`−`, `100%`, `+`).
-     - Atalhos de teclado: `Ctrl +` (Aumentar), `Ctrl -` (Diminuir), `Ctrl 0` (Restaurar 100%).
-     - Zoom com mouse: `Ctrl + Roda do Mouse`.
-     - Nível de zoom salvo automaticamente para as próximas sessões.
+O **Finanças Pessoais ADMX** é um SaaS moderno de gestão financeira individual e doméstica focado em:
+1. **Privacidade Patrimonial e Autonomia:** Controle total sobre os próprios dados financeiros e integração com **BunkerPay** (pagamento em PIX com liquidação direta/cripto).
+2. **Importação Inteligente de Extratos Bancários (.OFX):** Compatível com extratos dos principais bancos brasileiros (Nubank, Itaú, Inter, Bradesco, Santander, etc.).
+3. **Multi-Contas & Cartões de Crédito:** Controle de limites, faturas futuras, dias de fechamento e vencimento.
+4. **Orçamentos & Metas de Poupança:** Tetos de gastos por categoria e barras de progresso para metas financeiras (Reserva de Emergência, Viagens, etc.).
+5. **Mobile-First (PWA):** Aplicativo instalável no smartphone (Android/iOS) direto pelo navegador, sem necessidade de app stores.
 
 ---
 
-## 🚀 Como Iniciar
+## 🏗️ Stack Tecnológica
 
-### 1. Pelo Menu de Aplicativos do Linux
-Procure por **"Finanças de Casa"** no lançador de aplicativos do seu sistema.
+- **Frontend:** SPA nativo em HTML5, CSS3 moderno com suporte a temas Claro/Escuro, SVG Chart Engine responsivo e PWA Service Worker.
+- **Backend / Edge Functions:** Cloudflare Pages Functions em JavaScript ES Modules rodando na malha global da Cloudflare.
+- **Banco de Dados Relacional:** Cloudflare D1 (SQL Serverless baseado em SQLite de alta performance).
+- **Billing & Assinaturas:** BunkerPay Gateway (PIX Copia e Cola + Webhooks para liberação automática do plano Pro).
+- **CI/CD:** GitHub Actions com deploy contínuo em cada `git push origin main`.
 
-### 2. Pelo Terminal
-```bash
-cd ~/financas-casa
-./iniciar.sh
-```
-Ou diretamente:
-```bash
-python3 gui.py
+---
+
+## 📁 Estrutura do Projeto
+
+```text
+financas-casa/
+├── .github/workflows/deploy.yml   # Pipeline CI/CD GitHub Actions
+├── functions/api/                 # Edge Functions Serverless (Cloudflare)
+│   ├── dashboard.js               # Métricas e distribuição por categoria
+│   ├── transactions.js            # Lançamentos e extrato financeiro
+│   ├── categories.js              # Categorias de receitas e despesas
+│   ├── accounts.js                # Contas bancárias e carteiras
+│   ├── credit-cards.js            # Cartões de crédito e limites
+│   ├── import/ofx.js              # Parser de extratos bancários .OFX
+│   └── bunkerpay/
+│       ├── checkout.js            # Geração de cobranças PIX
+│       └── webhook.js             # Recepção de pagamentos e upgrade de plano
+├── migrations/
+│   └── 0001_initial_schema.sql    # Schema completo e seed para o Cloudflare D1
+├── static/                        # Frontend SPA & PWA
+│   ├── index.html                 # Interface principal e modais
+│   ├── styles.css                 # Design system responsivo e temas
+│   ├── app.js                     # Motor SPA, gráficos SVG e chamadas de API
+│   ├── manifest.json              # Configuração do PWA para celular
+│   ├── sw.js                      # Service Worker para cache e modo offline
+│   ├── _headers                   # Regras de cache imutável no Edge CDN
+│   └── _redirects                 # Fallback SPA (/* /index.html 200)
+├── deploy-cloudflare.sh           # Script de automação e deploy local
+└── wrangler.toml                  # Configurações do projeto e bindings D1
 ```
 
 ---
 
-## 🔒 Dados e Privacidade
-- Todos os dados ficam armazenados localmente no banco SQLite `financas.db`.
-- **Zero dependências externas de terceiros**: utiliza os módulos nativos do sistema.
+## 🚀 Como Fazer o Deploy
+
+### Opção 1: Via Script Automatizado (Terminal)
+```bash
+cd /home/nader/Documents/Projects/financas-casa
+./deploy-cloudflare.sh
+```
+
+### Opção 2: Via GitHub Actions (CI/CD Automático)
+Basta adicionar a secret `CLOUDFLARE_API_TOKEN` no seu repositório do GitHub em **Settings** > **Secrets and variables** > **Actions**. Todo push para a branch `main` realizará o deploy automaticamente.
+
+---
+
+## 🔒 Dados e Segurança
+- Sem trackers invasivos ou vazamento de dados bancários.
+- Roteamento 100% criptografado com HTTPS/TLS na borda da Cloudflare.
+- Headers estritos de segurança (`HSTS`, `X-Frame-Options`, `X-Content-Type-Options`).
