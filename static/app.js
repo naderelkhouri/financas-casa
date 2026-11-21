@@ -353,6 +353,22 @@ async function loadDashboard() {
     document.getElementById('dash-pending-expense').textContent = `Pendente: ${formatCurrency(data.totals.pending_expense)}`;
     document.getElementById('dash-savings-rate').textContent = `Taxa de Poupança: ${data.totals.savings_rate}%`;
 
+    // Projeção Inteligente de Fim de Mês (Cashflow Forecast)
+    const forecastEl = document.getElementById('dash-forecast');
+    const forecastDetailEl = document.getElementById('dash-forecast-detail');
+    if (forecastEl) {
+      const projectedBalance = (Number(data.totals.total_income) + Number(data.totals.pending_income)) - 
+                               (Number(data.totals.total_expense) + Number(data.totals.pending_expense));
+      forecastEl.textContent = formatCurrency(projectedBalance);
+      if (projectedBalance >= 0) {
+        forecastEl.style.color = '#34d399';
+        if (forecastDetailEl) forecastDetailEl.textContent = '🟢 Projeção Positiva no Fim do Mês';
+      } else {
+        forecastEl.style.color = '#f87171';
+        if (forecastDetailEl) forecastDetailEl.textContent = '🔴 Atenção: Projeção de Déficit';
+      }
+    }
+
     // Status Orçamentos
     const exceeded = data.budgets_status.filter(b => b.spent_amount > b.monthly_limit).length;
     const alertEl = document.getElementById('dash-budget-status');
