@@ -353,22 +353,6 @@ async function loadDashboard() {
     document.getElementById('dash-pending-expense').textContent = `Pendente: ${formatCurrency(data.totals.pending_expense)}`;
     document.getElementById('dash-savings-rate').textContent = `Taxa de Poupança: ${data.totals.savings_rate}%`;
 
-    // Projeção Inteligente de Fim de Mês (Cashflow Forecast)
-    const forecastEl = document.getElementById('dash-forecast');
-    const forecastDetailEl = document.getElementById('dash-forecast-detail');
-    if (forecastEl) {
-      const projectedBalance = (Number(data.totals.total_income) + Number(data.totals.pending_income)) - 
-                               (Number(data.totals.total_expense) + Number(data.totals.pending_expense));
-      forecastEl.textContent = formatCurrency(projectedBalance);
-      if (projectedBalance >= 0) {
-        forecastEl.style.color = '#34d399';
-        if (forecastDetailEl) forecastDetailEl.textContent = '🟢 Projeção Positiva no Fim do Mês';
-      } else {
-        forecastEl.style.color = '#f87171';
-        if (forecastDetailEl) forecastDetailEl.textContent = '🔴 Atenção: Projeção de Déficit';
-      }
-    }
-
     // Status Orçamentos
     const exceeded = data.budgets_status.filter(b => b.spent_amount > b.monthly_limit).length;
     const alertEl = document.getElementById('dash-budget-status');
@@ -1285,52 +1269,18 @@ async function loadAccountsAndCards() {
       if (cards.length === 0) {
         cardsContainer.innerHTML = '<p class="text-muted">Nenhum cartão cadastrado.</p>';
       } else {
-        const today = new Date().getDate();
-        cardsContainer.innerHTML = cards.map(c => {
-          const limit = Number(c.credit_limit) || 0;
-          const closing = Number(c.closing_day) || 25;
-          const due = Number(c.due_day) || 5;
-          const bestDay = closing === 1 ? 28 : (closing + 1 > 31 ? 1 : closing + 1);
-          const isBestDayPeriod = today >= closing || today <= (closing + 3);
-
-          return `
-          <div class="credit-card-glass">
-            <div class="credit-card-header">
-              <div style="display: flex; align-items: center; gap: 10px;">
-                <span style="display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: ${c.color || 'var(--accent-primary)'}; box-shadow: 0 0 8px ${c.color || 'var(--accent-primary)'};"></span>
-                <div>
-                  <div class="credit-card-name">${escapeHtml(c.name)}</div>
-                  <div style="font-size: 0.8rem; color: var(--text-muted);">Mastercard / Visa / Platinum</div>
-                </div>
-              </div>
-              <div class="best-purchase-day-badge" title="Compras feitas a partir deste dia caem na fatura do mês seguinte!">
-                ⭐ Melhor dia: ${bestDay}
-              </div>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 14px;">
+        cardsContainer.innerHTML = cards.map(c => `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--border); margin-bottom: 8px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: ${c.color};"></span>
               <div>
-                <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Limite Total</div>
-                <div style="font-size: 1.2rem; font-weight: 700; color: var(--text-primary); font-variant-numeric: tabular-nums;">${formatCurrency(limit)}</div>
-              </div>
-              <div style="text-align: right;">
-                <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Status do Ciclo</div>
-                <div style="font-size: 0.82rem; font-weight: 600; color: ${isBestDayPeriod ? 'var(--accent-success)' : 'var(--text-secondary)'};">
-                  ${isBestDayPeriod ? '🟢 Período Ouro (Fatura Seguinte)' : '🟡 Fatura Atual Aberta'}
-                </div>
+                <strong>${escapeHtml(c.name)}</strong>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Fecha dia ${c.closing_day} | Vence dia ${c.due_day}</div>
               </div>
             </div>
-
-            <div class="credit-limit-bar-bg">
-              <div class="credit-limit-bar-fill" style="width: 15%; background: var(--accent-primary);"></div>
-            </div>
-
-            <div class="credit-card-dates">
-              <div>📅 Fecha todo dia <strong>${closing}</strong></div>
-              <div>💳 Vence todo dia <strong>${due}</strong></div>
-            </div>
+            <span style="font-size: 0.9rem;">Limite: <strong>${formatCurrency(c.credit_limit)}</strong></span>
           </div>
-        `}).join('');
+        `).join('');
       }
     }
   } catch (err) {
@@ -1412,23 +1362,13 @@ async function handleOfxFileSelected(event) {
       const data = await res.json();
       if (data.success) {
         resultDiv.innerHTML = `
-          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; padding: 18px; border-radius: 12px; color: #10b981;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="font-size: 1.5rem;">🎉</span>
-              <div>
-                <h4 style="margin: 0; color: #10b981; font-weight: 700;">Extrato Processado com Sucesso!</h4>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">Origem: <strong>${escapeHtml(data.bank_id || 'Extrato Bancário')}</strong></div>
-              </div>
-            </div>
-            <div style="display: flex; gap: 16px; margin-top: 14px; font-size: 0.9rem; color: var(--text-primary);">
-              <div>📥 <strong>${data.imported_count}</strong> transações novas</div>
-              <div>⚡ <strong>${data.auto_categorized || 0}</strong> categorizadas automaticamente</div>
-            </div>
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; padding: 16px; border-radius: 8px; color: #10b981;">
+            <h4>✓ Extrato Importado com Sucesso!</h4>
+            <p style="margin-top: 8px; color: var(--text);">Foram importadas <strong>${data.imported_count}</strong> transações do Banco (${data.bank_id || 'Brasileiro'}).</p>
           </div>
         `;
-        showToast(`${data.imported_count} lançamentos importados com categorização preditiva!`);
+        showToast(`${data.imported_count} lançamentos adicionados via OFX!`);
         if (typeof loadTransactions === 'function') loadTransactions();
-        if (typeof loadDashboard === 'function') loadDashboard();
       } else {
         resultDiv.innerHTML = `<p style="color: #ef4444;">Erro: ${data.error}</p>`;
       }
@@ -1682,56 +1622,5 @@ async function logoutUser() {
     showToast('Erro ao sair da conta.', 'error');
   }
 }
-
-// Quick Capture - Lançamento Rápido em 3 Segundos
-function openQuickTransaction() {
-  const modal = document.getElementById('modal-transaction');
-  if (!modal) return;
-  
-  // Limpa formulário e prepara para entrada ultra-rápida
-  const form = document.getElementById('form-transaction');
-  if (form) form.reset();
-  
-  const idField = document.getElementById('tx-id');
-  if (idField) idField.value = '';
-
-  const titleField = document.getElementById('modal-tx-title');
-  if (titleField) titleField.textContent = '⚡ Lançamento Rápido';
-
-  const dateField = document.getElementById('tx-date');
-  if (dateField) dateField.value = new Date().toISOString().split('T')[0];
-
-  const expenseBtn = document.getElementById('type-btn-expense');
-  if (expenseBtn) {
-    document.querySelectorAll('.tx-type-toggle-group .type-btn').forEach(b => b.classList.remove('active'));
-    expenseBtn.classList.add('active');
-    const radio = expenseBtn.querySelector('input');
-    if (radio) radio.checked = true;
-  }
-
-  modal.style.display = 'flex';
-
-  // Foco imediato no campo de valor para digitação sem clique extra
-  setTimeout(() => {
-    const amountField = document.getElementById('tx-amount');
-    if (amountField) {
-      amountField.focus();
-      amountField.select();
-    }
-  }, 100);
-}
-
-// Atalho de teclado: Pressionar 'N' abre o lançamento rápido (quando não estiver digitando em inputs)
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'n' || e.key === 'N') {
-    const activeEl = document.activeElement;
-    if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'SELECT')) {
-      return;
-    }
-    e.preventDefault();
-    openQuickTransaction();
-  }
-});
-
 
 
