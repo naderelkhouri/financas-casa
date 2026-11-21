@@ -1412,13 +1412,23 @@ async function handleOfxFileSelected(event) {
       const data = await res.json();
       if (data.success) {
         resultDiv.innerHTML = `
-          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; padding: 16px; border-radius: 8px; color: #10b981;">
-            <h4>✓ Extrato Importado com Sucesso!</h4>
-            <p style="margin-top: 8px; color: var(--text);">Foram importadas <strong>${data.imported_count}</strong> transações do Banco (${data.bank_id || 'Brasileiro'}).</p>
+          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; padding: 18px; border-radius: 12px; color: #10b981;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 1.5rem;">🎉</span>
+              <div>
+                <h4 style="margin: 0; color: #10b981; font-weight: 700;">Extrato Processado com Sucesso!</h4>
+                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2px;">Origem: <strong>${escapeHtml(data.bank_id || 'Extrato Bancário')}</strong></div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 16px; margin-top: 14px; font-size: 0.9rem; color: var(--text-primary);">
+              <div>📥 <strong>${data.imported_count}</strong> transações novas</div>
+              <div>⚡ <strong>${data.auto_categorized || 0}</strong> categorizadas automaticamente</div>
+            </div>
           </div>
         `;
-        showToast(`${data.imported_count} lançamentos adicionados via OFX!`);
+        showToast(`${data.imported_count} lançamentos importados com categorização preditiva!`);
         if (typeof loadTransactions === 'function') loadTransactions();
+        if (typeof loadDashboard === 'function') loadDashboard();
       } else {
         resultDiv.innerHTML = `<p style="color: #ef4444;">Erro: ${data.error}</p>`;
       }
