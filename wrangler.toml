@@ -4,9 +4,11 @@ compatibility_date = "2024-09-23"
 
 [vars]
 ENVIRONMENT = "production"
-SAAS_NAME = "Finanças de Casa SaaS"
+SAAS_NAME = "Finanças Pessoais ADMX"
+APP_DOMAIN = "financaspessoais.admx.tech"
 
 [[d1_databases]]
 binding = "DB"
 database_name = "financas_d1"
 database_id = "financas-d1-placeholder"
+

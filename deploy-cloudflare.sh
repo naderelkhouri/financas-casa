@@ -24,5 +24,11 @@ echo ""
 echo "Passo 4: Publicando no Cloudflare Pages..."
 npx wrangler pages deploy static --project-name=financas-casa
 
+# 5. Vinculação do Domínio Personalizado
+echo ""
+echo "Passo 5: Vinculando domínio financaspessoais.admx.tech..."
+npx wrangler pages domain set financas-casa financaspessoais.admx.tech || true
+
 echo ""
 echo "✅ Deploy concluído com sucesso!"
+echo "🌐 Acesse: https://financaspessoais.admx.tech"

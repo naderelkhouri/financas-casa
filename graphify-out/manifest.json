@@ -80,8 +80,8 @@
     "semantic_hash": ""
   },
   "deploy-cloudflare.sh": {
-    "mtime": 1795269895.0636241,
-    "ast_hash": "b052558bbcb897a0ba4eb3dac0ec4db4",
+    "mtime": 1795270717.4044082,
+    "ast_hash": "59fe4af200f601b9e468ff0f4001cc27",
     "semantic_hash": ""
   },
   "functions/api/accounts.js": {
