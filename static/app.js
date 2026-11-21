@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initZoom();
   initMonthSelector();
   initEventListeners();
+  checkAuthSession();
   loadInitialData();
   registerServiceWorker();
 });
@@ -1401,4 +1402,126 @@ async function startBunkerpayCheckout(planKey) {
     showToast('Erro ao gerar cobrança BunkerPay', 'error');
   }
 }
+
+// ==========================================================================
+// MÓDULO DE AUTENTICAÇÃO SEGURA (CLIENT-SIDE)
+// ==========================================================================
+
+let authState = {
+  mode: 'login', // 'login' ou 'register'
+  user: null
+};
+
+async function checkAuthSession() {
+  try {
+    const res = await fetch('/api/auth/me');
+    if (res.ok) {
+      const data = await res.json();
+      if (data.authenticated && data.user) {
+        authState.user = data.user;
+        updateUserUI(data.user);
+        return;
+      }
+    }
+    updateUserUI(null);
+  } catch (err) {
+    updateUserUI(null);
+  }
+}
+
+function updateUserUI(user) {
+  const nameEl = document.getElementById('user-display-name');
+  const planEl = document.getElementById('user-display-plan');
+  const avatarEl = document.getElementById('user-avatar');
+  const btnAuth = document.getElementById('btn-auth-action');
+
+  if (user) {
+    if (nameEl) nameEl.textContent = user.name || user.email.split('@')[0];
+    if (planEl) planEl.textContent = user.plan || 'Free';
+    if (avatarEl) avatarEl.textContent = (user.name || user.email)[0].toUpperCase();
+    if (btnAuth) {
+      btnAuth.textContent = '🚪';
+      btnAuth.title = 'Sair da Conta (Logout)';
+    }
+  } else {
+    if (nameEl) nameEl.textContent = 'Visitante';
+    if (planEl) planEl.textContent = 'Não Autenticado';
+    if (avatarEl) avatarEl.textContent = '?';
+    if (btnAuth) {
+      btnAuth.textContent = '🔑';
+      btnAuth.title = 'Entrar / Cadastrar';
+    }
+  }
+}
+
+function handleAuthClick() {
+  if (authState.user) {
+    if (confirm('Deseja realmente encerrar a sessão?')) {
+      logoutUser();
+    }
+  } else {
+    switchAuthMode('login');
+    openModal('modal-auth');
+  }
+}
+
+function switchAuthMode(mode) {
+  authState.mode = mode;
+  const isRegister = mode === 'register';
+
+  document.getElementById('auth-tab-login')?.classList.toggle('active', !isRegister);
+  document.getElementById('auth-tab-register')?.classList.toggle('active', isRegister);
+  
+  const title = document.getElementById('auth-modal-title');
+  const nameGroup = document.getElementById('auth-group-name');
+  const submitBtn = document.getElementById('auth-submit-btn');
+
+  if (title) title.textContent = isRegister ? 'Criar Nova Conta' : 'Acessar Minha Conta';
+  if (nameGroup) nameGroup.style.display = isRegister ? 'block' : 'none';
+  if (submitBtn) submitBtn.textContent = isRegister ? 'Criar Conta Segura' : 'Entrar com Segurança';
+}
+
+async function handleAuthSubmit(e) {
+  e.preventDefault();
+  const email = document.getElementById('auth-email').value;
+  const password = document.getElementById('auth-password').value;
+  const name = document.getElementById('auth-name').value;
+
+  const endpoint = authState.mode === 'register' ? '/api/auth/register' : '/api/auth/login';
+  const payload = authState.mode === 'register' ? { name, email, password } : { email, password };
+
+  try {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      showToast(authState.mode === 'register' ? 'Conta criada com sucesso!' : 'Login realizado com sucesso!');
+      authState.user = data.user;
+      updateUserUI(data.user);
+      closeModal('modal-auth');
+      refreshCurrentView();
+    } else {
+      showToast(data.error || 'Erro na autenticação.', 'error');
+    }
+  } catch (err) {
+    showToast('Erro de conexão ao autenticar.', 'error');
+  }
+}
+
+async function logoutUser() {
+  try {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    authState.user = null;
+    updateUserUI(null);
+    showToast('Sessão encerrada com segurança.');
+    refreshCurrentView();
+  } catch (err) {
+    showToast('Erro ao sair da conta.', 'error');
+  }
+}
+
 

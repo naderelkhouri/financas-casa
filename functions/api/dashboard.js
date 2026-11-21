@@ -1,3 +1,5 @@
+import { authenticateRequest } from "./auth/_utils.js";
+
 export async function onRequestGet(context) {
   const { env, request } = context;
   const url = new URL(request.url);
@@ -10,20 +12,24 @@ export async function onRequestGet(context) {
     });
   }
 
+  const secret = env.JWT_SECRET || "cf-financas-pessoais-admx-jwt-super-secret-key-2026-edge";
+  const authUser = await authenticateRequest(request, secret);
+  const userId = authUser ? authUser.user_id : 1;
+
   try {
-    // 1. Total Receitas
+    // 1. Total Receitas (Segregado por Usuário)
     const incomeRes = await env.DB.prepare(`
       SELECT COALESCE(SUM(amount), 0) as total 
       FROM transactions 
-      WHERE type = 'income' AND date LIKE ?
-    `).bind(`${month}%`).first();
+      WHERE user_id = ? AND type = 'income' AND date LIKE ?
+    `).bind(userId, `${month}%`).first();
 
-    // 2. Total Despesas
+    // 2. Total Despesas (Segregado por Usuário)
     const expenseRes = await env.DB.prepare(`
       SELECT COALESCE(SUM(amount), 0) as total 
       FROM transactions 
-      WHERE type = 'expense' AND date LIKE ?
-    `).bind(`${month}%`).first();
+      WHERE user_id = ? AND type = 'expense' AND date LIKE ?
+    `).bind(userId, `${month}%`).first();
 
     const income = incomeRes?.total || 0;
     const expense = expenseRes?.total || 0;
@@ -34,12 +40,12 @@ export async function onRequestGet(context) {
     const catRes = await env.DB.prepare(`
       SELECT c.name, c.color, c.icon, COALESCE(SUM(t.amount), 0) as total
       FROM categories c
-      LEFT JOIN transactions t ON c.id = t.category_id AND t.type = 'expense' AND t.date LIKE ?
+      LEFT JOIN transactions t ON c.id = t.category_id AND t.user_id = ? AND t.type = 'expense' AND t.date LIKE ?
       WHERE c.type = 'expense'
       GROUP BY c.id
       HAVING total > 0
       ORDER BY total DESC
-    `).bind(`${month}%`).all();
+    `).bind(userId, `${month}%`).all();
 
     return new Response(JSON.stringify({
       month,

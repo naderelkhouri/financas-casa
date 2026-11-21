@@ -1,3 +1,5 @@
+import { authenticateRequest } from "./auth/_utils.js";
+
 export async function onRequestGet(context) {
   const { env, request } = context;
 
@@ -8,10 +10,14 @@ export async function onRequestGet(context) {
     });
   }
 
+  const secret = env.JWT_SECRET || "cf-financas-pessoais-admx-jwt-super-secret-key-2026-edge";
+  const authUser = await authenticateRequest(request, secret);
+  const userId = authUser ? authUser.user_id : 1;
+
   try {
     const res = await env.DB.prepare(`
-      SELECT * FROM accounts WHERE is_active = 1 ORDER BY name ASC
-    `).all();
+      SELECT * FROM accounts WHERE user_id = ? AND is_active = 1 ORDER BY name ASC
+    `).bind(userId).all();
 
     return new Response(JSON.stringify(res.results || []), {
       headers: { "Content-Type": "application/json" }
@@ -34,6 +40,10 @@ export async function onRequestPost(context) {
     });
   }
 
+  const secret = env.JWT_SECRET || "cf-financas-pessoais-admx-jwt-super-secret-key-2026-edge";
+  const authUser = await authenticateRequest(request, secret);
+  const userId = authUser ? authUser.user_id : 1;
+
   try {
     const data = await request.json();
     const { name, account_type, initial_balance, color } = data;
@@ -41,8 +51,8 @@ export async function onRequestPost(context) {
 
     const res = await env.DB.prepare(`
       INSERT INTO accounts (user_id, name, account_type, initial_balance, current_balance, color)
-      VALUES (1, ?, ?, ?, ?, ?)
-    `).bind(name, account_type || 'checking', balance, balance, color || '#10b981').run();
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).bind(userId, name, account_type || 'checking', balance, balance, color || '#10b981').run();
 
     return new Response(JSON.stringify({ success: true, id: res.meta.last_row_id }), {
       status: 201,

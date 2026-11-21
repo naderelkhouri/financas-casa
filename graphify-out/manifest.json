@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "static/app.js": {
-    "mtime": 1795270445.7725549,
-    "ast_hash": "4468a05969cee99caaa9df11a333d069",
+    "mtime": 1795274448.5525696,
+    "ast_hash": "56dc2ae0ae09eaa8454efdbb58c9a02a",
     "semantic_hash": ""
   },
   "README.md": {
@@ -45,8 +45,8 @@
     "semantic_hash": ""
   },
   "static/index.html": {
-    "mtime": 1795272725.6486626,
-    "ast_hash": "f840a0c8b36bbde4c85b659a4c572981",
+    "mtime": 1795274416.6927974,
+    "ast_hash": "cbde82d0e95bc7eb561a9de7bbcf1b54",
     "semantic_hash": ""
   },
   "static/icon.png": {
@@ -65,13 +65,13 @@
     "semantic_hash": ""
   },
   "functions/api/dashboard.js": {
-    "mtime": 1795208506.8141415,
-    "ast_hash": "0738c8dc52932c28df2209e1125030e0",
+    "mtime": 1795274330.9974098,
+    "ast_hash": "601bf6304f0f6ba6d1246207ea0107e7",
     "semantic_hash": ""
   },
   "functions/api/transactions.js": {
-    "mtime": 1795208515.237153,
-    "ast_hash": "a9f62b2fa3567368b3dca302921b94df",
+    "mtime": 1795274351.4442637,
+    "ast_hash": "77a7b791d126eeda43695e02d71af6b3",
     "semantic_hash": ""
   },
   "migrations/0001_initial_schema.sql": {
@@ -85,8 +85,8 @@
     "semantic_hash": ""
   },
   "functions/api/accounts.js": {
-    "mtime": 1795270311.6448152,
-    "ast_hash": "2e62f616d261274cd230412d563012b9",
+    "mtime": 1795274366.9721527,
+    "ast_hash": "eb7e2127ad3bb34c6aac35ae2ef59df2",
     "semantic_hash": ""
   },
   "functions/api/bunkerpay/checkout.js": {
@@ -100,8 +100,8 @@
     "semantic_hash": ""
   },
   "functions/api/credit-cards.js": {
-    "mtime": 1795270323.9967914,
-    "ast_hash": "e2b2f065a11c7c41b18f8a605b138562",
+    "mtime": 1795274383.6020339,
+    "ast_hash": "dbf16f4436dfa7a4006fe6317bc03f08",
     "semantic_hash": ""
   },
   "functions/api/import/ofx.js": {
@@ -125,7 +125,7 @@
     "semantic_hash": ""
   },
   ".wrangler/cache/pages.json": {
-    "mtime": 1795272745.2216125,
+    "mtime": 1795274464.8604531,
     "ast_hash": "63ced39f7b8f6921ffdd5aa8f0a845b5",
     "semantic_hash": ""
   },
@@ -172,6 +172,51 @@
   ".wrangler/tmp/pages-ruJh5B/functionsWorker-0.002910093280698689.js": {
     "mtime": 1795272739.0476282,
     "ast_hash": "33529e54ad37cf34a6960a9936c18415",
+    "semantic_hash": ""
+  },
+  ".wrangler/tmp/pages-AhOd8f/_routes-0.39069406429855214.json": {
+    "mtime": 1795274458.7414968,
+    "ast_hash": "0a4dbbc7fd3b7ecc2f42631ffa4ce2e8",
+    "semantic_hash": ""
+  },
+  ".wrangler/tmp/pages-AhOd8f/functions-filepath-routing-config-0.4330443489639435.json": {
+    "mtime": 1795274458.7414968,
+    "ast_hash": "01607770b9e5cf6f4d7171e442049e01",
+    "semantic_hash": ""
+  },
+  ".wrangler/tmp/pages-AhOd8f/functionsRoutes-0.6620327996306945.mjs": {
+    "mtime": 1795274458.743497,
+    "ast_hash": "5cddde4b31ecb476c3ac34797c30d9cc",
+    "semantic_hash": ""
+  },
+  ".wrangler/tmp/pages-AhOd8f/functionsWorker-0.5292158428853118.js": {
+    "mtime": 1795274458.7604969,
+    "ast_hash": "4a3eca14b89e6a4d11d1fc6ec987f782",
+    "semantic_hash": ""
+  },
+  "functions/api/auth/_utils.js": {
+    "mtime": 1795274278.665784,
+    "ast_hash": "de964714e176da9779ab3f88f4efafc7",
+    "semantic_hash": ""
+  },
+  "functions/api/auth/login.js": {
+    "mtime": 1795274301.2696223,
+    "ast_hash": "f3d34d1c49a88beabe53c048fb7ac93b",
+    "semantic_hash": ""
+  },
+  "functions/api/auth/logout.js": {
+    "mtime": 1795274313.9845314,
+    "ast_hash": "6a7dc30478f1605c3e04360388bbcbe8",
+    "semantic_hash": ""
+  },
+  "functions/api/auth/me.js": {
+    "mtime": 1795274308.0985734,
+    "ast_hash": "0622943b625088d654a075dc4a42dcc8",
+    "semantic_hash": ""
+  },
+  "functions/api/auth/register.js": {
+    "mtime": 1795274290.8336968,
+    "ast_hash": "53eb9bc7c306eb5d96b2199aae88a772",
     "semantic_hash": ""
   }
 }

@@ -1,5 +1,7 @@
+import { authenticateRequest } from "./auth/_utils.js";
+
 export async function onRequestGet(context) {
-  const { env } = context;
+  const { env, request } = context;
 
   if (!env.DB) {
     return new Response(JSON.stringify({ error: "Banco D1 não vinculado" }), {
@@ -8,10 +10,14 @@ export async function onRequestGet(context) {
     });
   }
 
+  const secret = env.JWT_SECRET || "cf-financas-pessoais-admx-jwt-super-secret-key-2026-edge";
+  const authUser = await authenticateRequest(request, secret);
+  const userId = authUser ? authUser.user_id : 1;
+
   try {
     const res = await env.DB.prepare(`
-      SELECT * FROM credit_cards WHERE is_active = 1 ORDER BY name ASC
-    `).all();
+      SELECT * FROM credit_cards WHERE user_id = ? AND is_active = 1 ORDER BY name ASC
+    `).bind(userId).all();
 
     return new Response(JSON.stringify(res.results || []), {
       headers: { "Content-Type": "application/json" }
@@ -34,14 +40,19 @@ export async function onRequestPost(context) {
     });
   }
 
+  const secret = env.JWT_SECRET || "cf-financas-pessoais-admx-jwt-super-secret-key-2026-edge";
+  const authUser = await authenticateRequest(request, secret);
+  const userId = authUser ? authUser.user_id : 1;
+
   try {
     const data = await request.json();
     const { name, credit_limit, closing_day, due_day, color } = data;
 
     const res = await env.DB.prepare(`
       INSERT INTO credit_cards (user_id, name, credit_limit, closing_day, due_day, color)
-      VALUES (1, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?)
     `).bind(
+      userId,
       name,
       parseFloat(credit_limit) || 0,
       parseInt(closing_day) || 25,

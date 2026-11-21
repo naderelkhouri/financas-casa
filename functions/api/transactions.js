@@ -1,3 +1,5 @@
+import { authenticateRequest } from "./auth/_utils.js";
+
 export async function onRequestGet(context) {
   const { env, request } = context;
   const url = new URL(request.url);
@@ -10,14 +12,18 @@ export async function onRequestGet(context) {
     });
   }
 
+  const secret = env.JWT_SECRET || "cf-financas-pessoais-admx-jwt-super-secret-key-2026-edge";
+  const authUser = await authenticateRequest(request, secret);
+  const userId = authUser ? authUser.user_id : 1;
+
   try {
     let query = `
       SELECT t.*, c.name as category_name, c.color as category_color, c.icon as category_icon
       FROM transactions t
       LEFT JOIN categories c ON t.category_id = c.id
-      WHERE 1=1
+      WHERE t.user_id = ?
     `;
-    const params = [];
+    const params = [userId];
 
     if (month) {
       query += ` AND t.date LIKE ?`;
@@ -27,7 +33,7 @@ export async function onRequestGet(context) {
     query += ` ORDER BY t.date DESC, t.id DESC`;
 
     const stmt = env.DB.prepare(query);
-    const result = params.length > 0 ? await stmt.bind(...params).all() : await stmt.all();
+    const result = await stmt.bind(...params).all();
 
     return new Response(JSON.stringify(result.results || []), {
       headers: { "Content-Type": "application/json" }
@@ -50,14 +56,19 @@ export async function onRequestPost(context) {
     });
   }
 
+  const secret = env.JWT_SECRET || "cf-financas-pessoais-admx-jwt-super-secret-key-2026-edge";
+  const authUser = await authenticateRequest(request, secret);
+  const userId = authUser ? authUser.user_id : 1;
+
   try {
     const data = await request.json();
     const { description, amount, type, category_id, payment_method, date, status, notes, tags } = data;
 
     const res = await env.DB.prepare(`
-      INSERT INTO transactions (description, amount, type, category_id, payment_method, date, status, notes, tags)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO transactions (user_id, description, amount, type, category_id, payment_method, date, status, notes, tags)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
+      userId,
       description,
       amount,
       type || 'expense',
