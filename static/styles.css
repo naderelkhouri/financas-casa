@@ -1,47 +1,49 @@
 /* ==========================================================================
-   Finanças Domésticas - Modern UI System
-   Vanilla CSS with Theme Tokens, Fluid Grid & Glassmorphism
+   Finanças Domésticas - Modern UI System (WCloudAPI / WACRM Design System)
+   Pure OKLCH tokens, ultra-clean neutral surfaces, zero clutter.
    ========================================================================== */
 
-:root {
+:root,
+html[data-mode="dark"] {
   color-scheme: dark;
-  /* Paleta Financeira Premium - Dark Minimalista */
-  --bg-primary: #090d16;
-  --bg-secondary: #0f172a;
-  --bg-card: rgba(30, 41, 59, 0.45);
-  --bg-card-hover: rgba(51, 65, 85, 0.55);
-  --bg-input: #090d16;
-  --border-color: rgba(148, 163, 184, 0.12);
-  --border-light: rgba(148, 163, 184, 0.22);
+  /* Neutral surfaces from wcloudapi.dev / wacrm */
+  --bg-primary: oklch(0.13 0.01 260);
+  --bg-secondary: oklch(0.16 0.01 260);
+  --bg-card: oklch(0.18 0.01 260);
+  --bg-card-hover: oklch(0.205 0.01 260);
+  --bg-input: oklch(0.14 0.01 260);
+  --border-color: oklch(0.28 0.01 260 / 0.7);
+  --border-light: oklch(0.35 0.01 260 / 0.5);
 
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-primary: oklch(0.985 0 0);
+  --text-secondary: oklch(0.75 0.01 260);
+  --text-muted: oklch(0.60 0.01 260);
 
-  --accent-primary: #10b981;
-  --accent-primary-hover: #059669;
-  --accent-success: #10b981;
-  --accent-success-bg: rgba(16, 185, 129, 0.12);
-  --accent-danger: #f43f5e;
-  --accent-danger-bg: rgba(244, 63, 94, 0.12);
-  --accent-warning: #f59e0b;
-  --accent-warning-bg: rgba(245, 158, 11, 0.12);
-  --accent-info: #06b6d4;
+  /* Primary WhatsApp / Emerald accent */
+  --accent-primary: oklch(0.62 0.16 162);
+  --accent-primary-hover: oklch(0.68 0.15 162);
+  --accent-success: oklch(0.62 0.16 162);
+  --accent-success-bg: oklch(0.62 0.16 162 / 0.12);
+  --accent-danger: oklch(0.577 0.245 27.325);
+  --accent-danger-bg: oklch(0.577 0.245 27.325 / 0.12);
+  --accent-warning: oklch(0.745 0.16 65);
+  --accent-warning-bg: oklch(0.745 0.16 65 / 0.12);
+  --accent-info: oklch(0.585 0.2 254);
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 12px 28px -6px rgba(0, 0, 0, 0.6);
-  --shadow-card: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 24px -6px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 2px 8px 0 rgba(0, 0, 0, 0.25);
 
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
   --radius-full: 9999px;
 
   --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --transition-fast: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-normal: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-theme="light"] {
