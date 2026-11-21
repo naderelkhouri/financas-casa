@@ -968,6 +968,31 @@
     </button>
   </div>
 
+  
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class=mobile-bottom-nav>
+    <button class="bottom-nav-item active" onclick="switchTab('dashboard')" id="bottom-nav-dashboard">
+      <span class="bottom-nav-icon">📊</span>
+      <span>Início</span>
+    </button>
+    <button class="bottom-nav-item" onclick="switchTab('transactions')" id="bottom-nav-transactions">
+      <span class="bottom-nav-icon">💳</span>
+      <span>Extrato</span>
+    </button>
+    <button class="bottom-nav-item" onclick="openQuickTransaction()" id="bottom-nav-quick" style="color: var(--accent-primary);">
+      <span class="bottom-nav-icon" style="font-size: 1.4rem;">⚡</span>
+      <span>Lançar</span>
+    </button>
+    <button class="bottom-nav-item" onclick="switchTab('accounts-cards')" id="bottom-nav-cards">
+      <span class="bottom-nav-icon">🏦</span>
+      <span>Contas</span>
+    </button>
+    <button class="bottom-nav-item" onclick="openAuthModal()" id="bottom-nav-profile">
+      <span class="bottom-nav-icon">👤</span>
+      <span>Perfil</span>
+    </button>
+  </nav>
+
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toast-container"></div>
 
