@@ -1,0 +1,101 @@
+{
+  "routes": [
+    {
+      "routePath": "/api/bunkerpay/checkout",
+      "mountPath": "/api/bunkerpay",
+      "method": "POST",
+      "module": [
+        "api/bunkerpay/checkout.js:onRequestPost"
+      ]
+    },
+    {
+      "routePath": "/api/bunkerpay/webhook",
+      "mountPath": "/api/bunkerpay",
+      "method": "POST",
+      "module": [
+        "api/bunkerpay/webhook.js:onRequestPost"
+      ]
+    },
+    {
+      "routePath": "/api/import/ofx",
+      "mountPath": "/api/import",
+      "method": "POST",
+      "module": [
+        "api/import/ofx.js:onRequestPost"
+      ]
+    },
+    {
+      "routePath": "/api/accounts",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/accounts.js:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/accounts",
+      "mountPath": "/api",
+      "method": "POST",
+      "module": [
+        "api/accounts.js:onRequestPost"
+      ]
+    },
+    {
+      "routePath": "/api/categories",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/categories.js:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/categories",
+      "mountPath": "/api",
+      "method": "POST",
+      "module": [
+        "api/categories.js:onRequestPost"
+      ]
+    },
+    {
+      "routePath": "/api/credit-cards",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/credit-cards.js:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/credit-cards",
+      "mountPath": "/api",
+      "method": "POST",
+      "module": [
+        "api/credit-cards.js:onRequestPost"
+      ]
+    },
+    {
+      "routePath": "/api/dashboard",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/dashboard.js:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/transactions",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/transactions.js:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/transactions",
+      "mountPath": "/api",
+      "method": "POST",
+      "module": [
+        "api/transactions.js:onRequestPost"
+      ]
+    }
+  ],
+  "baseURL": "/"
+}

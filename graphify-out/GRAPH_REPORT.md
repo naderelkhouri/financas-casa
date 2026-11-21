@@ -1,16 +1,16 @@
 # Graph Report - financas-casa  (2026-11-21)
 
 ## Corpus Check
-- 21 files · ~16,723 words
+- 27 files · ~20,746 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 189 nodes · 286 edges · 23 communities (20 shown, 3 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.5)
+- 217 nodes · 345 edges · 24 communities (20 shown, 4 thin omitted)
+- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 24 edges (avg confidence: 0.75)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c4ccec3e`
+- Built from commit: `d9b1cf91`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -30,35 +30,36 @@
 - [[_COMMUNITY_Community 20|Community 20]]
 - [[_COMMUNITY_Community 21|Community 21]]
 - [[_COMMUNITY_Community 22|Community 22]]
+- [[_COMMUNITY_Community 23|Community 23]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `get_connection()` - 31 edges
-2. `refreshCurrentView()` - 15 edges
-3. `showToast()` - 14 edges
-4. `FinanceRequestHandler` - 13 edges
-5. `ThreadedHTTPServer` - 8 edges
-6. `FinanceWindow` - 7 edges
-7. `loadDashboard()` - 7 edges
-8. `FinanceApp` - 6 edges
-9. `openModal()` - 6 edges
-10. `💰 Finanças Pessoais ADMX — Plataforma SaaS Serverless` - 6 edges
+2. `fetch()` - 21 edges
+3. `refreshCurrentView()` - 15 edges
+4. `showToast()` - 14 edges
+5. `FinanceRequestHandler` - 13 edges
+6. `ThreadedHTTPServer` - 8 edges
+7. `loadDashboard()` - 8 edges
+8. `FinanceWindow` - 7 edges
+9. `FinanceApp` - 6 edges
+10. `openModal()` - 6 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `FinanceApp` --uses--> `ThreadedHTTPServer`  [INFERRED]
-  gui.py → app.py
-- `FinanceWindow` --uses--> `ThreadedHTTPServer`  [INFERRED]
-  gui.py → app.py
-- `FinanceApp` --uses--> `FinanceRequestHandler`  [INFERRED]
-  gui.py → app.py
-- `FinanceWindow` --uses--> `FinanceRequestHandler`  [INFERRED]
-  gui.py → app.py
-- `start_backend_server()` --calls--> `ThreadedHTTPServer`  [EXTRACTED]
-  gui.py → app.py
+- `deleteRecurringBill()` --calls--> `fetch()`  [INFERRED]
+  static/app.js → .wrangler/tmp/pages-a2Fbgy/functionsWorker-0.20567011253490008.js
+- `deleteTransaction()` --calls--> `fetch()`  [INFERRED]
+  static/app.js → .wrangler/tmp/pages-a2Fbgy/functionsWorker-0.20567011253490008.js
+- `handleBudgetSubmit()` --calls--> `fetch()`  [INFERRED]
+  static/app.js → .wrangler/tmp/pages-a2Fbgy/functionsWorker-0.20567011253490008.js
+- `handleGoalSubmit()` --calls--> `fetch()`  [INFERRED]
+  static/app.js → .wrangler/tmp/pages-a2Fbgy/functionsWorker-0.20567011253490008.js
+- `handleRecurringSubmit()` --calls--> `fetch()`  [INFERRED]
+  static/app.js → .wrangler/tmp/pages-a2Fbgy/functionsWorker-0.20567011253490008.js
 
 ## Import Cycles
 - None detected.
 
-## Communities (23 total, 3 thin omitted)
+## Communities (24 total, 4 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.11
@@ -70,11 +71,11 @@ Nodes (11): FinanceRequestHandler, run_server(), ThreadedHTTPServer, FinanceApp,
 
 ### Community 2 - "Community 2"
 Cohesion: 0.12
-Nodes (12): applyZoom(), debounce(), initEventListeners(), initTheme(), initZoom(), state, toggleTheme(), updateThemeButton() (+4 more)
+Nodes (18): applyZoom(), debounce(), formatCurrency(), initEventListeners(), initTheme(), initZoom(), loadDashboard(), loadDashboardRecentTx() (+10 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.21
-Nodes (17): changeMonth(), closeModal(), deleteBudget(), deleteGoal(), deleteRecurringBill(), deleteTransaction(), escapeHtml(), handleBudgetSubmit() (+9 more)
+Cohesion: 0.24
+Nodes (15): changeMonth(), closeModal(), deleteRecurringBill(), deleteTransaction(), escapeHtml(), handleBudgetSubmit(), handleGoalSubmit(), handleRecurringSubmit() (+7 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.18
@@ -101,30 +102,32 @@ Cohesion: 0.33
 Nodes (7): editGoal(), editTransaction(), openGoalModal(), openModal(), openTransactionModal(), populateCategorySelect(), startBunkerpayCheckout()
 
 ### Community 20 - "Community 20"
-Cohesion: 0.33
-Nodes (6): formatCurrency(), loadDashboard(), loadDashboardRecentTx(), renderCategoryDonut(), renderDashboardBudgetsMini(), renderMonthlyHistoryBarChart()
+Cohesion: 0.12
+Nodes (12): arrayToRegexp(), escapeString(), flags(), lexer(), match(), onRequestPost3(), parse(), pathToRegexp() (+4 more)
 
 ### Community 21 - "Community 21"
-Cohesion: 0.50
-Nodes (4): loadCategories(), loadInitialData(), loadRecurringBills(), updateRecurringBadge()
+Cohesion: 0.24
+Nodes (10): fetch(), deleteBudget(), deleteGoal(), loadAccountsAndCards(), loadBudgetsAndGoals(), loadCategories(), loadInitialData(), loadRecurringBills() (+2 more)
 
 ## Knowledge Gaps
-- **22 isolated node(s):** `Any`, `deploy-cloudflare.sh script`, `iniciar.sh script`, `Any`, `state` (+17 more)
+- **23 isolated node(s):** `routes`, `Any`, `deploy-cloudflare.sh script`, `iniciar.sh script`, `Any` (+18 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **4 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
+- **Why does `fetch()` connect `Community 21` to `Community 19`, `Community 2`, `Community 3`, `Community 20`?**
+  _High betweenness centrality (0.064) - this node is a cross-community bridge._
+- **Are the 20 inferred relationships involving `fetch()` (e.g. with `deleteBudget()` and `deleteGoal()`) actually correct?**
+  _`fetch()` has 20 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 2 inferred relationships involving `FinanceRequestHandler` (e.g. with `FinanceApp` and `FinanceWindow`) actually correct?**
   _`FinanceRequestHandler` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 2 inferred relationships involving `ThreadedHTTPServer` (e.g. with `FinanceApp` and `FinanceWindow`) actually correct?**
-  _`ThreadedHTTPServer` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `Any`, `Módulo de Autenticação e Gestão de Usuários (SaaS). Implementa Hash seguro (PBKD`, `Gera hash PBKDF2 com salt aleatório de 16 bytes.` to the rest of the system?**
-  _36 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **What connects `routes`, `Any`, `Módulo de Autenticação e Gestão de Usuários (SaaS). Implementa Hash seguro (PBKD` to the rest of the system?**
+  _37 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.1066066066066066 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.13538461538461538 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
-  _Cohesion score 0.12121212121212122 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.12 - nodes in this community are weakly interconnected._

@@ -10,5 +10,5 @@ APP_DOMAIN = "financaspessoais.admx.tech"
 [[d1_databases]]
 binding = "DB"
 database_name = "financas_d1"
-database_id = "financas-d1-placeholder"
+database_id = "aa8222cb-0862-4bc6-b0e8-46123e089957"
 
