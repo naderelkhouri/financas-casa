@@ -1,0 +1,23 @@
+{
+  "name": "Finanças de Casa — SaaS Pessoal",
+  "short_name": "Finanças Casa",
+  "description": "Controle financeiro pessoal inteligente, contas, cartões e extratos bancários com privacidade patrimonial e BunkerPay.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#10b981",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

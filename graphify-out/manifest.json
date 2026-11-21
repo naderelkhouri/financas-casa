@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "static/app.js": {
-    "mtime": 1795139946.3749974,
-    "ast_hash": "3e38fd2781fc2cf4fe2df8da754cd0af",
+    "mtime": 1795270445.7725549,
+    "ast_hash": "4468a05969cee99caaa9df11a333d069",
     "semantic_hash": ""
   },
   "README.md": {
@@ -45,8 +45,8 @@
     "semantic_hash": ""
   },
   "static/index.html": {
-    "mtime": 1795139891.475396,
-    "ast_hash": "bf61d40e4df6c3dc6daf5aab4efce2a3",
+    "mtime": 1795270437.1175718,
+    "ast_hash": "00422f82d9b44011522a26e19f86b396",
     "semantic_hash": ""
   },
   "static/icon.png": {
@@ -107,6 +107,16 @@
   "functions/api/import/ofx.js": {
     "mtime": 1795270334.531771,
     "ast_hash": "ab41f104089d7dd432318f4ed9e8e042",
+    "semantic_hash": ""
+  },
+  "static/manifest.json": {
+    "mtime": 1795270417.2486103,
+    "ast_hash": "856d1c249d1a6541535fb8df5c6ebb22",
+    "semantic_hash": ""
+  },
+  "static/sw.js": {
+    "mtime": 1795270424.3275967,
+    "ast_hash": "4743c83d331aee3d2300c9b296f4a69f",
     "semantic_hash": ""
   }
 }
