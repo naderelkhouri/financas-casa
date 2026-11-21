@@ -78,5 +78,35 @@
     "mtime": 1795208487.4680862,
     "ast_hash": "bfb0ed0fe7145fcf8ed42c840f7cb937",
     "semantic_hash": ""
+  },
+  "deploy-cloudflare.sh": {
+    "mtime": 1795269895.0636241,
+    "ast_hash": "b052558bbcb897a0ba4eb3dac0ec4db4",
+    "semantic_hash": ""
+  },
+  "functions/api/accounts.js": {
+    "mtime": 1795270311.6448152,
+    "ast_hash": "2e62f616d261274cd230412d563012b9",
+    "semantic_hash": ""
+  },
+  "functions/api/bunkerpay/checkout.js": {
+    "mtime": 1795270342.0977561,
+    "ast_hash": "d43a7113acfe9876a88dc72eefdaef44",
+    "semantic_hash": ""
+  },
+  "functions/api/categories.js": {
+    "mtime": 1795270304.0938299,
+    "ast_hash": "a68e848256b9261c8ec8b0230a9918d9",
+    "semantic_hash": ""
+  },
+  "functions/api/credit-cards.js": {
+    "mtime": 1795270323.9967914,
+    "ast_hash": "e2b2f065a11c7c41b18f8a605b138562",
+    "semantic_hash": ""
+  },
+  "functions/api/import/ofx.js": {
+    "mtime": 1795270334.531771,
+    "ast_hash": "ab41f104089d7dd432318f4ed9e8e042",
+    "semantic_hash": ""
   }
 }

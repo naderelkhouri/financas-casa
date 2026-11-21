@@ -50,7 +50,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "app_financerequesthandler",
-      "community": 8,
+      "community": 1,
       "norm_label": "financerequesthandler"
     },
     {
@@ -60,7 +60,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "simplehttprequesthandler",
-      "community": 8,
+      "community": 1,
       "norm_label": "simplehttprequesthandler"
     },
     {
@@ -70,7 +70,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "app_financerequesthandler_init",
-      "community": 8,
+      "community": 1,
       "norm_label": ".__init__()"
     },
     {
@@ -80,7 +80,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "app_financerequesthandler_send_json",
-      "community": 8,
+      "community": 1,
       "norm_label": "._send_json()"
     },
     {
@@ -90,7 +90,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "app_financerequesthandler_read_json_body",
-      "community": 8,
+      "community": 1,
       "norm_label": "._read_json_body()"
     },
     {
@@ -100,7 +100,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "app_financerequesthandler_do_options",
-      "community": 8,
+      "community": 1,
       "norm_label": ".do_options()"
     },
     {
@@ -110,7 +110,7 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "app_financerequesthandler_do_get",
-      "community": 8,
+      "community": 1,
       "norm_label": ".do_get()"
     },
     {
@@ -120,7 +120,7 @@
       "source_location": "L165",
       "_origin": "ast",
       "id": "app_financerequesthandler_do_post",
-      "community": 8,
+      "community": 1,
       "norm_label": ".do_post()"
     },
     {
@@ -130,7 +130,7 @@
       "source_location": "L427",
       "_origin": "ast",
       "id": "app_financerequesthandler_do_put",
-      "community": 8,
+      "community": 1,
       "norm_label": ".do_put()"
     },
     {
@@ -140,7 +140,7 @@
       "source_location": "L470",
       "_origin": "ast",
       "id": "app_financerequesthandler_do_delete",
-      "community": 8,
+      "community": 1,
       "norm_label": ".do_delete()"
     },
     {
@@ -704,6 +704,84 @@
       "norm_label": "limpa e recarrega os dados de demonstracao."
     },
     {
+      "label": "deploy-cloudflare.sh",
+      "file_type": "code",
+      "source_file": "deploy-cloudflare.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "_origin": "ast",
+      "id": "deploy_cloudflare",
+      "community": 16,
+      "norm_label": "deploy-cloudflare.sh"
+    },
+    {
+      "label": "deploy-cloudflare.sh script",
+      "file_type": "code",
+      "source_file": "deploy-cloudflare.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "_origin": "ast",
+      "id": "home_nader_documents_projects_financas_casa_deploy_cloudflare_sh__entry",
+      "community": 16,
+      "norm_label": "deploy-cloudflare.sh script"
+    },
+    {
+      "label": "accounts.js",
+      "file_type": "code",
+      "source_file": "functions/api/accounts.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "api_accounts",
+      "community": 8,
+      "norm_label": "accounts.js"
+    },
+    {
+      "label": "onRequestGet()",
+      "file_type": "code",
+      "source_file": "functions/api/accounts.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "api_accounts_onrequestget",
+      "community": 8,
+      "norm_label": "onrequestget()"
+    },
+    {
+      "label": "onRequestPost()",
+      "file_type": "code",
+      "source_file": "functions/api/accounts.js",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "api_accounts_onrequestpost",
+      "community": 8,
+      "norm_label": "onrequestpost()"
+    },
+    {
+      "label": "checkout.js",
+      "file_type": "code",
+      "source_file": "functions/api/bunkerpay/checkout.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "bunkerpay_checkout",
+      "community": 15,
+      "norm_label": "checkout.js"
+    },
+    {
+      "label": "onRequestPost()",
+      "file_type": "code",
+      "source_file": "functions/api/bunkerpay/checkout.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "bunkerpay_checkout_onrequestpost",
+      "community": 15,
+      "norm_label": "onrequestpost()"
+    },
+    {
       "label": "webhook.js",
       "file_type": "code",
       "source_file": "functions/api/bunkerpay/webhook.js",
@@ -721,6 +799,66 @@
       "_origin": "ast",
       "id": "bunkerpay_webhook_onrequestpost",
       "community": 12,
+      "norm_label": "onrequestpost()"
+    },
+    {
+      "label": "categories.js",
+      "file_type": "code",
+      "source_file": "functions/api/categories.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "api_categories",
+      "community": 13,
+      "norm_label": "categories.js"
+    },
+    {
+      "label": "onRequestGet()",
+      "file_type": "code",
+      "source_file": "functions/api/categories.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "api_categories_onrequestget",
+      "community": 13,
+      "norm_label": "onrequestget()"
+    },
+    {
+      "label": "onRequestPost()",
+      "file_type": "code",
+      "source_file": "functions/api/categories.js",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "api_categories_onrequestpost",
+      "community": 13,
+      "norm_label": "onrequestpost()"
+    },
+    {
+      "label": "credit-cards.js",
+      "file_type": "code",
+      "source_file": "functions/api/credit-cards.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "api_credit_cards",
+      "community": 14,
+      "norm_label": "credit-cards.js"
+    },
+    {
+      "label": "onRequestGet()",
+      "file_type": "code",
+      "source_file": "functions/api/credit-cards.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "api_credit_cards_onrequestget",
+      "community": 14,
+      "norm_label": "onrequestget()"
+    },
+    {
+      "label": "onRequestPost()",
+      "file_type": "code",
+      "source_file": "functions/api/credit-cards.js",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "api_credit_cards_onrequestpost",
+      "community": 14,
       "norm_label": "onrequestpost()"
     },
     {
@@ -742,6 +880,26 @@
       "id": "api_dashboard_onrequestget",
       "community": 10,
       "norm_label": "onrequestget()"
+    },
+    {
+      "label": "ofx.js",
+      "file_type": "code",
+      "source_file": "functions/api/import/ofx.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "import_ofx",
+      "community": 17,
+      "norm_label": "ofx.js"
+    },
+    {
+      "label": "onRequestPost()",
+      "file_type": "code",
+      "source_file": "functions/api/import/ofx.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "import_ofx_onrequestpost",
+      "community": 17,
+      "norm_label": "onrequestpost()"
     },
     {
       "label": "transactions.js",
@@ -2892,11 +3050,91 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "deploy-cloudflare.sh",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "deploy_cloudflare",
+      "target": "home_nader_documents_projects_financas_casa_deploy_cloudflare_sh__entry",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/api/accounts.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "api_accounts",
+      "target": "api_accounts_onrequestget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/api/accounts.js",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "api_accounts",
+      "target": "api_accounts_onrequestpost",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/api/bunkerpay/checkout.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "bunkerpay_checkout",
+      "target": "bunkerpay_checkout_onrequestpost",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "functions/api/bunkerpay/webhook.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "bunkerpay_webhook",
-      "target": "bunkerpay_webhook_onrequestpost",
+      "target": "bunkerpay_webhook_onrequestpost"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/api/categories.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "api_categories",
+      "target": "api_categories_onrequestget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/api/categories.js",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "api_categories",
+      "target": "api_categories_onrequestpost",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/api/credit-cards.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "api_credit_cards",
+      "target": "api_credit_cards_onrequestget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/api/credit-cards.js",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "api_credit_cards",
+      "target": "api_credit_cards_onrequestpost",
       "confidence_score": 1.0
     },
     {
@@ -2905,8 +3143,18 @@
       "source_file": "functions/api/dashboard.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_dashboard",
-      "target": "api_dashboard_onrequestget",
+      "target": "api_dashboard_onrequestget"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/api/import/ofx.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "import_ofx",
+      "target": "import_ofx_onrequestpost",
       "confidence_score": 1.0
     },
     {
@@ -2915,9 +3163,9 @@
       "source_file": "functions/api/transactions.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_transactions",
-      "target": "api_transactions_onrequestget",
-      "confidence_score": 1.0
+      "target": "api_transactions_onrequestget"
     },
     {
       "relation": "contains",
@@ -2925,9 +3173,9 @@
       "source_file": "functions/api/transactions.js",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_transactions",
-      "target": "api_transactions_onrequestpost",
-      "confidence_score": 1.0
+      "target": "api_transactions_onrequestpost"
     },
     {
       "relation": "contains",
@@ -4383,5 +4631,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "dc34f18d598c23bf91ca55484cdd1920d8f7f181"
+  "built_at_commit": "7436dfeb3490479069cd084494535d6816bb55ca"
 }
