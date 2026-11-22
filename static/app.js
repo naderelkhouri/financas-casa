@@ -210,6 +210,7 @@ function switchTab(tabId) {
     'budgets-goals': { title: 'Orçamentos & Metas', sub: 'Tetos de gastos e objetivos de poupança' },
     'recurring': { title: 'Contas Recorrentes', sub: 'Lembretes de vencimento e contas fixas' },
     'accounts-cards': { title: 'Contas & Cartões', sub: 'Gestão de bancos, saldos e faturas de cartões' },
+    'workspace': { title: 'Workspace & Equipe', sub: 'Gestão colaborativa de até 5 usuários por workspace' },
     'saas-admin': { title: 'Painel do Administrador', sub: 'Governança do SaaS, MRR e usuários da plataforma' },
     'import-ofx': { title: 'Importação OFX', sub: 'Conciliação automática de extratos bancários brasileiros' },
     'bunkerpay-sub': { title: 'Assinatura BunkerPay', sub: 'Planos Pro com liquidação direta em PIX' },
@@ -241,6 +242,8 @@ function refreshCurrentView() {
       loadRecurringBills();
     } else if (state.activeTab === 'accounts-cards') {
       loadAccountsAndCards();
+    } else if (state.activeTab === 'workspace') {
+      loadWorkspace();
     } else if (state.activeTab === 'saas-admin') {
       loadAdminDashboard();
     }
@@ -251,6 +254,7 @@ async function loadInitialData() {
   await loadCategories();
   await loadDashboard();
   await updateRecurringBadge();
+  await loadWorkspace();
 }
 
 // ==========================================================================
@@ -1619,5 +1623,160 @@ async function adminToggleSetting(key, newValue) {
     }
   } catch (err) {
     showToast('Erro de conexão ao alterar flag.', 'error');
+  }
+}
+
+// ==========================================================================
+// MÓDULO DE WORKSPACE MULTI-USUÁRIO (ATÉ 5 USUÁRIOS POR WORKSPACE)
+// ==========================================================================
+
+let currentWorkspace = null;
+
+async function loadWorkspace() {
+  try {
+    const res = await fetch('/api/workspace');
+    if (!res.ok) return;
+    const data = await res.json();
+    const ws = data.workspace;
+    const members = data.members || [];
+    currentWorkspace = ws;
+
+    const badge = document.getElementById('workspace-seats-badge');
+    if (badge && ws) {
+      badge.textContent = `${ws.member_count}/${ws.max_members}`;
+      badge.style.background = ws.member_count >= ws.max_members ? 'var(--accent-warning)' : 'var(--accent-primary)';
+    }
+
+    const headerName = document.getElementById('ws-header-name');
+    if (headerName && ws) headerName.textContent = ws.name;
+
+    const seatsUsed = document.getElementById('ws-seats-used');
+    if (seatsUsed && ws) seatsUsed.textContent = `${ws.member_count} / ${ws.max_members}`;
+
+    const seatsStatus = document.getElementById('ws-seats-status');
+    if (seatsStatus && ws) {
+      seatsStatus.textContent = ws.available_seats > 0
+        ? `${ws.available_seats} vaga(s) disponível(is)`
+        : 'Limite máximo de 5 usuários atingido';
+      seatsStatus.style.color = ws.available_seats > 0 ? 'var(--text-muted)' : 'var(--accent-warning)';
+    }
+
+    const roleLabels = { owner: 'Proprietário Titular', admin: 'Co-Administrador', member: 'Membro Colaborador' };
+    const myRoleEl = document.getElementById('ws-my-role');
+    if (myRoleEl && ws) myRoleEl.textContent = roleLabels[ws.current_user_role] || 'Membro';
+
+    const capBar = document.getElementById('ws-capacity-bar');
+    if (capBar && ws) {
+      const pct = Math.min(100, Math.round((ws.member_count / ws.max_members) * 100));
+      capBar.style.width = `${pct}%`;
+      capBar.className = `progress-bar-fill ${ws.member_count >= ws.max_members ? 'progress-fill-warning' : 'progress-fill-success'}`;
+    }
+
+    const addBtn = document.getElementById('btn-add-ws-member');
+    if (addBtn && ws) {
+      const canManage = ws.current_user_role === 'owner' || ws.current_user_role === 'admin';
+      const isFull = ws.member_count >= ws.max_members;
+      addBtn.disabled = !canManage || isFull;
+      addBtn.style.opacity = (!canManage || isFull) ? '0.5' : '1';
+      addBtn.style.cursor = (!canManage || isFull) ? 'not-allowed' : 'pointer';
+      addBtn.textContent = isFull ? 'Limite 5/5 Atingido' : '+ Adicionar Usuário';
+    }
+
+    const tbody = document.getElementById('ws-members-tbody');
+    if (tbody && ws) {
+      const canManage = ws.current_user_role === 'owner' || ws.current_user_role === 'admin';
+      tbody.innerHTML = members.map((m, idx) => {
+        const isOwner = m.member_role === 'owner' || m.id === ws.owner_id;
+        const badgeClass = isOwner ? 'badge-paid' : 'badge-pending';
+        return `
+          <tr>
+            <td><strong>#${idx + 1} / ${ws.max_members}</strong></td>
+            <td><strong>${escapeHtml(m.name)}</strong></td>
+            <td><span class="text-muted">${escapeHtml(m.email)}</span></td>
+            <td><span class="badge ${badgeClass}">${escapeHtml(roleLabels[m.member_role] || 'Membro')}</span></td>
+            <td class="text-muted">${formatDate(String(m.added_at || '').slice(0, 10))}</td>
+            <td class="text-right">
+              ${(!isOwner && canManage)
+                ? `<button type="button" class="btn-action-icon delete" onclick="removeWorkspaceMember(${m.id}, '${escapeHtml(m.name)}')" title="Remover do Workspace">${SVG_ICONS.trash}</button>`
+                : `<span class="text-muted" style="font-size:0.78rem;">Titular</span>`
+              }
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+  } catch (err) {
+    console.error('Erro ao carregar workspace:', err);
+  }
+}
+
+document.getElementById('form-workspace-member')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('ws-member-name').value.trim();
+  const email = document.getElementById('ws-member-email').value.trim();
+  const password = document.getElementById('ws-member-password').value;
+  const member_role = document.getElementById('ws-member-role').value;
+
+  try {
+    const res = await fetch('/api/workspace', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'add_member', name, email, password, member_role })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast(data.message || 'Usuário adicionado ao workspace!', 'success');
+      document.getElementById('form-workspace-member').reset();
+      closeModal('modal-workspace-member');
+      loadWorkspace();
+    } else {
+      showToast(data.error || 'Erro ao adicionar membro.', 'error');
+    }
+  } catch (err) {
+    showToast('Erro de conexão ao adicionar membro.', 'error');
+  }
+});
+
+async function renameWorkspacePrompt() {
+  const currentName = currentWorkspace ? currentWorkspace.name : 'Meu Workspace';
+  const newName = prompt('Novo nome do Workspace (ex: Família El-Khouri):', currentName);
+  if (!newName || newName.trim() === currentName) return;
+
+  try {
+    const res = await fetch('/api/workspace', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'rename', name: newName.trim() })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast('Workspace renomeado com sucesso!', 'success');
+      loadWorkspace();
+    } else {
+      showToast(data.error || 'Erro ao renomear workspace.', 'error');
+    }
+  } catch (err) {
+    showToast('Erro de rede ao renomear workspace.', 'error');
+  }
+}
+
+async function removeWorkspaceMember(userId, userName) {
+  if (!confirm(`Deseja remover ${userName} deste workspace? A vaga ficará disponível novamente.`)) return;
+
+  try {
+    const res = await fetch('/api/workspace', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'remove_member', user_id: userId })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast('Membro removido do workspace.', 'success');
+      loadWorkspace();
+    } else {
+      showToast(data.error || 'Erro ao remover membro.', 'error');
+    }
+  } catch (err) {
+    showToast('Erro de rede ao remover membro.', 'error');
   }
 }

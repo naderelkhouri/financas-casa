@@ -122,6 +122,36 @@ CREATE TABLE IF NOT EXISTS recurring_payments (
     UNIQUE(bill_id, month_year)
 );
 
+-- 10. Workspaces Multi-Usuário (Limite de até 5 usuários por workspace)
+CREATE TABLE IF NOT EXISTS workspaces (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    owner_id INTEGER NOT NULL,
+    max_members INTEGER NOT NULL DEFAULT 5 CHECK(max_members <= 5),
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- 11. Membros de Workspace (Até 5 vagas por workspace)
+CREATE TABLE IF NOT EXISTS workspace_members (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    workspace_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    member_role TEXT NOT NULL DEFAULT 'member' CHECK(member_role IN ('owner', 'admin', 'member')),
+    added_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE(workspace_id, user_id)
+);
+
+-- 12. Configurações Globais do Sistema (Super Admin Feature Flags)
+CREATE TABLE IF NOT EXISTS system_settings (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL,
+    description TEXT,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Seed de Categorias Básicas
 INSERT OR IGNORE INTO categories (name, type, color, icon) VALUES
     ('Moradia', 'expense', '#ef4444', '🏠'),

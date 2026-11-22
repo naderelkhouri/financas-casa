@@ -1,6 +1,6 @@
 import { authenticateRequest } from "../auth/_utils.js";
 
-// Endpoint de Métricas Globais, Lista de Usuários e Feature Flags do Super Admin (role = 'admin')
+// Endpoint de Métricas Globais, Lista de Usuários, Workspaces e Feature Flags do Super Admin (role = 'admin')
 export async function onRequestGet(context) {
   const { env, request } = context;
 
@@ -14,7 +14,6 @@ export async function onRequestGet(context) {
   const secret = env.JWT_SECRET || "cf-financas-pessoais-admx-jwt-super-secret-key-2026-edge";
   const authUser = await authenticateRequest(request, secret);
 
-  // 1. Verificação de Permissão RBAC (Zero Trust)
   if (!authUser) {
     return new Response(JSON.stringify({ error: "Acesso não autorizado. Faça login." }), {
       status: 401,
@@ -22,8 +21,8 @@ export async function onRequestGet(context) {
     });
   }
 
-  // Validar se o usuário tem a role 'admin' no banco
-  const dbUser = await env.DB.prepare("SELECT role FROM users WHERE id = ?").bind(authUser.user_id).first();
+  const actorId = authUser.actor_id || authUser.user_id;
+  const dbUser = await env.DB.prepare("SELECT role FROM users WHERE id = ?").bind(actorId).first();
   if (!dbUser || dbUser.role !== 'admin') {
     return new Response(JSON.stringify({ error: "Acesso proibido. Requer privilégios de Administrador." }), {
       status: 403,
@@ -32,33 +31,37 @@ export async function onRequestGet(context) {
   }
 
   try {
-    // 2. Métricas do SaaS (MRR, Usuários, Lançamentos)
     const totalUsersRes = await env.DB.prepare("SELECT COUNT(*) as count FROM users").first();
     const proUsersRes = await env.DB.prepare("SELECT COUNT(*) as count FROM users WHERE plan LIKE 'pro%'").first();
     const totalTxRes = await env.DB.prepare("SELECT COUNT(*) as count, COALESCE(SUM(amount), 0) as volume FROM transactions").first();
+    const totalWsRes = await env.DB.prepare("SELECT COUNT(*) as count FROM workspaces").first();
 
     const totalUsers = totalUsersRes?.count || 0;
     const proUsers = proUsersRes?.count || 0;
-    const mrrEstimated = proUsers * 19.90; // R$ 19,90/mês
+    const mrrEstimated = proUsers * 19.90;
     const totalTransactions = totalTxRes?.count || 0;
     const totalVolume = totalTxRes?.volume || 0;
 
-    // 3. Listagem de Usuários Cadastrados
     const usersList = await env.DB.prepare(`
       SELECT u.id, u.name, u.email, u.plan, u.role, u.created_at,
              (SELECT COUNT(*) FROM transactions t WHERE t.user_id = u.id) as tx_count,
-             (SELECT COUNT(*) FROM accounts a WHERE a.user_id = u.id) as accounts_count
+             (SELECT COUNT(*) FROM accounts a WHERE a.user_id = u.id) as accounts_count,
+             (SELECT w.name || ' (' || (SELECT COUNT(*) FROM workspace_members wm2 WHERE wm2.workspace_id = w.id) || '/' || w.max_members || ')'
+              FROM workspace_members wm
+              JOIN workspaces w ON wm.workspace_id = w.id
+              WHERE wm.user_id = u.id
+              LIMIT 1) as workspace_info
       FROM users u
       ORDER BY u.id DESC
       LIMIT 100
     `).all();
 
-    // 4. Feature Flags / Controle Global de Funções (Shift ON/OFF)
     const settingsRes = await env.DB.prepare("SELECT key, value, description, updated_at FROM system_settings").all();
 
     return new Response(JSON.stringify({
       metrics: {
         total_users: totalUsers,
+        total_workspaces: totalWsRes?.count || 1,
         pro_subscribers: proUsers,
         free_users: totalUsers - proUsers,
         estimated_mrr: mrrEstimated,
@@ -78,7 +81,6 @@ export async function onRequestGet(context) {
   }
 }
 
-// Alteração de Configurações Globais (Shift ON/OFF) ou Gestão de Usuário
 export async function onRequestPost(context) {
   const { env, request } = context;
 
@@ -96,7 +98,8 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: "Não autorizado" }), { status: 401, headers: { "Content-Type": "application/json" } });
   }
 
-  const dbUser = await env.DB.prepare("SELECT role FROM users WHERE id = ?").bind(authUser.user_id).first();
+  const actorId = authUser.actor_id || authUser.user_id;
+  const dbUser = await env.DB.prepare("SELECT role FROM users WHERE id = ?").bind(actorId).first();
   if (!dbUser || dbUser.role !== 'admin') {
     return new Response(JSON.stringify({ error: "Requer papel de Administrador" }), { status: 403, headers: { "Content-Type": "application/json" } });
   }
@@ -104,7 +107,6 @@ export async function onRequestPost(context) {
   try {
     const data = await request.json();
 
-    // Rota A: Atualização de Feature Flag / Shift ON/OFF
     if (data.action === "toggle_setting") {
       const { key, value } = data;
       if (!key || value === undefined) {
@@ -112,7 +114,7 @@ export async function onRequestPost(context) {
       }
 
       await env.DB.prepare(`
-        INSERT INTO system_settings (key, value, updated_at) 
+        INSERT INTO system_settings (key, value, updated_at)
         VALUES (?, ?, CURRENT_TIMESTAMP)
         ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = CURRENT_TIMESTAMP
       `).bind(key, String(value)).run();
@@ -122,7 +124,6 @@ export async function onRequestPost(context) {
       });
     }
 
-    // Rota B: Gestão de Usuário (Plan / Role)
     const targetUserId = parseInt(data.user_id);
     const newPlan = data.plan;
     const newRole = data.role;

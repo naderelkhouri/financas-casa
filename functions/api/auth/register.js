@@ -11,14 +11,13 @@ export async function onRequestPost(context) {
   }
 
   try {
-    // 0. Super Admin Feature Toggle: allow_signup
     const signupSetting = await env.DB.prepare(
       "SELECT value FROM system_settings WHERE key = 'allow_signup'"
     ).first();
 
     if (signupSetting && signupSetting.value === 'false') {
-      return new Response(JSON.stringify({ 
-        error: "Novos cadastros estão temporariamente suspensos pela administração do sistema." 
+      return new Response(JSON.stringify({
+        error: "Novos cadastros estão temporariamente suspensos pela administração do sistema."
       }), {
         status: 403,
         headers: { "Content-Type": "application/json" }
@@ -30,7 +29,6 @@ export async function onRequestPost(context) {
     const email = String(data.email || "").trim().toLowerCase();
     const password = String(data.password || "");
 
-    // 1. Validações estritas de entrada
     if (!name || name.length < 2 || name.length > 80) {
       return new Response(JSON.stringify({ error: "Nome deve conter entre 2 e 80 caracteres." }), {
         status: 400,
@@ -53,7 +51,6 @@ export async function onRequestPost(context) {
       });
     }
 
-    // 2. Verificar duplicidade de e-mail
     const existing = await env.DB.prepare("SELECT id FROM users WHERE email = ?").bind(email).first();
     if (existing) {
       return new Response(JSON.stringify({ error: "Este e-mail já está cadastrado no sistema." }), {
@@ -62,10 +59,8 @@ export async function onRequestPost(context) {
       });
     }
 
-    // 3. Hash PBKDF2
     const passwordHash = await hashPassword(password);
 
-    // 4. Inserção do usuário
     const userInsert = await env.DB.prepare(`
       INSERT INTO users (name, email, password_hash, plan)
       VALUES (?, ?, ?, 'free')
@@ -73,15 +68,35 @@ export async function onRequestPost(context) {
 
     const userId = userInsert.meta.last_row_id;
 
-    // 5. Criar conta padrão 'Carteira' para o novo usuário
+    // Criar Workspace exclusivo com capacidade para até 5 usuários
+    const wsName = `Workspace de ${name}`;
+    const wsInsert = await env.DB.prepare(`
+      INSERT INTO workspaces (name, owner_id, max_members)
+      VALUES (?, ?, 5)
+    `).bind(wsName, userId).run();
+    const workspaceId = wsInsert.meta.last_row_id;
+
+    await env.DB.prepare(`
+      INSERT INTO workspace_members (workspace_id, user_id, member_role)
+      VALUES (?, ?, 'owner')
+    `).bind(workspaceId, userId).run();
+
     await env.DB.prepare(`
       INSERT INTO accounts (user_id, name, account_type, color)
       VALUES (?, 'Carteira Principal', 'checking', '#10b981')
-    `).bind(userId).run();
+    `).bind(workspaceId).run();
 
-    // 6. Gerar JWT e Cookie HttpOnly Seguro
     const secret = env.JWT_SECRET || "cf-financas-pessoais-admx-jwt-super-secret-key-2026-edge";
-    const token = await createJWT({ user_id: userId, email: email, name: name, plan: "free" }, secret);
+    const token = await createJWT({
+      user_id: workspaceId,
+      actor_id: userId,
+      workspace_id: workspaceId,
+      member_role: "owner",
+      role: "user",
+      email,
+      name,
+      plan: "free"
+    }, secret);
 
     const cookieFlags = [
       `auth_token=${token}`,
@@ -94,7 +109,17 @@ export async function onRequestPost(context) {
 
     return new Response(JSON.stringify({
       success: true,
-      user: { id: userId, name, email, plan: "free" }
+      user: {
+        id: userId,
+        name,
+        email,
+        plan: "free",
+        role: "user",
+        workspace_id: workspaceId,
+        workspace_name: wsName,
+        member_role: "owner",
+        max_members: 5
+      }
     }), {
       status: 201,
       headers: {

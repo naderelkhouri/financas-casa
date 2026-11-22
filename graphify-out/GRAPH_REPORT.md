@@ -1,16 +1,16 @@
 # Graph Report - financas-casa  (2026-11-22)
 
 ## Corpus Check
-- 40 files · ~25,325 words
+- 41 files · ~27,694 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 240 nodes · 407 edges · 21 communities (18 shown, 3 thin omitted)
+- 246 nodes · 423 edges · 21 communities (18 shown, 3 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `aa5c076a`
+- Built from commit: `7e607583`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -34,9 +34,9 @@
 - [[_COMMUNITY_Community 22|Community 22]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `authenticateRequest()` - 47 edges
+1. `authenticateRequest()` - 50 edges
 2. `get_connection()` - 31 edges
-3. `showToast()` - 19 edges
+3. `showToast()` - 21 edges
 4. `refreshCurrentView()` - 17 edges
 5. `FinanceRequestHandler` - 13 edges
 6. `ThreadedHTTPServer` - 8 edges
@@ -75,8 +75,8 @@ Cohesion: 0.12
 Nodes (8): authState, debounce(), initEventListeners(), initTheme(), state, SVG_ICONS, toggleTheme(), updateThemeButton()
 
 ### Community 3 - "Community 3"
-Cohesion: 0.23
-Nodes (16): changeMonth(), closeModal(), deleteBudget(), deleteGoal(), deleteRecurringBill(), deleteTransaction(), handleBudgetSubmit(), handleGoalSubmit() (+8 more)
+Cohesion: 0.20
+Nodes (18): changeMonth(), closeModal(), deleteBudget(), deleteGoal(), deleteRecurringBill(), deleteTransaction(), escapeHtml(), handleBudgetSubmit() (+10 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.18
@@ -96,15 +96,15 @@ Nodes (6): parse_ofx_content(), parse_ofx_date(), Any, Parser Nativo de Extratos
 
 ### Community 8 - "Community 8"
 Cohesion: 0.07
-Nodes (35): onRequestGet(), onRequestPost(), onRequestGet(), onRequestPost(), onRequestGet(), onRequestPost(), onRequestGet(), onRequestPost() (+27 more)
+Nodes (37): onRequestGet(), onRequestPost(), onRequestGet(), onRequestPost(), onRequestGet(), onRequestPost(), onRequestGet(), onRequestPost() (+29 more)
 
 ### Community 9 - "Community 9"
 Cohesion: 0.22
 Nodes (9): adminTogglePlan(), adminToggleSetting(), formatCurrency(), loadAdminDashboard(), loadDashboard(), loadDashboardRecentTx(), renderCategoryDonut(), renderDashboardBudgetsMini() (+1 more)
 
 ### Community 14 - "Community 14"
-Cohesion: 0.29
-Nodes (8): editGoal(), editTransaction(), escapeHtml(), openGoalModal(), openModal(), openTransactionModal(), populateCategorySelect(), startBunkerpayCheckout()
+Cohesion: 0.40
+Nodes (6): editGoal(), editTransaction(), openGoalModal(), openModal(), openTransactionModal(), populateCategorySelect()
 
 ### Community 17 - "Community 17"
 Cohesion: 0.40
@@ -115,8 +115,8 @@ Cohesion: 0.20
 Nodes (9): background_color, description, display, icons, name, orientation, short_name, start_url (+1 more)
 
 ### Community 19 - "Community 19"
-Cohesion: 0.50
-Nodes (4): loadCategories(), loadInitialData(), loadRecurringBills(), updateRecurringBadge()
+Cohesion: 0.29
+Nodes (7): loadCategories(), loadInitialData(), loadRecurringBills(), loadWorkspace(), removeWorkspaceMember(), renameWorkspacePrompt(), updateRecurringBadge()
 
 ## Knowledge Gaps
 - **24 isolated node(s):** `Any`, `deploy-cloudflare.sh script`, `KEYWORD_RULES`, `iniciar.sh script`, `Any` (+19 more)
@@ -137,4 +137,4 @@ _Questions this graph is uniquely positioned to answer:_
 - **Should `Community 2` be split into smaller, more focused modules?**
   _Cohesion score 0.11578947368421053 - nodes in this community are weakly interconnected._
 - **Should `Community 8` be split into smaller, more focused modules?**
-  _Cohesion score 0.07077922077922078 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06838106370543542 - nodes in this community are weakly interconnected._

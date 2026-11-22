@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1795365000">
+  <link rel="stylesheet" href="styles.css?v=1795370000">
 </head>
 <body>
 
@@ -98,6 +98,11 @@
         <button type="button" class="nav-item" data-tab="accounts-cards" id="nav-accounts">
           <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m2 7 10-5 10 5v2H2zM4 11v7M8 11v7M12 11v7M16 11v7M20 11v7M2 21h20"/></svg></span>
           <span class="nav-label">Contas &amp; Cartões</span>
+        </button>
+        <button type="button" class="nav-item" data-tab="workspace" id="nav-workspace">
+          <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+          <span class="nav-label">Workspace &amp; Equipe</span>
+          <span class="badge-counter" id="workspace-seats-badge" style="background: var(--accent-primary);">1/5</span>
         </button>
         <button type="button" class="nav-item" data-tab="import-ofx" id="nav-ofx">
           <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></span>
@@ -445,6 +450,69 @@
               <h2>Cartões de Crédito</h2>
             </div>
             <div class="card-body" id="cards-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5.1: WORKSPACE & MEMBROS (ATÉ 5 USUÁRIOS) -->
+      <section class="tab-pane" id="pane-workspace">
+        <div class="content-header-row">
+          <div>
+            <h2 id="ws-header-name">Workspace Compartilhado</h2>
+            <p>Compartilhe a gestão financeira com sua família ou sócios (limite estrito de até 5 usuários por workspace)</p>
+          </div>
+          <div class="header-btns">
+            <button type="button" class="btn-secondary" onclick="renameWorkspacePrompt()">Renomear Workspace</button>
+            <button type="button" class="btn-primary" id="btn-add-ws-member" onclick="openModal('modal-workspace-member')">+ Adicionar Usuário</button>
+          </div>
+        </div>
+
+        <div class="stats-grid mt-4">
+          <div class="stat-card">
+            <span class="stat-label">Ocupação do Workspace</span>
+            <div class="stat-value tabular-nums" id="ws-seats-used">1 / 5</div>
+            <span class="stat-sub" id="ws-seats-status">4 vagas disponíveis</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="stat-label">Limite Máximo</span>
+            <div class="stat-value tabular-nums">5 Usuários</div>
+            <span class="stat-sub">Acesso simultâneo sincronizado</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="stat-label">Seu Papel no Workspace</span>
+            <div class="stat-value" id="ws-my-role" style="font-size: 1.35rem;">Proprietário</div>
+            <span class="stat-sub">Isolamento criptográfico por tenant</span>
+          </div>
+        </div>
+
+        <div class="card mt-4">
+          <div class="card-header">
+            <div>
+              <h2>Membros Ativos no Workspace</h2>
+              <span class="card-subtitle">Todos os membros abaixo visualizam e colaboram no mesmo fluxo de caixa deste workspace</span>
+            </div>
+          </div>
+          <div class="progress-bar-bg" style="margin-bottom: 18px;">
+            <div class="progress-bar-fill progress-fill-success" id="ws-capacity-bar" style="width: 20%;"></div>
+          </div>
+          <div class="card-body no-padding">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>VAGA</th>
+                    <th>NOME</th>
+                    <th>E-MAIL</th>
+                    <th>PERMISSÃO</th>
+                    <th>INCLUSÃO</th>
+                    <th class="text-right">AÇÕES</th>
+                  </tr>
+                </thead>
+                <tbody id="ws-members-tbody"></tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
@@ -952,6 +1020,43 @@
     </div>
   </div>
 
+  <!-- MODAL: NOVO MEMBRO DO WORKSPACE (ATÉ 5 USUÁRIOS) -->
+  <div class="modal-overlay" id="modal-workspace-member" style="display:none;" role="dialog" aria-modal="true">
+    <div class="modal-card modal-sm">
+      <div class="modal-header">
+        <h2>Adicionar Usuário ao Workspace</h2>
+        <button type="button" class="btn-close-modal" onclick="closeModal('modal-workspace-member')" aria-label="Fechar">✕</button>
+      </div>
+      <form id="form-workspace-member">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="ws-member-name">Nome Completo *</label>
+            <input type="text" id="ws-member-name" class="form-input" placeholder="Ex: Sandra El-Khouri" required>
+          </div>
+          <div class="form-group mt-3">
+            <label class="form-label" for="ws-member-email">E-mail de Acesso *</label>
+            <input type="email" id="ws-member-email" class="form-input" placeholder="usuario@exemplo.com" required>
+          </div>
+          <div class="form-group mt-3">
+            <label class="form-label" for="ws-member-password">Senha Inicial *</label>
+            <input type="password" id="ws-member-password" class="form-input" placeholder="Mínimo 8 caracteres" required minlength="8">
+          </div>
+          <div class="form-group mt-3">
+            <label class="form-label" for="ws-member-role">Permissão no Workspace</label>
+            <select id="ws-member-role" class="form-select">
+              <option value="member">Membro (Lançamentos e Visualização)</option>
+              <option value="admin">Co-Administrador (Pode gerenciar membros)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost" onclick="closeModal('modal-workspace-member')">Cancelar</button>
+          <button type="submit" class="btn-primary">Adicionar ao Workspace</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- MODAL: BUNKERPAY PIX -->
   <div id="bunkerpay-pix-modal" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true">
     <div class="modal-card modal-sm">
@@ -966,6 +1071,6 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toast-container" aria-live="polite"></div>
 
-  <script src="app.js?v=1795365000"></script>
+  <script src="app.js?v=1795370000"></script>
 </body>
 </html>

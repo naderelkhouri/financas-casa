@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "static/app.js": {
-    "mtime": 1795375069.7780278,
-    "ast_hash": "69c74c1e2c59e6b85894e1caba7f16a9",
+    "mtime": 1795378991.1096096,
+    "ast_hash": "55c5d27217fbd3e720397d1fd4c46235",
     "semantic_hash": ""
   },
   "README.md": {
@@ -45,8 +45,8 @@
     "semantic_hash": ""
   },
   "static/index.html": {
-    "mtime": 1795375067.4910464,
-    "ast_hash": "99b6c3a3e70e673dcc2570909e5d8d6f",
+    "mtime": 1795379030.3422935,
+    "ast_hash": "a11d6ebd1f90dbe282a57d89a0902b8e",
     "semantic_hash": ""
   },
   "static/icon.png": {
@@ -75,8 +75,8 @@
     "semantic_hash": ""
   },
   "migrations/0001_initial_schema.sql": {
-    "mtime": 1795208487.4680862,
-    "ast_hash": "bfb0ed0fe7145fcf8ed42c840f7cb937",
+    "mtime": 1795379032.3242774,
+    "ast_hash": "224e93868605e3776784d819b34767e9",
     "semantic_hash": ""
   },
   "deploy-cloudflare.sh": {
@@ -125,7 +125,7 @@
     "semantic_hash": ""
   },
   ".wrangler/cache/pages.json": {
-    "mtime": 1795375200.067954,
+    "mtime": 1795379086.42189,
     "ast_hash": "63ced39f7b8f6921ffdd5aa8f0a845b5",
     "semantic_hash": ""
   },
@@ -140,8 +140,8 @@
     "semantic_hash": ""
   },
   "functions/api/auth/login.js": {
-    "mtime": 1795274301.2696223,
-    "ast_hash": "f3d34d1c49a88beabe53c048fb7ac93b",
+    "mtime": 1795378869.2125921,
+    "ast_hash": "eed86bc9eb8c3b661732a4bb4edae17f",
     "semantic_hash": ""
   },
   "functions/api/auth/logout.js": {
@@ -150,18 +150,18 @@
     "semantic_hash": ""
   },
   "functions/api/auth/me.js": {
-    "mtime": 1795274308.0985734,
-    "ast_hash": "0622943b625088d654a075dc4a42dcc8",
+    "mtime": 1795378872.6755643,
+    "ast_hash": "622d8ab4f2b7e0006eec6870dc191efe",
     "semantic_hash": ""
   },
   "functions/api/auth/register.js": {
-    "mtime": 1795315065.7375789,
-    "ast_hash": "e303d52787f6ba234da75868c85cdac4",
+    "mtime": 1795378870.5765812,
+    "ast_hash": "da9ade0d049f57a30681d7244944035b",
     "semantic_hash": ""
   },
   "functions/api/admin/overview.js": {
-    "mtime": 1795315099.5333064,
-    "ast_hash": "d4c43cd831acedf12da85524669a4274",
+    "mtime": 1795378877.1975276,
+    "ast_hash": "08a4d0e47616c6f4b6ab21c422a9a190",
     "semantic_hash": ""
   },
   "functions/api/budgets.js": {
@@ -217,6 +217,11 @@
   "functions/api/transactions/[id].js": {
     "mtime": 1795374608.122439,
     "ast_hash": "2e69d27f702793452b414f9ebfef478a",
+    "semantic_hash": ""
+  },
+  "functions/api/workspace.js": {
+    "mtime": 1795378875.553541,
+    "ast_hash": "ff7db312cff10378364c9c17592c7206",
     "semantic_hash": ""
   }
 }

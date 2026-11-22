@@ -785,7 +785,7 @@
       "label": "onRequestPost()",
       "file_type": "code",
       "source_file": "functions/api/admin/overview.js",
-      "source_location": "L82",
+      "source_location": "L84",
       "_origin": "ast",
       "id": "admin_overview_onrequestpost",
       "community": 8,
@@ -1382,6 +1382,36 @@
       "norm_label": "onrequestdelete()"
     },
     {
+      "label": "workspace.js",
+      "file_type": "code",
+      "source_file": "functions/api/workspace.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "api_workspace",
+      "community": 8,
+      "norm_label": "workspace.js"
+    },
+    {
+      "label": "onRequestGet()",
+      "file_type": "code",
+      "source_file": "functions/api/workspace.js",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "api_workspace_onrequestget",
+      "community": 8,
+      "norm_label": "onrequestget()"
+    },
+    {
+      "label": "onRequestPost()",
+      "file_type": "code",
+      "source_file": "functions/api/workspace.js",
+      "source_location": "L74",
+      "_origin": "ast",
+      "id": "api_workspace_onrequestpost",
+      "community": 8,
+      "norm_label": "onrequestpost()"
+    },
+    {
       "label": "gui.py",
       "file_type": "code",
       "source_file": "gui.py",
@@ -1723,7 +1753,7 @@
       "label": "refreshCurrentView()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L230",
+      "source_location": "L231",
       "_origin": "ast",
       "id": "static_app_refreshcurrentview",
       "community": 3,
@@ -1733,7 +1763,7 @@
       "label": "loadInitialData()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L250",
+      "source_location": "L253",
       "_origin": "ast",
       "id": "static_app_loadinitialdata",
       "community": 19,
@@ -1743,7 +1773,7 @@
       "label": "loadCategories()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L260",
+      "source_location": "L264",
       "_origin": "ast",
       "id": "static_app_loadcategories",
       "community": 19,
@@ -1753,7 +1783,7 @@
       "label": "populateCategorySelect()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L274",
+      "source_location": "L278",
       "_origin": "ast",
       "id": "static_app_populatecategoryselect",
       "community": 14,
@@ -1763,7 +1793,7 @@
       "label": "loadDashboard()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L296",
+      "source_location": "L300",
       "_origin": "ast",
       "id": "static_app_loaddashboard",
       "community": 9,
@@ -1773,7 +1803,7 @@
       "label": "loadTransactions()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L353",
+      "source_location": "L357",
       "_origin": "ast",
       "id": "static_app_loadtransactions",
       "community": 2,
@@ -1783,7 +1813,7 @@
       "label": "loadDashboardRecentTx()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L424",
+      "source_location": "L428",
       "_origin": "ast",
       "id": "static_app_loaddashboardrecenttx",
       "community": 9,
@@ -1793,7 +1823,7 @@
       "label": "loadBudgetsAndGoals()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L463",
+      "source_location": "L467",
       "_origin": "ast",
       "id": "static_app_loadbudgetsandgoals",
       "community": 2,
@@ -1803,7 +1833,7 @@
       "label": "renderDashboardBudgetsMini()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L577",
+      "source_location": "L581",
       "_origin": "ast",
       "id": "static_app_renderdashboardbudgetsmini",
       "community": 9,
@@ -1813,7 +1843,7 @@
       "label": "loadRecurringBills()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L607",
+      "source_location": "L611",
       "_origin": "ast",
       "id": "static_app_loadrecurringbills",
       "community": 19,
@@ -1823,7 +1853,7 @@
       "label": "updateRecurringBadge()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L657",
+      "source_location": "L661",
       "_origin": "ast",
       "id": "static_app_updaterecurringbadge",
       "community": 19,
@@ -1833,7 +1863,7 @@
       "label": "handleTransactionSubmit()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L680",
+      "source_location": "L684",
       "_origin": "ast",
       "id": "static_app_handletransactionsubmit",
       "community": 3,
@@ -1843,7 +1873,7 @@
       "label": "editTransaction()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L720",
+      "source_location": "L724",
       "_origin": "ast",
       "id": "static_app_edittransaction",
       "community": 14,
@@ -1853,7 +1883,7 @@
       "label": "deleteTransaction()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L747",
+      "source_location": "L751",
       "_origin": "ast",
       "id": "static_app_deletetransaction",
       "community": 3,
@@ -1863,7 +1893,7 @@
       "label": "openTransactionModal()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L760",
+      "source_location": "L764",
       "_origin": "ast",
       "id": "static_app_opentransactionmodal",
       "community": 14,
@@ -1873,7 +1903,7 @@
       "label": "handleBudgetSubmit()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L772",
+      "source_location": "L776",
       "_origin": "ast",
       "id": "static_app_handlebudgetsubmit",
       "community": 3,
@@ -1883,7 +1913,7 @@
       "label": "deleteBudget()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L795",
+      "source_location": "L799",
       "_origin": "ast",
       "id": "static_app_deletebudget",
       "community": 3,
@@ -1893,7 +1923,7 @@
       "label": "openGoalModal()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L808",
+      "source_location": "L812",
       "_origin": "ast",
       "id": "static_app_opengoalmodal",
       "community": 14,
@@ -1903,7 +1933,7 @@
       "label": "handleGoalSubmit()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L815",
+      "source_location": "L819",
       "_origin": "ast",
       "id": "static_app_handlegoalsubmit",
       "community": 3,
@@ -1913,7 +1943,7 @@
       "label": "editGoal()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L850",
+      "source_location": "L854",
       "_origin": "ast",
       "id": "static_app_editgoal",
       "community": 14,
@@ -1923,7 +1953,7 @@
       "label": "deleteGoal()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L866",
+      "source_location": "L870",
       "_origin": "ast",
       "id": "static_app_deletegoal",
       "community": 3,
@@ -1933,7 +1963,7 @@
       "label": "handleRecurringSubmit()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L879",
+      "source_location": "L883",
       "_origin": "ast",
       "id": "static_app_handlerecurringsubmit",
       "community": 3,
@@ -1943,7 +1973,7 @@
       "label": "payRecurringBill()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L906",
+      "source_location": "L910",
       "_origin": "ast",
       "id": "static_app_payrecurringbill",
       "community": 3,
@@ -1953,7 +1983,7 @@
       "label": "unpayRecurringBill()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L922",
+      "source_location": "L926",
       "_origin": "ast",
       "id": "static_app_unpayrecurringbill",
       "community": 3,
@@ -1963,7 +1993,7 @@
       "label": "deleteRecurringBill()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L938",
+      "source_location": "L942",
       "_origin": "ast",
       "id": "static_app_deleterecurringbill",
       "community": 3,
@@ -1973,7 +2003,7 @@
       "label": "exportData()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L951",
+      "source_location": "L955",
       "_origin": "ast",
       "id": "static_app_exportdata",
       "community": 2,
@@ -1983,7 +2013,7 @@
       "label": "handleCsvFileUpload()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L959",
+      "source_location": "L963",
       "_origin": "ast",
       "id": "static_app_handlecsvfileupload",
       "community": 2,
@@ -1993,7 +2023,7 @@
       "label": "resetDemoData()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L983",
+      "source_location": "L987",
       "_origin": "ast",
       "id": "static_app_resetdemodata",
       "community": 3,
@@ -2003,7 +2033,7 @@
       "label": "renderCategoryDonut()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1000",
+      "source_location": "L1004",
       "_origin": "ast",
       "id": "static_app_rendercategorydonut",
       "community": 9,
@@ -2013,7 +2043,7 @@
       "label": "renderMonthlyHistoryBarChart()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1070",
+      "source_location": "L1074",
       "_origin": "ast",
       "id": "static_app_rendermonthlyhistorybarchart",
       "community": 9,
@@ -2023,7 +2053,7 @@
       "label": "openModal()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1138",
+      "source_location": "L1142",
       "_origin": "ast",
       "id": "static_app_openmodal",
       "community": 14,
@@ -2033,7 +2063,7 @@
       "label": "closeModal()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1143",
+      "source_location": "L1147",
       "_origin": "ast",
       "id": "static_app_closemodal",
       "community": 3,
@@ -2043,7 +2073,7 @@
       "label": "formatCurrency()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1148",
+      "source_location": "L1152",
       "_origin": "ast",
       "id": "static_app_formatcurrency",
       "community": 9,
@@ -2053,7 +2083,7 @@
       "label": "formatDate()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1152",
+      "source_location": "L1156",
       "_origin": "ast",
       "id": "static_app_formatdate",
       "community": 2,
@@ -2063,17 +2093,17 @@
       "label": "escapeHtml()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1161",
+      "source_location": "L1165",
       "_origin": "ast",
       "id": "static_app_escapehtml",
-      "community": 14,
+      "community": 3,
       "norm_label": "escapehtml()"
     },
     {
       "label": "showToast()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1171",
+      "source_location": "L1175",
       "_origin": "ast",
       "id": "static_app_showtoast",
       "community": 3,
@@ -2083,7 +2113,7 @@
       "label": "debounce()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1185",
+      "source_location": "L1189",
       "_origin": "ast",
       "id": "static_app_debounce",
       "community": 2,
@@ -2093,7 +2123,7 @@
       "label": "loadAccountsAndCards()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1197",
+      "source_location": "L1201",
       "_origin": "ast",
       "id": "static_app_loadaccountsandcards",
       "community": 2,
@@ -2103,7 +2133,7 @@
       "label": "handleOfxFileSelected()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1301",
+      "source_location": "L1305",
       "_origin": "ast",
       "id": "static_app_handleofxfileselected",
       "community": 2,
@@ -2113,17 +2143,17 @@
       "label": "startBunkerpayCheckout()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1338",
+      "source_location": "L1342",
       "_origin": "ast",
       "id": "static_app_startbunkerpaycheckout",
-      "community": 14,
+      "community": 3,
       "norm_label": "startbunkerpaycheckout()"
     },
     {
       "label": "checkAuthSession()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1368",
+      "source_location": "L1372",
       "_origin": "ast",
       "id": "static_app_checkauthsession",
       "community": 17,
@@ -2133,7 +2163,7 @@
       "label": "updateUserUI()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1391",
+      "source_location": "L1395",
       "_origin": "ast",
       "id": "static_app_updateuserui",
       "community": 17,
@@ -2143,7 +2173,7 @@
       "label": "handleAuthClick()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1421",
+      "source_location": "L1425",
       "_origin": "ast",
       "id": "static_app_handleauthclick",
       "community": 17,
@@ -2153,7 +2183,7 @@
       "label": "switchGateAuthMode()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1432",
+      "source_location": "L1436",
       "_origin": "ast",
       "id": "static_app_switchgateauthmode",
       "community": 2,
@@ -2163,7 +2193,7 @@
       "label": "handleGateAuthSubmit()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1445",
+      "source_location": "L1449",
       "_origin": "ast",
       "id": "static_app_handlegateauthsubmit",
       "community": 17,
@@ -2173,7 +2203,7 @@
       "label": "logoutUser()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1478",
+      "source_location": "L1482",
       "_origin": "ast",
       "id": "static_app_logoutuser",
       "community": 17,
@@ -2183,7 +2213,7 @@
       "label": "loadAdminDashboard()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1495",
+      "source_location": "L1499",
       "_origin": "ast",
       "id": "static_app_loadadmindashboard",
       "community": 9,
@@ -2193,7 +2223,7 @@
       "label": "adminTogglePlan()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1584",
+      "source_location": "L1588",
       "_origin": "ast",
       "id": "static_app_admintoggleplan",
       "community": 9,
@@ -2203,11 +2233,41 @@
       "label": "adminToggleSetting()",
       "file_type": "code",
       "source_file": "static/app.js",
-      "source_location": "L1606",
+      "source_location": "L1610",
       "_origin": "ast",
       "id": "static_app_admintogglesetting",
       "community": 9,
       "norm_label": "admintogglesetting()"
+    },
+    {
+      "label": "loadWorkspace()",
+      "file_type": "code",
+      "source_file": "static/app.js",
+      "source_location": "L1635",
+      "_origin": "ast",
+      "id": "static_app_loadworkspace",
+      "community": 19,
+      "norm_label": "loadworkspace()"
+    },
+    {
+      "label": "renameWorkspacePrompt()",
+      "file_type": "code",
+      "source_file": "static/app.js",
+      "source_location": "L1740",
+      "_origin": "ast",
+      "id": "static_app_renameworkspaceprompt",
+      "community": 19,
+      "norm_label": "renameworkspaceprompt()"
+    },
+    {
+      "label": "removeWorkspaceMember()",
+      "file_type": "code",
+      "source_file": "static/app.js",
+      "source_location": "L1763",
+      "_origin": "ast",
+      "id": "static_app_removeworkspacemember",
+      "community": 19,
+      "norm_label": "removeworkspacemember()"
     },
     {
       "label": "manifest.json",
@@ -3842,9 +3902,9 @@
       "source_file": "functions/api/budgets.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_budgets",
-      "target": "auth_utils",
-      "confidence_score": 1.0
+      "target": "auth_utils"
     },
     {
       "relation": "imports_from",
@@ -3875,9 +3935,9 @@
       "source_file": "functions/api/goals.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_goals",
-      "target": "auth_utils",
-      "confidence_score": 1.0
+      "target": "auth_utils"
     },
     {
       "relation": "imports_from",
@@ -3886,9 +3946,9 @@
       "source_file": "functions/api/recurring.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_recurring",
-      "target": "auth_utils",
-      "confidence_score": 1.0
+      "target": "auth_utils"
     },
     {
       "relation": "imports_from",
@@ -3897,9 +3957,9 @@
       "source_file": "functions/api/reset-demo.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_reset_demo",
-      "target": "auth_utils",
-      "confidence_score": 1.0
+      "target": "auth_utils"
     },
     {
       "relation": "imports_from",
@@ -3911,6 +3971,17 @@
       "confidence_score": 1.0,
       "source": "api_transactions",
       "target": "auth_utils"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/api/workspace.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "api_workspace",
+      "target": "auth_utils",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -4002,9 +4073,9 @@
       "source_file": "functions/api/budgets/[id].js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "budgets_id",
-      "target": "auth_utils",
-      "confidence_score": 1.0
+      "target": "auth_utils"
     },
     {
       "relation": "imports_from",
@@ -4013,9 +4084,9 @@
       "source_file": "functions/api/export/csv.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "export_csv",
-      "target": "auth_utils",
-      "confidence_score": 1.0
+      "target": "auth_utils"
     },
     {
       "relation": "imports_from",
@@ -4024,9 +4095,9 @@
       "source_file": "functions/api/export/json.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "export_json",
-      "target": "auth_utils",
-      "confidence_score": 1.0
+      "target": "auth_utils"
     },
     {
       "relation": "imports_from",
@@ -4035,9 +4106,9 @@
       "source_file": "functions/api/goals/[id].js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "goals_id",
-      "target": "auth_utils",
-      "confidence_score": 1.0
+      "target": "auth_utils"
     },
     {
       "relation": "imports_from",
@@ -4046,9 +4117,9 @@
       "source_file": "functions/api/import/csv.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "import_csv",
-      "target": "auth_utils",
-      "confidence_score": 1.0
+      "target": "auth_utils"
     },
     {
       "relation": "imports_from",
@@ -4057,9 +4128,9 @@
       "source_file": "functions/api/import/ofx.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "import_ofx",
-      "target": "auth_utils",
-      "confidence_score": 1.0
+      "target": "auth_utils"
     },
     {
       "relation": "imports_from",
@@ -4068,9 +4139,9 @@
       "source_file": "functions/api/recurring/[[path]].js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "recurring_path",
-      "target": "auth_utils",
-      "confidence_score": 1.0
+      "target": "auth_utils"
     },
     {
       "relation": "imports_from",
@@ -4079,9 +4150,31 @@
       "source_file": "functions/api/transactions/[id].js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "transactions_id",
-      "target": "auth_utils",
+      "target": "auth_utils"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/api/workspace.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "api_workspace",
+      "target": "auth_utils_hashpassword",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "functions/api/workspace.js",
+      "source_location": "L178",
+      "weight": 1.0,
+      "source": "api_workspace_onrequestpost",
+      "target": "auth_utils_hashpassword"
     },
     {
       "relation": "imports",
@@ -4189,9 +4282,9 @@
       "source_file": "functions/api/budgets.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_budgets",
-      "target": "auth_utils_authenticaterequest",
-      "confidence_score": 1.0
+      "target": "auth_utils_authenticaterequest"
     },
     {
       "relation": "calls",
@@ -4277,9 +4370,9 @@
       "source_file": "functions/api/goals.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_goals",
-      "target": "auth_utils_authenticaterequest",
-      "confidence_score": 1.0
+      "target": "auth_utils_authenticaterequest"
     },
     {
       "relation": "calls",
@@ -4310,9 +4403,9 @@
       "source_file": "functions/api/recurring.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_recurring",
-      "target": "auth_utils_authenticaterequest",
-      "confidence_score": 1.0
+      "target": "auth_utils_authenticaterequest"
     },
     {
       "relation": "calls",
@@ -4343,9 +4436,9 @@
       "source_file": "functions/api/reset-demo.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_reset_demo",
-      "target": "auth_utils_authenticaterequest",
-      "confidence_score": 1.0
+      "target": "auth_utils_authenticaterequest"
     },
     {
       "relation": "calls",
@@ -4395,6 +4488,39 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "functions/api/workspace.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "api_workspace",
+      "target": "auth_utils_authenticaterequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "functions/api/workspace.js",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "api_workspace_onrequestget",
+      "target": "auth_utils_authenticaterequest"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "functions/api/workspace.js",
+      "source_location": "L81",
+      "weight": 1.0,
+      "source": "api_workspace_onrequestpost",
+      "target": "auth_utils_authenticaterequest"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "functions/api/auth/me.js",
       "source_location": "L1",
       "weight": 1.0,
@@ -4420,9 +4546,9 @@
       "source_file": "functions/api/budgets/[id].js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "budgets_id",
-      "target": "auth_utils_authenticaterequest",
-      "confidence_score": 1.0
+      "target": "auth_utils_authenticaterequest"
     },
     {
       "relation": "calls",
@@ -4442,9 +4568,9 @@
       "source_file": "functions/api/export/csv.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "export_csv",
-      "target": "auth_utils_authenticaterequest",
-      "confidence_score": 1.0
+      "target": "auth_utils_authenticaterequest"
     },
     {
       "relation": "calls",
@@ -4464,9 +4590,9 @@
       "source_file": "functions/api/export/json.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "export_json",
-      "target": "auth_utils_authenticaterequest",
-      "confidence_score": 1.0
+      "target": "auth_utils_authenticaterequest"
     },
     {
       "relation": "calls",
@@ -4486,9 +4612,9 @@
       "source_file": "functions/api/goals/[id].js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "goals_id",
-      "target": "auth_utils_authenticaterequest",
-      "confidence_score": 1.0
+      "target": "auth_utils_authenticaterequest"
     },
     {
       "relation": "calls",
@@ -4519,9 +4645,9 @@
       "source_file": "functions/api/import/csv.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "import_csv",
-      "target": "auth_utils_authenticaterequest",
-      "confidence_score": 1.0
+      "target": "auth_utils_authenticaterequest"
     },
     {
       "relation": "calls",
@@ -4541,9 +4667,9 @@
       "source_file": "functions/api/import/ofx.js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "import_ofx",
-      "target": "auth_utils_authenticaterequest",
-      "confidence_score": 1.0
+      "target": "auth_utils_authenticaterequest"
     },
     {
       "relation": "calls",
@@ -4563,9 +4689,9 @@
       "source_file": "functions/api/recurring/[[path]].js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "recurring_path",
-      "target": "auth_utils_authenticaterequest",
-      "confidence_score": 1.0
+      "target": "auth_utils_authenticaterequest"
     },
     {
       "relation": "calls",
@@ -4585,9 +4711,9 @@
       "source_file": "functions/api/transactions/[id].js",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "transactions_id",
-      "target": "auth_utils_authenticaterequest",
-      "confidence_score": 1.0
+      "target": "auth_utils_authenticaterequest"
     },
     {
       "relation": "calls",
@@ -4657,9 +4783,9 @@
       "source_file": "functions/api/budgets.js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_budgets",
-      "target": "api_budgets_onrequestget",
-      "confidence_score": 1.0
+      "target": "api_budgets_onrequestget"
     },
     {
       "relation": "contains",
@@ -4667,9 +4793,9 @@
       "source_file": "functions/api/budgets.js",
       "source_location": "L32",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_budgets",
-      "target": "api_budgets_onrequestpost",
-      "confidence_score": 1.0
+      "target": "api_budgets_onrequestpost"
     },
     {
       "relation": "contains",
@@ -4677,9 +4803,9 @@
       "source_file": "functions/api/budgets/[id].js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "budgets_id",
-      "target": "budgets_id_onrequestdelete",
-      "confidence_score": 1.0
+      "target": "budgets_id_onrequestdelete"
     },
     {
       "relation": "contains",
@@ -4757,9 +4883,9 @@
       "source_file": "functions/api/export/csv.js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "export_csv",
-      "target": "export_csv_onrequestget",
-      "confidence_score": 1.0
+      "target": "export_csv_onrequestget"
     },
     {
       "relation": "contains",
@@ -4767,9 +4893,9 @@
       "source_file": "functions/api/export/json.js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "export_json",
-      "target": "export_json_onrequestget",
-      "confidence_score": 1.0
+      "target": "export_json_onrequestget"
     },
     {
       "relation": "contains",
@@ -4777,9 +4903,9 @@
       "source_file": "functions/api/goals.js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_goals",
-      "target": "api_goals_onrequestget",
-      "confidence_score": 1.0
+      "target": "api_goals_onrequestget"
     },
     {
       "relation": "contains",
@@ -4787,9 +4913,9 @@
       "source_file": "functions/api/goals.js",
       "source_location": "L31",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_goals",
-      "target": "api_goals_onrequestpost",
-      "confidence_score": 1.0
+      "target": "api_goals_onrequestpost"
     },
     {
       "relation": "contains",
@@ -4797,9 +4923,9 @@
       "source_file": "functions/api/goals/[id].js",
       "source_location": "L40",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "goals_id",
-      "target": "goals_id_onrequestdelete",
-      "confidence_score": 1.0
+      "target": "goals_id_onrequestdelete"
     },
     {
       "relation": "contains",
@@ -4807,9 +4933,9 @@
       "source_file": "functions/api/goals/[id].js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "goals_id",
-      "target": "goals_id_onrequestput",
-      "confidence_score": 1.0
+      "target": "goals_id_onrequestput"
     },
     {
       "relation": "contains",
@@ -4817,9 +4943,9 @@
       "source_file": "functions/api/import/csv.js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "import_csv",
-      "target": "import_csv_onrequestpost",
-      "confidence_score": 1.0
+      "target": "import_csv_onrequestpost"
     },
     {
       "relation": "contains",
@@ -4827,9 +4953,9 @@
       "source_file": "functions/api/import/ofx.js",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "import_ofx",
-      "target": "import_ofx_keyword_rules",
-      "confidence_score": 1.0
+      "target": "import_ofx_keyword_rules"
     },
     {
       "relation": "contains",
@@ -4847,9 +4973,9 @@
       "source_file": "functions/api/recurring.js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_recurring",
-      "target": "api_recurring_onrequestget",
-      "confidence_score": 1.0
+      "target": "api_recurring_onrequestget"
     },
     {
       "relation": "contains",
@@ -4857,9 +4983,9 @@
       "source_file": "functions/api/recurring.js",
       "source_location": "L42",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_recurring",
-      "target": "api_recurring_onrequestpost",
-      "confidence_score": 1.0
+      "target": "api_recurring_onrequestpost"
     },
     {
       "relation": "contains",
@@ -4867,9 +4993,9 @@
       "source_file": "functions/api/recurring/[[path]].js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "recurring_path",
-      "target": "recurring_path_onrequest",
-      "confidence_score": 1.0
+      "target": "recurring_path_onrequest"
     },
     {
       "relation": "contains",
@@ -4877,9 +5003,9 @@
       "source_file": "functions/api/reset-demo.js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_reset_demo",
-      "target": "api_reset_demo_onrequestpost",
-      "confidence_score": 1.0
+      "target": "api_reset_demo_onrequestpost"
     },
     {
       "relation": "contains",
@@ -4907,9 +5033,9 @@
       "source_file": "functions/api/transactions/[id].js",
       "source_location": "L56",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "transactions_id",
-      "target": "transactions_id_onrequestdelete",
-      "confidence_score": 1.0
+      "target": "transactions_id_onrequestdelete"
     },
     {
       "relation": "contains",
@@ -4917,8 +5043,28 @@
       "source_file": "functions/api/transactions/[id].js",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "transactions_id",
-      "target": "transactions_id_onrequestput",
+      "target": "transactions_id_onrequestput"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/api/workspace.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "api_workspace",
+      "target": "api_workspace_onrequestget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "functions/api/workspace.js",
+      "source_location": "L74",
+      "weight": 1.0,
+      "source": "api_workspace",
+      "target": "api_workspace_onrequestpost",
       "confidence_score": 1.0
     },
     {
@@ -5174,9 +5320,9 @@
       "source_file": "static/app.js",
       "source_location": "L1606",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app",
-      "target": "static_app_admintogglesetting",
-      "confidence_score": 1.0
+      "target": "static_app_admintogglesetting"
     },
     {
       "relation": "contains",
@@ -5364,9 +5510,9 @@
       "source_file": "static/app.js",
       "source_location": "L1445",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app",
-      "target": "static_app_handlegateauthsubmit",
-      "confidence_score": 1.0
+      "target": "static_app_handlegateauthsubmit"
     },
     {
       "relation": "contains",
@@ -5532,6 +5678,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "static/app.js",
+      "source_location": "L1635",
+      "weight": 1.0,
+      "source": "static_app",
+      "target": "static_app_loadworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "static/app.js",
       "source_location": "L1515",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -5612,6 +5768,26 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "static/app.js",
+      "source_location": "L1763",
+      "weight": 1.0,
+      "source": "static_app",
+      "target": "static_app_removeworkspacemember",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "static/app.js",
+      "source_location": "L1740",
+      "weight": 1.0,
+      "source": "static_app",
+      "target": "static_app_renameworkspaceprompt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "static/app.js",
       "source_location": "L1016",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -5634,9 +5810,9 @@
       "source_file": "static/app.js",
       "source_location": "L42",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app",
-      "target": "static_app_rendergoalicon",
-      "confidence_score": 1.0
+      "target": "static_app_rendergoalicon"
     },
     {
       "relation": "contains",
@@ -5694,9 +5870,9 @@
       "source_file": "static/app.js",
       "source_location": "L24",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app",
-      "target": "static_app_svg_icons",
-      "confidence_score": 1.0
+      "target": "static_app_svg_icons"
     },
     {
       "relation": "contains",
@@ -5704,9 +5880,9 @@
       "source_file": "static/app.js",
       "source_location": "L1432",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app",
-      "target": "static_app_switchgateauthmode",
-      "confidence_score": 1.0
+      "target": "static_app_switchgateauthmode"
     },
     {
       "relation": "contains",
@@ -5885,9 +6061,9 @@
       "source_file": "static/app.js",
       "source_location": "L1469",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app_handlegateauthsubmit",
-      "target": "static_app_refreshcurrentview",
-      "confidence_score": 1.0
+      "target": "static_app_refreshcurrentview"
     },
     {
       "relation": "calls",
@@ -5984,9 +6160,9 @@
       "source_file": "static/app.js",
       "source_location": "L1468",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app_handlegateauthsubmit",
-      "target": "static_app_loadinitialdata",
-      "confidence_score": 1.0
+      "target": "static_app_loadinitialdata"
     },
     {
       "relation": "calls",
@@ -6009,6 +6185,17 @@
       "confidence_score": 1.0,
       "source": "static_app_loadinitialdata",
       "target": "static_app_loaddashboard"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "static/app.js",
+      "source_location": "L257",
+      "weight": 1.0,
+      "source": "static_app_loadinitialdata",
+      "target": "static_app_loadworkspace",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -6380,9 +6567,9 @@
       "source_file": "static/app.js",
       "source_location": "L1351",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app_startbunkerpaycheckout",
-      "target": "static_app_escapehtml",
-      "confidence_score": 1.0
+      "target": "static_app_escapehtml"
     },
     {
       "relation": "calls",
@@ -6402,9 +6589,9 @@
       "source_file": "static/app.js",
       "source_location": "L1615",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app_admintogglesetting",
-      "target": "static_app_showtoast",
-      "confidence_score": 1.0
+      "target": "static_app_showtoast"
     },
     {
       "relation": "calls",
@@ -6413,9 +6600,9 @@
       "source_file": "static/app.js",
       "source_location": "L1463",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app_handlegateauthsubmit",
-      "target": "static_app_showtoast",
-      "confidence_score": 1.0
+      "target": "static_app_showtoast"
     },
     {
       "relation": "calls",
@@ -6438,6 +6625,28 @@
       "confidence_score": 1.0,
       "source": "static_app_logoutuser",
       "target": "static_app_showtoast"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "static/app.js",
+      "source_location": "L1774",
+      "weight": 1.0,
+      "source": "static_app_removeworkspacemember",
+      "target": "static_app_showtoast",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "static/app.js",
+      "source_location": "L1753",
+      "weight": 1.0,
+      "source": "static_app_renameworkspaceprompt",
+      "target": "static_app_showtoast",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -6468,9 +6677,9 @@
       "source_file": "static/app.js",
       "source_location": "L1465",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app_handlegateauthsubmit",
-      "target": "static_app_updateuserui",
-      "confidence_score": 1.0
+      "target": "static_app_updateuserui"
     },
     {
       "relation": "calls",
@@ -6512,8 +6721,30 @@
       "source_file": "static/app.js",
       "source_location": "L1616",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "static_app_admintogglesetting",
-      "target": "static_app_loadadmindashboard",
+      "target": "static_app_loadadmindashboard"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "static/app.js",
+      "source_location": "L1775",
+      "weight": 1.0,
+      "source": "static_app_removeworkspacemember",
+      "target": "static_app_loadworkspace",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "static/app.js",
+      "source_location": "L1754",
+      "weight": 1.0,
+      "source": "static_app_renameworkspaceprompt",
+      "target": "static_app_loadworkspace",
       "confidence_score": 1.0
     },
     {
@@ -6698,5 +6929,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "aa5c076aca871559d1541d66a2507aee5d2ec11b"
+  "built_at_commit": "7e607583bb0f077fbaddecf2e06a8457b9481677"
 }
