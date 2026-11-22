@@ -1348,17 +1348,22 @@ let authState = {
 async function checkAuthSession() {
   try {
     const res = await fetch('/api/auth/me');
+    const gate = document.getElementById('auth-screen-gate');
     if (res.ok) {
       const data = await res.json();
       if (data.authenticated && data.user) {
         authState.user = data.user;
         updateUserUI(data.user);
+        if (gate) gate.style.display = 'none';
         return;
       }
     }
     updateUserUI(null);
+    if (gate) gate.style.display = 'flex';
   } catch (err) {
     updateUserUI(null);
+    const gate = document.getElementById('auth-screen-gate');
+    if (gate) gate.style.display = 'flex';
   }
 }
 
@@ -1593,10 +1598,58 @@ async function logoutUser() {
     authState.user = null;
     updateUserUI(null);
     showToast('Sessão encerrada com segurança.');
-    refreshCurrentView();
+    const gate = document.getElementById('auth-screen-gate');
+    if (gate) gate.style.display = 'flex';
   } catch (err) {
     showToast('Erro ao sair da conta.', 'error');
   }
 }
 
 
+
+let gateMode = 'login';
+
+function switchGateAuthMode(mode) {
+  gateMode = mode;
+  const isRegister = mode === 'register';
+  document.getElementById('gate-tab-login')?.classList.toggle('active', !isRegister);
+  document.getElementById('gate-tab-register')?.classList.toggle('active', isRegister);
+  
+  const nameGroup = document.getElementById('gate-group-name');
+  const submitBtn = document.getElementById('gate-submit-btn');
+
+  if (nameGroup) nameGroup.style.display = isRegister ? 'block' : 'none';
+  if (submitBtn) submitBtn.textContent = isRegister ? 'Criar Minha Conta' : 'Entrar na Plataforma';
+}
+
+async function handleGateAuthSubmit(e) {
+  e.preventDefault();
+  const email = document.getElementById('gate-email').value.trim();
+  const password = document.getElementById('gate-password').value;
+  const name = document.getElementById('gate-name')?.value.trim();
+
+  const endpoint = gateMode === 'register' ? '/api/auth/register' : '/api/auth/login';
+  const body = gateMode === 'register' ? { name, email, password } : { email, password };
+
+  try {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      showToast(gateMode === 'register' ? 'Conta criada com sucesso!' : 'Login realizado com sucesso!');
+      authState.user = data.user;
+      updateUserUI(data.user);
+      const gate = document.getElementById('auth-screen-gate');
+      if (gate) gate.style.display = 'none';
+      refreshCurrentView();
+    } else {
+      showToast(data.error || 'Erro na autenticação.', 'error');
+    }
+  } catch (err) {
+    showToast('Erro de conexão ao autenticar.', 'error');
+  }
+}

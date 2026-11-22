@@ -11,9 +11,54 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1795321187">
+  <link rel="stylesheet" href="styles.css?v=1795321865">
 </head>
 <body>
+
+  <!-- TELA DEDICADA DE AUTENTICAÇÃO SEGURA (ZERO TRUST AUTH GATE) -->
+  <div id="auth-screen-gate" style="display: none; position: fixed; inset: 0; background: #0b0f17; z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+    <div style="width: 100%; max-width: 440px; background: #151d2e; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 36px 32px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);">
+      <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 28px;">
+        <div style="width: 48px; height: 48px; border-radius: 12px; background: #8b5cf6; display: flex; align-items: center; justify-content: center; color: #fff; margin-bottom: 14px; box-shadow: 0 8px 16px rgba(139, 92, 246, 0.3);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h2 style="font-size: 1.45rem; font-weight: 700; color: #f8fafc; letter-spacing: -0.02em; margin-bottom: 4px;">Finanças SaaS</h2>
+        <p style="font-size: 0.85rem; color: #94a3b8;">Acesse seu ambiente financeiro seguro</p>
+      </div>
+
+      <div style="display: flex; gap: 6px; margin-bottom: 24px; background: #0b0f17; padding: 4px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08);">
+        <button id="gate-tab-login" class="btn-ghost active" style="flex: 1; padding: 9px; font-weight: 600; font-size: 0.85rem; justify-content: center; border-radius: 8px;" onclick="switchGateAuthMode('login')">Entrar</button>
+        <button id="gate-tab-register" class="btn-ghost" style="flex: 1; padding: 9px; font-weight: 600; font-size: 0.85rem; justify-content: center; border-radius: 8px;" onclick="switchGateAuthMode('register')">Criar Conta</button>
+      </div>
+
+      <form id="form-gate-auth" onsubmit="handleGateAuthSubmit(event)">
+        <div class="form-group" id="gate-group-name" style="display: none;">
+          <label class="form-label" style="color: #94a3b8; font-size: 0.8rem; font-weight: 500;">Nome Completo</label>
+          <input type="text" id="gate-name" class="form-input" placeholder="Seu nome completo">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="color: #94a3b8; font-size: 0.8rem; font-weight: 500;">E-mail</label>
+          <input type="email" id="gate-email" class="form-input" placeholder="nome@exemplo.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" style="color: #94a3b8; font-size: 0.8rem; font-weight: 500;">Senha</label>
+          <input type="password" id="gate-password" class="form-input" placeholder="Mínimo 8 caracteres" required minlength="8" autocomplete="current-password">
+        </div>
+
+        <button type="submit" id="gate-submit-btn" class="btn-primary" style="width: 100%; padding: 12px; justify-content: center; font-size: 0.92rem; margin-top: 10px;">
+          Entrar na Plataforma
+        </button>
+
+        <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 20px; font-size: 0.72rem; color: #64748b;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Sessão Segura HttpOnly • Criptografia PBKDF2 Web Crypto
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div class="app-layout">
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
@@ -995,6 +1040,6 @@
       <!-- Toast Notification Container -->
   <div class="toast-container" id="toast-container"></div>
 
-  <script src="app.js?v=1795321187"></script>
+  <script src="app.js?v=1795321865"></script>
 </body>
 </html>
