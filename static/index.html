@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1795321865">
+  <link rel="stylesheet" href="styles.css?v=1795322515">
 </head>
 <body>
 
@@ -28,7 +28,7 @@
 
       <div style="display: flex; gap: 6px; margin-bottom: 24px; background: #0b0f17; padding: 4px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08);">
         <button id="gate-tab-login" class="btn-ghost active" style="flex: 1; padding: 9px; font-weight: 600; font-size: 0.85rem; justify-content: center; border-radius: 8px;" onclick="switchGateAuthMode('login')">Entrar</button>
-        <button id="gate-tab-register" class="btn-ghost" style="flex: 1; padding: 9px; font-weight: 600; font-size: 0.85rem; justify-content: center; border-radius: 8px;" onclick="switchGateAuthMode('register')">Criar Conta</button>
+        <button id="gate-tab-register" class="btn-ghost" style="flex: 1; padding: 9px; font-weight: 600; font-size: 0.85rem; justify-content: center; border-radius: 8px; opacity: 0.45; cursor: not-allowed;" title="Novos cadastros suspensos temporariamente" onclick="showToast('Novos cadastros suspensos pela administração.', 'error')">Criar Conta (Fechado)</button>
       </div>
 
       <form id="form-gate-auth" onsubmit="handleGateAuthSubmit(event)">
@@ -1040,6 +1040,6 @@
       <!-- Toast Notification Container -->
   <div class="toast-container" id="toast-container"></div>
 
-  <script src="app.js?v=1795321865"></script>
+  <script src="app.js?v=1795322515"></script>
 </body>
 </html>
