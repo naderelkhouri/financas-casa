@@ -11,6 +11,20 @@ export async function onRequestPost(context) {
   }
 
   try {
+    // 0. Super Admin Feature Toggle: allow_signup
+    const signupSetting = await env.DB.prepare(
+      "SELECT value FROM system_settings WHERE key = 'allow_signup'"
+    ).first();
+
+    if (signupSetting && signupSetting.value === 'false') {
+      return new Response(JSON.stringify({ 
+        error: "Novos cadastros estão temporariamente suspensos pela administração do sistema." 
+      }), {
+        status: 403,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
     const data = await request.json();
     const name = String(data.name || "").trim();
     const email = String(data.email || "").trim().toLowerCase();

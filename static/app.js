@@ -18,12 +18,10 @@ const state = {
 // Inicialização
 // ==========================================================================
 
-const ZOOM_LEVELS = [0.7, 0.8, 0.9, 1.0, 1.1, 1.25, 1.4, 1.6, 1.8, 2.0];
-let currentZoom = parseFloat(localStorage.getItem('financas_zoom')) || 1.0;
+
 
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
-  initZoom();
   initMonthSelector();
   initEventListeners();
   checkAuthSession();
@@ -41,75 +39,7 @@ function registerServiceWorker() {
   }
 }
 
-function initZoom() {
-  applyZoom(currentZoom);
 
-  document.getElementById('btn-zoom-in')?.addEventListener('click', () => zoomIn());
-  document.getElementById('btn-zoom-out')?.addEventListener('click', () => zoomOut());
-  document.getElementById('btn-zoom-reset')?.addEventListener('click', () => zoomReset());
-
-  // Atalhos de teclado (Ctrl +, Ctrl -, Ctrl 0)
-  window.addEventListener('keydown', (e) => {
-    if (e.ctrlKey || e.metaKey) {
-      if (e.key === '=' || e.key === '+' || e.key === 'Add') {
-        e.preventDefault();
-        zoomIn();
-      } else if (e.key === '-' || e.key === '_' || e.key === 'Subtract') {
-        e.preventDefault();
-        zoomOut();
-      } else if (e.key === '0') {
-        e.preventDefault();
-        zoomReset();
-      }
-    }
-  });
-
-  // Zoom com Ctrl + Roda do Mouse
-  window.addEventListener('wheel', (e) => {
-    if (e.ctrlKey || e.metaKey) {
-      e.preventDefault();
-      if (e.deltaY < 0) {
-        zoomIn();
-      } else if (e.deltaY > 0) {
-        zoomOut();
-      }
-    }
-  }, { passive: false });
-}
-
-function zoomIn() {
-  const next = ZOOM_LEVELS.find(z => z > currentZoom + 0.01);
-  if (next) {
-    applyZoom(next);
-  } else if (currentZoom < 2.5) {
-    applyZoom(Math.min(2.5, currentZoom + 0.1));
-  }
-}
-
-function zoomOut() {
-  const prev = [...ZOOM_LEVELS].reverse().find(z => z < currentZoom - 0.01);
-  if (prev) {
-    applyZoom(prev);
-  } else if (currentZoom > 0.6) {
-    applyZoom(Math.max(0.6, currentZoom - 0.1));
-  }
-}
-
-function zoomReset() {
-  applyZoom(1.0);
-}
-
-function applyZoom(zoom) {
-  currentZoom = Math.round(zoom * 100) / 100;
-  document.documentElement.style.zoom = currentZoom;
-  document.body.style.zoom = currentZoom;
-  localStorage.setItem('financas_zoom', currentZoom);
-  
-  const label = document.getElementById('zoom-level-label');
-  if (label) {
-    label.textContent = `${Math.round(currentZoom * 100)}%`;
-  }
-}
 
 function initTheme() {
   const savedTheme = localStorage.getItem('financas_theme') || 'dark';
@@ -1491,40 +1421,66 @@ async function loadAdminDashboard() {
     if (tbody) {
       if (!data.users || data.users.length === 0) {
         tbody.innerHTML = '<tr><td colspan="7" style="padding: 24px; text-align: center; color: var(--text-muted);">Nenhum usuário cadastrado.</td></tr>';
-        return;
+      } else {
+        tbody.innerHTML = data.users.map(u => `
+          <tr style="border-bottom: 1px solid var(--border-color); font-size: 0.85rem;">
+            <td style="padding: 12px 16px; font-weight: 600;">#${u.id}</td>
+            <td style="padding: 12px 16px;">
+              <strong>${escapeHtml(u.name)}</strong>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">${escapeHtml(u.email)}</div>
+            </td>
+            <td style="padding: 12px 16px;">
+              <span style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; background: ${u.plan.startsWith('pro') ? 'rgba(16, 185, 129, 0.2)' : 'rgba(148, 163, 184, 0.15)'}; color: ${u.plan.startsWith('pro') ? '#10b981' : 'var(--text-muted)'};">
+                ${u.plan.toUpperCase()}
+              </span>
+            </td>
+            <td style="padding: 12px 16px;">
+              <span style="font-weight: 600; color: ${u.role === 'admin' ? 'var(--accent-warning)' : 'inherit'};">
+                ${u.role === 'admin' ? 'Administrador' : 'Usuário'}
+              </span>
+            </td>
+            <td style="padding: 12px 16px;">
+              <span>${u.tx_count || 0} lançamentos</span>
+              <div style="font-size: 0.72rem; color: var(--text-muted);">${u.accounts_count || 0} contas</div>
+            </td>
+            <td style="padding: 12px 16px; color: var(--text-muted); font-size: 0.78rem;">
+              ${formatDate(String(u.created_at || '').slice(0, 10))}
+            </td>
+            <td style="padding: 12px 16px; text-align: right;">
+              <button class="btn-ghost" style="padding: 4px 8px; font-size: 0.75rem;" onclick="adminTogglePlan(${u.id}, '${u.plan}')">
+                ${u.plan.startsWith('pro') ? 'Rebaixar p/ Free' : 'Promover p/ Pro'}
+              </button>
+            </td>
+          </tr>
+        `).join('');
       }
+    }
 
-      tbody.innerHTML = data.users.map(u => `
-        <tr style="border-bottom: 1px solid var(--border-color); font-size: 0.85rem;">
-          <td style="padding: 12px 16px; font-weight: 600;">#${u.id}</td>
-          <td style="padding: 12px 16px;">
-            <strong>${escapeHtml(u.name)}</strong>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">${escapeHtml(u.email)}</div>
-          </td>
-          <td style="padding: 12px 16px;">
-            <span style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; background: ${u.plan.startsWith('pro') ? 'rgba(16, 185, 129, 0.2)' : 'rgba(148, 163, 184, 0.15)'}; color: ${u.plan.startsWith('pro') ? '#10b981' : 'var(--text-muted)'};">
-              ${u.plan.toUpperCase()}
-            </span>
-          </td>
-          <td style="padding: 12px 16px;">
-            <span style="font-weight: 600; color: ${u.role === 'admin' ? 'var(--accent-warning)' : 'inherit'};">
-              ${u.role === 'admin' ? '🛡️ Admin' : 'Usuário'}
-            </span>
-          </td>
-          <td style="padding: 12px 16px;">
-            <span>${u.tx_count || 0} lançamentos</span>
-            <div style="font-size: 0.72rem; color: var(--text-muted);">${u.accounts_count || 0} contas</div>
-          </td>
-          <td style="padding: 12px 16px; color: var(--text-muted); font-size: 0.78rem;">
-            ${formatDate(String(u.created_at || '').slice(0, 10))}
-          </td>
-          <td style="padding: 12px 16px; text-align: right;">
-            <button class="btn-ghost" style="padding: 4px 8px; font-size: 0.75rem;" onclick="adminTogglePlan(${u.id}, '${u.plan}')">
-              ${u.plan.startsWith('pro') ? 'Rebaixar p/ Free' : 'Promover p/ Pro'}
-            </button>
-          </td>
-        </tr>
-      `).join('');
+    // Renderizar Feature Flags (Shift ON / OFF)
+    const flagsContainer = document.getElementById('admin-feature-flags');
+    if (flagsContainer && data.settings) {
+      flagsContainer.innerHTML = data.settings.map(s => {
+        const isEnabled = s.value === 'true';
+        return `
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700; color: var(--accent-primary);">${escapeHtml(s.key)}</span>
+                <span style="font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; font-weight: 700; background: ${isEnabled ? 'var(--accent-success-bg)' : 'var(--accent-danger-bg)'}; color: ${isEnabled ? 'var(--accent-success)' : 'var(--accent-danger)'};">
+                  ${isEnabled ? 'ATIVO (ON)' : 'INATIVO (OFF)'}
+                </span>
+              </div>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0;">${escapeHtml(s.description || '')}</p>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--border-color);">
+              <span style="font-size: 0.72rem; color: var(--text-muted);">Shift Control</span>
+              <button class="${isEnabled ? 'btn-danger-outline' : 'btn-primary'}" style="padding: 4px 12px; font-size: 0.78rem;" onclick="adminToggleSetting('${s.key}', ${!isEnabled})">
+                ${isEnabled ? 'Desativar' : 'Ativar'}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
   } catch (err) {
     showToast('Erro ao carregar dados administrativos.', 'error');
@@ -1550,6 +1506,26 @@ async function adminTogglePlan(userId, currentPlan) {
     }
   } catch (err) {
     showToast('Erro de rede ao atualizar usuário.', 'error');
+  }
+}
+
+// Alternar Feature Flag do Super Admin (Shift ON / OFF)
+async function adminToggleSetting(key, newValue) {
+  try {
+    const res = await fetch('/api/admin/overview', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'toggle_setting', key, value: String(newValue) })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast(data.message || 'Configuração atualizada com sucesso!');
+      loadAdminDashboard();
+    } else {
+      showToast(data.error || 'Erro ao atualizar configuração.', 'error');
+    }
+  } catch (err) {
+    showToast('Erro de conexão ao alterar flag.', 'error');
   }
 }
 

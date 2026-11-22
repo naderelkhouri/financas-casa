@@ -1,11 +1,11 @@
 import { authenticateRequest } from "../auth/_utils.js";
 
-// Endpoint de Métricas Globais e Lista de Usuários do SaaS (Acesso Restrito: role = 'admin')
+// Endpoint de Métricas Globais, Lista de Usuários e Feature Flags do Super Admin (role = 'admin')
 export async function onRequestGet(context) {
   const { env, request } = context;
 
   if (!env.DB) {
-    return new Response(JSON.stringify({ error: "Serviço D1 indisponível" }), {
+    return new Response(JSON.stringify({ error: "Serviço de banco indisponível" }), {
       status: 500,
       headers: { "Content-Type": "application/json" }
     });
@@ -53,6 +53,9 @@ export async function onRequestGet(context) {
       LIMIT 100
     `).all();
 
+    // 4. Feature Flags / Controle Global de Funções (Shift ON/OFF)
+    const settingsRes = await env.DB.prepare("SELECT key, value, description, updated_at FROM system_settings").all();
+
     return new Response(JSON.stringify({
       metrics: {
         total_users: totalUsers,
@@ -62,7 +65,8 @@ export async function onRequestGet(context) {
         total_transactions: totalTransactions,
         total_financial_volume: totalVolume
       },
-      users: usersList.results || []
+      users: usersList.results || [],
+      settings: settingsRes.results || []
     }), {
       headers: { "Content-Type": "application/json" }
     });
@@ -74,12 +78,12 @@ export async function onRequestGet(context) {
   }
 }
 
-// Alteração de Plano ou Role de um Usuário pelo Administrador
+// Alteração de Configurações Globais (Shift ON/OFF) ou Gestão de Usuário
 export async function onRequestPost(context) {
   const { env, request } = context;
 
   if (!env.DB) {
-    return new Response(JSON.stringify({ error: "Serviço D1 indisponível" }), {
+    return new Response(JSON.stringify({ error: "Serviço de banco indisponível" }), {
       status: 500,
       headers: { "Content-Type": "application/json" }
     });
@@ -99,6 +103,26 @@ export async function onRequestPost(context) {
 
   try {
     const data = await request.json();
+
+    // Rota A: Atualização de Feature Flag / Shift ON/OFF
+    if (data.action === "toggle_setting") {
+      const { key, value } = data;
+      if (!key || value === undefined) {
+        return new Response(JSON.stringify({ error: "Chave e valor são obrigatórios" }), { status: 400, headers: { "Content-Type": "application/json" } });
+      }
+
+      await env.DB.prepare(`
+        INSERT INTO system_settings (key, value, updated_at) 
+        VALUES (?, ?, CURRENT_TIMESTAMP)
+        ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = CURRENT_TIMESTAMP
+      `).bind(key, String(value)).run();
+
+      return new Response(JSON.stringify({ success: true, message: `Configuração '${key}' atualizada para ${value}.` }), {
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+
+    // Rota B: Gestão de Usuário (Plan / Role)
     const targetUserId = parseInt(data.user_id);
     const newPlan = data.plan;
     const newRole = data.role;
@@ -114,7 +138,7 @@ export async function onRequestPost(context) {
       await env.DB.prepare("UPDATE users SET role = ? WHERE id = ?").bind(newRole, targetUserId).run();
     }
 
-    return new Response(JSON.stringify({ success: true, message: "Usuário atualizado pelo administrador." }), {
+    return new Response(JSON.stringify({ success: true, message: "Usuário atualizado com sucesso." }), {
       headers: { "Content-Type": "application/json" }
     });
   } catch (err) {

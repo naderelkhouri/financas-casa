@@ -31,40 +31,40 @@
 
       <nav class="sidebar-nav">
         <button class="nav-item active" data-tab="dashboard" id="nav-dashboard">
-          <span class="nav-icon">📊</span>
+          <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>
           <span class="nav-label">Dashboard</span>
         </button>
         <button class="nav-item" data-tab="transactions" id="nav-transactions">
-          <span class="nav-icon">💳</span>
+          <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></span>
           <span class="nav-label">Transações</span>
         </button>
         <button class="nav-item" data-tab="budgets-goals" id="nav-budgets">
-          <span class="nav-icon">🎯</span>
+          <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg></span>
           <span class="nav-label">Orçamentos & Metas</span>
         </button>
         <button class="nav-item" data-tab="recurring" id="nav-recurring">
-          <span class="nav-icon">📅</span>
+          <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
           <span class="nav-label">Contas Fixas</span>
           <span class="badge-counter" id="recurring-badge" style="display:none;">0</span>
         </button>
         <button class="nav-item" data-tab="accounts-cards" id="nav-accounts">
-          <span class="nav-icon">🏦</span>
+          <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m2 7 10-5 10 5v2H2zM4 11v7M8 11v7M12 11v7M16 11v7M20 11v7M2 21h20"/></svg></span>
           <span class="nav-label">Contas & Cartões</span>
         </button>
         <button class="nav-item" data-tab="import-ofx" id="nav-ofx">
-          <span class="nav-icon">📥</span>
+          <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></span>
           <span class="nav-label">Importar OFX</span>
         </button>
         <button class="nav-item" data-tab="bunkerpay-sub" id="nav-bunkerpay">
-          <span class="nav-icon">⚡</span>
+          <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
           <span class="nav-label">Plano Pro (BunkerPay)</span>
         </button>
         <button class="nav-item" data-tab="reports" id="nav-reports">
-          <span class="nav-icon">⚙️</span>
+          <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></span>
           <span class="nav-label">Relatórios & Backup</span>
         </button>
         <button class="nav-item" data-tab="saas-admin" id="nav-saas-admin" style="display: none; border: 1px dashed var(--accent-warning); color: var(--accent-warning);">
-          <span class="nav-icon">🛡️</span>
+          <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
           <span class="nav-label">Painel Admin</span>
         </button>
       </nav>
@@ -88,7 +88,7 @@
         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
           <div class="quick-stats-pill">
             <span class="pill-dot"></span>
-            <span>Cloudflare D1 • Edge</span>
+            <span style="font-size:0.75rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted);">ADMX Enterprise Cloud</span>
           </div>
           <button class="btn-theme-toggle" id="btn-theme-toggle" title="Alternar Tema Claro/Escuro">
             <span class="theme-icon">🌙</span>
@@ -110,15 +110,7 @@
         </div>
 
         <div class="header-actions">
-          <!-- Zoom Controls -->
-          <div class="zoom-controls-wrapper">
-            <button class="btn-zoom" id="btn-zoom-out" title="Diminuir Zoom (Ctrl -)">−</button>
-            <button class="btn-zoom-label" id="btn-zoom-reset" title="Restaurar Zoom 100% (Ctrl 0)">
-              <span class="zoom-icon">🔍</span>
-              <span id="zoom-level-label">100%</span>
-            </button>
-            <button class="btn-zoom" id="btn-zoom-in" title="Aumentar Zoom (Ctrl +)">+</button>
-          </div>
+
 
           <div class="month-selector-wrapper">
             <button class="btn-month-nav" id="btn-prev-month" title="Mês Anterior">◀</button>
@@ -138,7 +130,7 @@
           <div class="metric-card income-card">
             <div class="metric-header">
               <span class="metric-title">Receitas Recebidas</span>
-              <span class="metric-icon-bg">📈</span>
+              <span class="metric-icon-bg"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span>
             </div>
             <div class="metric-value" id="dash-income">R$ 0,00</div>
             <div class="metric-footer text-muted" id="dash-pending-income">Pendente: R$ 0,00</div>
@@ -147,7 +139,7 @@
           <div class="metric-card expense-card">
             <div class="metric-header">
               <span class="metric-title">Despesas Pagas</span>
-              <span class="metric-icon-bg">📉</span>
+              <span class="metric-icon-bg"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg></span>
             </div>
             <div class="metric-value" id="dash-expense">R$ 0,00</div>
             <div class="metric-footer text-muted" id="dash-pending-expense">Pendente: R$ 0,00</div>
@@ -156,7 +148,7 @@
           <div class="metric-card balance-card">
             <div class="metric-header">
               <span class="metric-title">Saldo Líquido</span>
-              <span class="metric-icon-bg">💵</span>
+              <span class="metric-icon-bg"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8M12 6v2M12 16v2"/></svg></span>
             </div>
             <div class="metric-value" id="dash-balance">R$ 0,00</div>
             <div class="metric-footer" id="dash-savings-rate">Taxa de Poupança: 0%</div>
@@ -165,7 +157,7 @@
           <div class="metric-card alerts-card">
             <div class="metric-header">
               <span class="metric-title">Status Orçamentário</span>
-              <span class="metric-icon-bg">⚠️</span>
+              <span class="metric-icon-bg"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
             </div>
             <div class="metric-value" id="dash-budget-status">Em dia</div>
             <div class="metric-footer text-muted" id="dash-budget-details">0 limites excedidos</div>
@@ -268,7 +260,7 @@
               </select>
 
               <button class="btn-secondary" id="btn-export-csv-direct" title="Exportar CSV do mês">
-                📥 Exportar CSV
+                Exportar CSV
               </button>
             </div>
           </div>
@@ -386,7 +378,7 @@
             <div class="card-body">
               <div class="action-tiles-grid">
                 <div class="action-tile">
-                  <div class="tile-icon">📄</div>
+                  <div class="tile-icon"></div>
                   <div class="tile-info">
                     <h4>Exportar Extrato (CSV)</h4>
                     <p>Compatível com Excel, LibreOffice Calc e Google Sheets.</p>
@@ -435,7 +427,7 @@
               <div class="danger-zone-box mt-4">
                 <h4>Gerenciamento da Base</h4>
                 <p>Restaurar a base com dados de demonstração ou limpar registros.</p>
-                <button class="btn-danger-outline" onclick="resetDemoData()">🔄 Restaurar Dados de Demonstração</button>
+                <button class="btn-danger-outline" onclick="resetDemoData()">Restaurar Dados de Demonstração</button>
               </div>
             </div>
           </div>
@@ -456,10 +448,10 @@
         <div class="modal-body">
           <div class="tx-type-toggle-group">
             <label class="type-btn active" id="type-btn-expense">
-              <input type="radio" name="tx-type" value="expense" checked> 📉 Despesa
+              <input type="radio" name="tx-type" value="expense" checked> Despesa
             </label>
             <label class="type-btn" id="type-btn-income">
-              <input type="radio" name="tx-type" value="income"> 📈 Receita
+              <input type="radio" name="tx-type" value="income"> Receita
             </label>
           </div>
 
@@ -707,7 +699,7 @@
       <section class="tab-content" id="tab-saas-admin" style="display:none;">
         <div class="content-header-row">
           <div>
-            <h2>🛡️ Painel Administrativo do SaaS</h2>
+            <h2>Painel Administrativo do SaaS</h2>
             <p>Métricas globais, receita recorrente (MRR), usuários cadastrados e controle de planos</p>
           </div>
           <button class="btn-secondary" onclick="loadAdminDashboard()">↻ Atualizar Métricas</button>
@@ -740,10 +732,27 @@
           </div>
         </div>
 
+        
+        <!-- CONTROLE GLOBAL DE RECURSOS (SUPER ADMIN FEATURE FLAGS / SHIFT ON-OFF) -->
+        <div class="card mt-4">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h3>Controles Globais do Sistema (Feature Toggles)</h3>
+              <span class="card-subtitle">Habilite ou suspenda funcionalidades do SaaS em tempo real sem deploy</span>
+            </div>
+            <button class="btn-ghost" onclick="loadAdminOverview()" title="Recarregar Estados">Atualizar</button>
+          </div>
+          <div class="card-body">
+            <div id="admin-feature-flags" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+              <div class="loading-state">Carregando flags do sistema...</div>
+            </div>
+          </div>
+        </div>
+
         <!-- Tabela de Gestão de Usuários -->
         <div class="card mt-4">
           <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-            <h3>Usuários da Base (Cloudflare D1)</h3>
+            <h3>Gestão de Usuários e Acessos</h3>
           </div>
           <div class="card-body" style="overflow-x: auto; padding: 0;">
             <table class="data-table" style="width: 100%; border-collapse: collapse;">
@@ -777,7 +786,7 @@
 
         <div class="card mt-4" style="max-width: 700px; margin: 24px auto;">
           <div class="card-body text-center" style="padding: 40px 24px;">
-            <div style="font-size: 3rem; margin-bottom: 16px;">📄</div>
+            <div style="font-size: 3rem; margin-bottom: 16px;"></div>
             <h3>Selecione seu arquivo .OFX</h3>
             <p style="color: var(--text-muted); margin-bottom: 24px;">Exporte o extrato no app do seu banco ou internet banking e faça upload aqui.</p>
             <input type="file" id="ofx-file-input" accept=".ofx" style="display: none;" onchange="handleOfxFileSelected(event)">
@@ -937,13 +946,13 @@
               <div class="form-group mt-3">
                 <label class="form-label">Senha *</label>
                 <input type="password" id="auth-password" class="form-input" placeholder="Mínimo 8 caracteres" required minlength="8" autocomplete="current-password">
-                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">Criptografia PBKDF2 com Salt de 16 bytes na borda da Cloudflare.</div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">Proteção avançada de ponta a ponta com criptografia segura.</div>
               </div>
             </div>
 
             <div class="modal-footer" style="flex-direction: column; gap: 8px;">
               <button type="submit" id="auth-submit-btn" class="btn-primary" style="width: 100%; padding: 12px;">Entrar com Segurança</button>
-              <div style="font-size: 0.75rem; color: var(--text-muted); text-align: center;">Protegido por Sessões Seguras HttpOnly & D1</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted); text-align: center;">Ambiente Criptografado & Sessões Seguras</div>
             </div>
           </form>
         </div>
