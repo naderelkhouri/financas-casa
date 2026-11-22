@@ -1,11 +1,11 @@
 {
-  "name": "Finanças de Casa — SaaS Pessoal",
-  "short_name": "Finanças Casa",
+  "name": "Finanças SaaS — Enterprise Edition",
+  "short_name": "Finanças SaaS",
   "description": "Controle financeiro pessoal inteligente, contas, cartões e extratos bancários com privacidade patrimonial e BunkerPay.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#10b981",
+  "background_color": "#0b0f17",
+  "theme_color": "#2563eb",
   "orientation": "portrait",
   "icons": [
     {

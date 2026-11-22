@@ -3,57 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Finanças de Casa | Gestão Financeira Pessoal SaaS</title>
-  <meta name="description" content="Aplicativo completo e moderno para controle de finanças pessoais, contas, cartões e extratos bancários com privacidade patrimonial e BunkerPay.">
+  <title>Finanças SaaS | Gestão Financeira Pessoal Enterprise</title>
+  <meta name="description" content="Aplicativo moderno para controle de finanças pessoais, contas, cartões e extratos bancários com privacidade patrimonial e BunkerPay.">
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#10b981">
+  <meta name="theme-color" content="#2563eb">
   <link rel="apple-touch-icon" href="/icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=1795322515">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=1795365000">
 </head>
 <body>
 
   <!-- TELA DEDICADA DE AUTENTICAÇÃO SEGURA (ZERO TRUST AUTH GATE) -->
-  <div id="auth-screen-gate" style="display: none; position: fixed; inset: 0; background: #0b0f17; z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
-    <div style="width: 100%; max-width: 440px; background: #151d2e; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 36px 32px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);">
-      <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 28px;">
-        <div style="width: 48px; height: 48px; border-radius: 12px; background: #8b5cf6; display: flex; align-items: center; justify-content: center; color: #fff; margin-bottom: 14px; box-shadow: 0 8px 16px rgba(139, 92, 246, 0.3);">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+  <div id="auth-screen-gate" style="display: none; position: fixed; inset: 0; background: var(--bg-primary); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+    <div style="width: 100%; max-width: 440px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 32px; box-shadow: 0 24px 48px rgba(0, 0, 0, 0.55);">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
+        <div class="brand-icon" style="width: 42px; height: 42px; border-radius: 10px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
         </div>
-        <h2 style="font-size: 1.45rem; font-weight: 700; color: #f8fafc; letter-spacing: -0.02em; margin-bottom: 4px;">Finanças SaaS</h2>
-        <p style="font-size: 0.85rem; color: #94a3b8;">Acesse seu ambiente financeiro seguro</p>
+        <div>
+          <div style="font-size: 1.35rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em;">Finanças SaaS</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Acesse seu ambiente financeiro seguro</p>
+        </div>
       </div>
 
-      <div style="display: flex; gap: 6px; margin-bottom: 24px; background: #0b0f17; padding: 4px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08);">
-        <button id="gate-tab-login" class="btn-ghost active" style="flex: 1; padding: 9px; font-weight: 600; font-size: 0.85rem; justify-content: center; border-radius: 8px;" onclick="switchGateAuthMode('login')">Entrar</button>
-        <button id="gate-tab-register" class="btn-ghost" style="flex: 1; padding: 9px; font-weight: 600; font-size: 0.85rem; justify-content: center; border-radius: 8px; opacity: 0.45; cursor: not-allowed;" title="Novos cadastros suspensos temporariamente" onclick="showToast('Novos cadastros suspensos pela administração.', 'error')">Criar Conta (Fechado)</button>
+      <div style="display: flex; gap: 6px; margin-bottom: 24px; background: var(--bg-input); padding: 4px; border-radius: 10px; border: 1px solid var(--border-color);">
+        <button type="button" id="gate-tab-login" class="btn-ghost active" style="flex: 1; padding: 9px; font-weight: 600; font-size: 0.85rem; justify-content: center; border-radius: 8px;" onclick="switchGateAuthMode('login')">Entrar</button>
+        <button type="button" id="gate-tab-register" class="btn-ghost" style="flex: 1; padding: 9px; font-weight: 600; font-size: 0.85rem; justify-content: center; border-radius: 8px; color: var(--text-muted); cursor: not-allowed;" title="Novos cadastros suspensos temporariamente" onclick="showToast('Novos cadastros suspensos pela administração.', 'error')">Criar Conta (Fechado)</button>
       </div>
 
       <form id="form-gate-auth" onsubmit="handleGateAuthSubmit(event)">
         <div class="form-group" id="gate-group-name" style="display: none;">
-          <label class="form-label" style="color: #94a3b8; font-size: 0.8rem; font-weight: 500;">Nome Completo</label>
+          <label class="form-label" for="gate-name">Nome Completo</label>
           <input type="text" id="gate-name" class="form-input" placeholder="Seu nome completo">
         </div>
 
         <div class="form-group">
-          <label class="form-label" style="color: #94a3b8; font-size: 0.8rem; font-weight: 500;">E-mail</label>
+          <label class="form-label" for="gate-email">E-mail</label>
           <input type="email" id="gate-email" class="form-input" placeholder="nome@exemplo.com" required autocomplete="email">
         </div>
 
         <div class="form-group">
-          <label class="form-label" style="color: #94a3b8; font-size: 0.8rem; font-weight: 500;">Senha</label>
+          <label class="form-label" for="gate-password">Senha</label>
           <input type="password" id="gate-password" class="form-input" placeholder="Mínimo 8 caracteres" required minlength="8" autocomplete="current-password">
         </div>
 
-        <button type="submit" id="gate-submit-btn" class="btn-primary" style="width: 100%; padding: 12px; justify-content: center; font-size: 0.92rem; margin-top: 10px;">
+        <button type="submit" id="gate-submit-btn" class="btn-primary" style="width: 100%; padding: 12px; justify-content: center; font-size: 0.92rem; margin-top: 8px;">
           Entrar na Plataforma
         </button>
 
-        <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 20px; font-size: 0.72rem; color: #64748b;">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Sessão Segura HttpOnly • Criptografia PBKDF2 Web Crypto
+        <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 20px; font-size: 0.78rem; color: var(--text-muted);">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>Sessão Segura HttpOnly • Criptografia PBKDF2 Web Crypto</span>
         </div>
       </form>
     </div>
@@ -61,83 +63,83 @@
 
   <div class="app-layout">
     <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar" aria-label="Menu Lateral">
       <div class="sidebar-brand">
-        <div class="brand-icon" style="background: #8b5cf6; border: none; border-radius: 8px; width: 36px; height: 36px;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <rect width="18" height="18" x="3" y="3" rx="2"/>
             <path d="m9 12 2 2 4-4"/>
           </svg>
         </div>
         <div class="brand-text">
-          <h2 style="font-size: 1.05rem; font-weight: 700; color: #f8fafc;">Finanças SaaS</h2>
-          <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 500;">Enterprise Edition</span>
+          <strong class="brand-title">Finanças SaaS</strong>
+          <span>Enterprise Edition</span>
         </div>
       </div>
 
-      <nav class="sidebar-nav">
-        <button class="nav-item active" data-tab="dashboard" id="nav-dashboard">
+      <nav class="sidebar-nav" aria-label="Navegação Principal">
+        <button type="button" class="nav-item active" data-tab="dashboard" id="nav-dashboard">
           <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>
           <span class="nav-label">Dashboard</span>
         </button>
-        <button class="nav-item" data-tab="transactions" id="nav-transactions">
+        <button type="button" class="nav-item" data-tab="transactions" id="nav-transactions">
           <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></span>
           <span class="nav-label">Transações</span>
         </button>
-        <button class="nav-item" data-tab="budgets-goals" id="nav-budgets">
+        <button type="button" class="nav-item" data-tab="budgets-goals" id="nav-budgets">
           <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg></span>
-          <span class="nav-label">Orçamentos & Metas</span>
+          <span class="nav-label">Orçamentos &amp; Metas</span>
         </button>
-        <button class="nav-item" data-tab="recurring" id="nav-recurring">
+        <button type="button" class="nav-item" data-tab="recurring" id="nav-recurring">
           <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>
           <span class="nav-label">Contas Fixas</span>
           <span class="badge-counter" id="recurring-badge" style="display:none;">0</span>
         </button>
-        <button class="nav-item" data-tab="accounts-cards" id="nav-accounts">
+        <button type="button" class="nav-item" data-tab="accounts-cards" id="nav-accounts">
           <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m2 7 10-5 10 5v2H2zM4 11v7M8 11v7M12 11v7M16 11v7M20 11v7M2 21h20"/></svg></span>
-          <span class="nav-label">Contas & Cartões</span>
+          <span class="nav-label">Contas &amp; Cartões</span>
         </button>
-        <button class="nav-item" data-tab="import-ofx" id="nav-ofx">
+        <button type="button" class="nav-item" data-tab="import-ofx" id="nav-ofx">
           <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></span>
           <span class="nav-label">Importar OFX</span>
         </button>
-        <button class="nav-item" data-tab="bunkerpay-sub" id="nav-bunkerpay">
+        <button type="button" class="nav-item" data-tab="bunkerpay-sub" id="nav-bunkerpay">
           <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
           <span class="nav-label">Plano Pro (BunkerPay)</span>
         </button>
-        <button class="nav-item" data-tab="reports" id="nav-reports">
+        <button type="button" class="nav-item" data-tab="reports" id="nav-reports">
           <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></span>
-          <span class="nav-label">Relatórios & Backup</span>
+          <span class="nav-label">Relatórios &amp; Backup</span>
         </button>
-        <button class="nav-item" data-tab="saas-admin" id="nav-saas-admin" style="display: none; border: 1px dashed var(--accent-warning); color: var(--accent-warning);">
+        <button type="button" class="nav-item" data-tab="saas-admin" id="nav-saas-admin" style="display: none; border: 1px dashed var(--accent-warning); color: var(--accent-warning);">
           <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
           <span class="nav-label">Painel Admin</span>
         </button>
       </nav>
 
       <div class="sidebar-footer">
-        <div class="user-profile-badge" id="user-badge" style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 14px; padding: 10px 12px; background: rgba(255, 255, 255, 0.03); border-radius: 10px; border: 1px solid var(--border-color); transition: background var(--transition-fast);">
-          <div style="display: flex; align-items: center; gap: 8px; overflow: hidden;">
-            <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--accent-primary); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: #fff;" id="user-avatar">
+        <div class="user-profile-badge" id="user-badge">
+          <div style="display: flex; align-items: center; gap: 10px; overflow: hidden;">
+            <div style="width: 30px; height: 30px; border-radius: 50%; background: var(--accent-primary); display: flex; align-items: center; justify-content: center; font-size: 0.82rem; font-weight: 700; color: #ffffff; flex-shrink: 0;" id="user-avatar">
               U
             </div>
-            <div style="line-height: 1.2; overflow: hidden;">
-              <div id="user-display-name" style="font-size: 0.82rem; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">Visitante</div>
-              <div id="user-display-plan" style="font-size: 0.7rem; color: var(--accent-primary); text-transform: uppercase; font-weight: 700;">Free</div>
+            <div style="line-height: 1.25; overflow: hidden;">
+              <div id="user-display-name" style="font-size: 0.85rem; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">Visitante</div>
+              <div id="user-display-plan" style="font-size: 0.78rem; color: var(--accent-text); text-transform: uppercase; font-weight: 700;">Free</div>
             </div>
           </div>
-          <button id="btn-auth-action" onclick="handleAuthClick()" style="background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 0.85rem;" title="Entrar / Sair">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5L11 9l-1.5-1.5L8 9l-1.5-1.5-4 4a5 5 0 1 0 7 7l4-4 1.5 1.5L16 14.5l1.5-1.5 1.5 1.5 2-2z"/></svg>
+          <button type="button" id="btn-auth-action" onclick="handleAuthClick()" class="btn-action-icon" title="Entrar / Sair" aria-label="Alternar Sessão">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
           </button>
         </div>
 
         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
           <div class="quick-stats-pill">
             <span class="pill-dot"></span>
-            <span style="font-size:0.75rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted);">ADMX Enterprise Cloud</span>
+            <span>ADMX Enterprise Cloud</span>
           </div>
-          <button class="btn-theme-toggle" id="btn-theme-toggle" title="Alternar Tema Claro/Escuro">
-            <span class="theme-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></span>
+          <button type="button" class="btn-theme-toggle" id="btn-theme-toggle" title="Alternar Tema Claro/Escuro" aria-label="Alternar Tema">
+            <span class="theme-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></span>
           </button>
         </div>
       </div>
@@ -148,7 +150,9 @@
       <!-- Top Header Bar -->
       <header class="top-header">
         <div class="header-title-wrapper">
-          <button class="mobile-toggle" id="mobile-menu-btn">☰</button>
+          <button type="button" class="mobile-toggle" id="mobile-menu-btn" aria-label="Abrir Menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
+          </button>
           <div>
             <h1 class="page-title" id="page-title">Dashboard Financeiro</h1>
             <p class="page-subtitle" id="page-subtitle">Visão consolidada do fluxo de caixa e despesas</p>
@@ -156,14 +160,12 @@
         </div>
 
         <div class="header-actions">
-
-
           <div class="month-selector-wrapper">
-            <button class="btn-month-nav" id="btn-prev-month" title="Mês Anterior">◀</button>
-            <input type="month" id="selected-month" class="input-month-picker">
-            <button class="btn-month-nav" id="btn-next-month" title="Próximo Mês">▶</button>
+            <button type="button" class="btn-month-nav" id="btn-prev-month" title="Mês Anterior" aria-label="Mês Anterior">◀</button>
+            <input type="month" id="selected-month" class="input-month-picker" aria-label="Selecionar Mês">
+            <button type="button" class="btn-month-nav" id="btn-next-month" title="Próximo Mês" aria-label="Próximo Mês">▶</button>
           </div>
-          <button class="btn-primary" id="btn-open-tx-modal">
+          <button type="button" class="btn-primary" id="btn-open-tx-modal">
             <span class="btn-icon">+</span> Nova Transação
           </button>
         </div>
@@ -171,35 +173,35 @@
 
       <!-- TAB 1: DASHBOARD -->
       <section class="tab-pane active" id="pane-dashboard">
-        
-        <!-- GUIA DE CONFIGURACAO DA CONTA (ONBOARDING PADRAO WACRM) -->
-        <div class="card mb-4" id="onboarding-guide-card" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(15, 23, 42, 0.6) 100%); border-color: rgba(139, 92, 246, 0.25);">
+        <!-- Guia de Inicialização -->
+        <div class="card mb-4" id="onboarding-guide-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(139, 92, 246, 0.2); display: flex; align-items: center; justify-content: center; color: #a78bfa;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div class="metric-icon-bg" style="color: var(--accent-text);">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </div>
               <div>
-                <div style="font-size: 0.95rem; font-weight: 700; color: #f8fafc;">Guia de Inicialização do SaaS <span style="font-size: 0.75rem; background: rgba(139, 92, 246, 0.2); color: #c4b5fd; padding: 2px 8px; border-radius: 20px; font-weight: 600; margin-left: 6px;">Passos Essenciais</span></div>
-                <div style="font-size: 0.8rem; color: #94a3b8;">Configure suas contas, orçamentos e importe seu extrato para atingir a máxima eficácia patrimonial.</div>
+                <h2 style="font-size: 0.98rem; font-weight: 700; color: var(--text-primary); display: inline;">Guia de Inicialização do SaaS</h2>
+                <span class="badge" style="background: var(--accent-primary-soft); color: var(--accent-text); margin-left: 8px;">Passos Essenciais</span>
+                <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">Configure suas contas, orçamentos e importe seu extrato para atingir a máxima eficácia patrimonial.</p>
               </div>
             </div>
-            <button class="btn-close-modal" onclick="document.getElementById('onboarding-guide-card').style.display='none'" style="color: #64748b; background: none; border: none; cursor: pointer; font-size: 1.1rem;">✕</button>
+            <button type="button" class="btn-close-modal" onclick="document.getElementById('onboarding-guide-card').style.display='none'" aria-label="Fechar Guia">✕</button>
           </div>
-          
-          <div style="width: 100%; height: 5px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; margin: 10px 0 16px;">
-            <div style="width: 65%; height: 100%; background: linear-gradient(90deg, #8b5cf6, #10b981); border-radius: 4px;"></div>
+
+          <div class="progress-bar-bg" style="margin: 12px 0 16px;">
+            <div class="progress-bar-fill progress-fill-success" style="width: 65%;"></div>
           </div>
 
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
-            <button class="btn-ghost" style="justify-content: flex-start; padding: 10px 14px; background: var(--bg-card); font-size: 0.82rem;" onclick="switchTab('accounts-cards')">
-              <span style="color: #10b981; font-weight: 700; margin-right: 6px;">✓</span> 1. Cadastrar Contas & Cartões
+            <button type="button" class="btn-secondary" style="text-align: left;" onclick="switchTab('accounts-cards')">
+              1. Cadastrar Contas &amp; Cartões
             </button>
-            <button class="btn-ghost" style="justify-content: flex-start; padding: 10px 14px; background: var(--bg-card); font-size: 0.82rem;" onclick="switchTab('budgets-goals')">
-              <span style="color: #10b981; font-weight: 700; margin-right: 6px;">✓</span> 2. Definir Tetos de Gastos
+            <button type="button" class="btn-secondary" style="text-align: left;" onclick="switchTab('budgets-goals')">
+              2. Definir Tetos de Gastos
             </button>
-            <button class="btn-ghost" style="justify-content: flex-start; padding: 10px 14px; background: var(--bg-card); font-size: 0.82rem;" onclick="switchTab('import-ofx')">
-              <span style="color: #a78bfa; font-weight: 700; margin-right: 6px;">→</span> 3. Importar Extrato Bancário
+            <button type="button" class="btn-secondary" style="text-align: left;" onclick="switchTab('import-ofx')">
+              3. Importar Extrato Bancário
             </button>
           </div>
         </div>
@@ -245,73 +247,59 @@
 
         <!-- Charts Grid -->
         <div class="dashboard-grid">
-          <!-- Expenses by Category Chart -->
           <div class="card chart-card">
             <div class="card-header">
               <div class="card-header-title">
-                <h3>Despesas por Categoria</h3>
+                <h2>Despesas por Categoria</h2>
                 <span class="card-subtitle">Distribuição percentual dos gastos</span>
               </div>
             </div>
             <div class="card-body">
               <div class="donut-chart-container">
-                <div class="svg-chart-wrapper" id="category-donut-container">
-                  <!-- SVG Injetado dinamicamente -->
-                </div>
-                <div class="category-legend" id="category-legend">
-                  <!-- Legenda Injetada dinamicamente -->
-                </div>
+                <div class="svg-chart-wrapper" id="category-donut-container"></div>
+                <div class="category-legend" id="category-legend"></div>
               </div>
             </div>
           </div>
 
-          <!-- Monthly Evolution Bar Chart -->
           <div class="card chart-card">
             <div class="card-header">
               <div class="card-header-title">
-                <h3>Histórico dos Últimos 6 Meses</h3>
+                <h2>Histórico dos Últimos 6 Meses</h2>
                 <span class="card-subtitle">Comparativo de Receitas vs Despesas</span>
               </div>
             </div>
             <div class="card-body">
-              <div class="bar-chart-wrapper" id="history-barchart-container">
-                <!-- SVG Injetado dinamicamente -->
-              </div>
+              <div class="bar-chart-wrapper" id="history-barchart-container"></div>
             </div>
           </div>
         </div>
 
         <!-- Secondary Overview Grid -->
         <div class="dashboard-bottom-grid">
-          <!-- Budget Progress Mini List -->
           <div class="card">
             <div class="card-header">
               <div class="card-header-title">
-                <h3>Orçamentos do Mês</h3>
+                <h2>Orçamentos do Mês</h2>
                 <span class="card-subtitle">Acompanhamento dos limites definidos</span>
               </div>
-              <button class="btn-ghost" onclick="switchTab('budgets-goals')">Ver Todos</button>
+              <button type="button" class="btn-ghost" onclick="switchTab('budgets-goals')">Ver Todos</button>
             </div>
             <div class="card-body">
-              <div class="budgets-mini-list" id="dash-budgets-list">
-                <!-- Lista de orçamentos -->
-              </div>
+              <div class="budgets-mini-list" id="dash-budgets-list"></div>
             </div>
           </div>
 
-          <!-- Recent Transactions Mini List -->
           <div class="card">
             <div class="card-header">
               <div class="card-header-title">
-                <h3>Últimas Movimentações</h3>
+                <h2>Últimas Movimentações</h2>
                 <span class="card-subtitle">Transações recentes do período</span>
               </div>
-              <button class="btn-ghost" onclick="switchTab('transactions')">Ver Extrato</button>
+              <button type="button" class="btn-ghost" onclick="switchTab('transactions')">Ver Extrato</button>
             </div>
             <div class="card-body">
-              <div class="recent-tx-list" id="dash-recent-tx">
-                <!-- Lista de transações recentes -->
-              </div>
+              <div class="recent-tx-list" id="dash-recent-tx"></div>
             </div>
           </div>
         </div>
@@ -322,23 +310,22 @@
         <div class="card">
           <div class="card-header filter-bar">
             <div class="search-box">
-              <span class="search-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
-              <input type="text" id="tx-search-input" placeholder="Buscar por descrição, tag ou observação..." class="form-input search-input">
+              <span class="search-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+              <input type="text" id="tx-search-input" placeholder="Buscar por descrição, tag ou observação..." class="form-input search-input" aria-label="Buscar Transações">
             </div>
 
             <div class="filter-controls">
-              <select id="tx-filter-type" class="form-select">
+              <select id="tx-filter-type" class="form-select" aria-label="Filtrar por Tipo">
                 <option value="">Todos os Tipos</option>
                 <option value="expense">Apenas Despesas</option>
                 <option value="income">Apenas Receitas</option>
               </select>
 
-              <select id="tx-filter-category" class="form-select">
+              <select id="tx-filter-category" class="form-select" aria-label="Filtrar por Categoria">
                 <option value="">Todas as Categorias</option>
-                <!-- Categorias dinâmicas -->
               </select>
 
-              <button class="btn-secondary" id="btn-export-csv-direct" title="Exportar CSV do mês">
+              <button type="button" class="btn-secondary" id="btn-export-csv-direct" title="Exportar CSV do mês">
                 Exportar CSV
               </button>
             </div>
@@ -358,16 +345,14 @@
                     <th class="text-center">Ações</th>
                   </tr>
                 </thead>
-                <tbody id="transactions-tbody">
-                  <!-- Linhas da tabela de transações -->
-                </tbody>
+                <tbody id="transactions-tbody"></tbody>
               </table>
             </div>
             <div class="empty-state" id="tx-empty-state" style="display: none;">
-              <div class="empty-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></div>
-              <h4>Nenhuma transação encontrada</h4>
-              <p>Registre suas receitas e despesas para acompanhar seu dinheiro.</p>
-              <button class="btn-primary" onclick="openTransactionModal()">Adicionar Transação</button>
+              <div class="empty-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></div>
+              <h2>Nenhuma transação encontrada</h2>
+              <p>Registre suas receitas e despesas para acompanhar seu fluxo financeiro.</p>
+              <button type="button" class="btn-primary" onclick="openTransactionModal()">Adicionar Transação</button>
             </div>
           </div>
         </div>
@@ -376,35 +361,29 @@
       <!-- TAB 3: BUDGETS & GOALS -->
       <section class="tab-pane" id="pane-budgets-goals">
         <div class="grid-2-col">
-          <!-- Coluna 1: Orçamentos -->
           <div class="card">
             <div class="card-header">
               <div class="card-header-title">
-                <h3>Orçamentos Mensais por Categoria</h3>
+                <h2>Orçamentos Mensais por Categoria</h2>
                 <span class="card-subtitle">Defina um teto máximo de gastos por categoria</span>
               </div>
-              <button class="btn-secondary" id="btn-open-budget-modal">+ Novo Teto</button>
+              <button type="button" class="btn-secondary" id="btn-open-budget-modal">+ Novo Teto</button>
             </div>
             <div class="card-body">
-              <div class="budgets-full-list" id="budgets-full-list">
-                <!-- Lista de orçamentos -->
-              </div>
+              <div class="budgets-full-list" id="budgets-full-list"></div>
             </div>
           </div>
 
-          <!-- Coluna 2: Metas de Economia -->
           <div class="card">
             <div class="card-header">
               <div class="card-header-title">
-                <h3>Metas de Economia & Sonhos</h3>
-                <span class="card-subtitle">Acompanhe a evolução das suas economias</span>
+                <h2>Metas de Economia &amp; Patrimônio</h2>
+                <span class="card-subtitle">Acompanhe a evolução das suas reservas</span>
               </div>
-              <button class="btn-secondary" id="btn-open-goal-modal">+ Nova Meta</button>
+              <button type="button" class="btn-secondary" id="btn-open-goal-modal">+ Nova Meta</button>
             </div>
             <div class="card-body">
-              <div class="goals-grid" id="goals-list">
-                <!-- Lista de metas -->
-              </div>
+              <div class="goals-grid" id="goals-list"></div>
             </div>
           </div>
         </div>
@@ -415,10 +394,10 @@
         <div class="card">
           <div class="card-header">
             <div class="card-header-title">
-              <h3>Contas Fixas & Despesas Recorrentes</h3>
+              <h2>Contas Fixas &amp; Despesas Recorrentes</h2>
               <span class="card-subtitle">Controle pagamentos mensais (Aluguel, Luz, Internet, Assinaturas)</span>
             </div>
-            <button class="btn-primary" id="btn-open-recurring-modal">+ Nova Conta Fixa</button>
+            <button type="button" class="btn-primary" id="btn-open-recurring-modal">+ Nova Conta Fixa</button>
           </div>
           <div class="card-body no-padding">
             <div class="table-responsive">
@@ -434,80 +413,247 @@
                     <th class="text-center">Ações</th>
                   </tr>
                 </thead>
-                <tbody id="recurring-tbody">
-                  <!-- Linhas das contas fixas -->
-                </tbody>
+                <tbody id="recurring-tbody"></tbody>
               </table>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- TAB 5: REPORTS & BACKUP -->
+      <!-- TAB 5: ACCOUNTS & CARDS -->
+      <section class="tab-pane" id="pane-accounts-cards">
+        <div class="content-header-row">
+          <div>
+            <h2>Contas Bancárias &amp; Cartões de Crédito</h2>
+            <p>Gerencie suas instituições financeiras, carteiras e limites operacionais</p>
+          </div>
+          <div class="header-btns">
+            <button type="button" class="btn-primary" onclick="openModal('modal-account')">+ Nova Conta</button>
+            <button type="button" class="btn-secondary" onclick="openModal('modal-card')">+ Novo Cartão</button>
+          </div>
+        </div>
+
+        <div class="cards-grid mt-4">
+          <div class="card">
+            <div class="card-header">
+              <h2>Contas Bancárias &amp; Saldos</h2>
+            </div>
+            <div class="card-body" id="accounts-list"></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h2>Cartões de Crédito</h2>
+            </div>
+            <div class="card-body" id="cards-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: IMPORT OFX -->
+      <section class="tab-pane" id="pane-import-ofx">
+        <div class="content-header-row">
+          <div>
+            <h2>Importação de Extrato Bancário (.OFX)</h2>
+            <p>Importe faturas e extratos de bancos brasileiros (Nubank, Itaú, Inter, Bradesco) com categorização automática</p>
+          </div>
+        </div>
+
+        <div class="card mt-4" style="max-width: 700px; margin: 24px auto;">
+          <div class="card-body text-center" style="padding: 36px 24px;">
+            <div class="dropzone-icon" style="margin-bottom: 16px;">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+            </div>
+            <h2>Selecione seu arquivo .OFX</h2>
+            <p style="color: var(--text-muted); margin: 8px 0 24px;">Exporte o extrato no aplicativo do seu banco ou internet banking e envie abaixo.</p>
+            <input type="file" id="ofx-file-input" accept=".ofx" style="display: none;" onchange="handleOfxFileSelected(event)">
+            <button type="button" class="btn-primary" style="padding: 12px 28px; font-size: 0.95rem;" onclick="document.getElementById('ofx-file-input').click()">
+              Selecionar Arquivo .OFX
+            </button>
+            <div id="ofx-result" style="margin-top: 24px; display: none;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 7: BUNKERPAY SUBSCRIPTION -->
+      <section class="tab-pane" id="pane-bunkerpay-sub">
+        <div class="content-header-row">
+          <div>
+            <h2>Plano Pro com BunkerPay</h2>
+            <p>Liquidação instantânea via PIX, privacidade patrimonial e recursos ilimitados</p>
+          </div>
+        </div>
+
+        <div class="grid-2-col mt-4" style="max-width: 840px; margin: 24px auto;">
+          <div class="card" style="border: 1px solid var(--accent-text); padding: 24px;">
+            <h2>Plano Pro Mensal</h2>
+            <div class="tabular-nums" style="font-size: 2rem; font-weight: 700; margin: 16px 0; color: var(--text-primary);">R$ 19,90<span style="font-size: 0.95rem; color: var(--text-muted); font-weight: 500;">/mês</span></div>
+            <ul style="list-style: none; padding: 0; margin-bottom: 24px; line-height: 2; color: var(--text-secondary);">
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Importação OFX ilimitada</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Múltiplas Contas &amp; Cartões</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Metas e Tetos de Gastos</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Pagamento PIX via BunkerPay</li>
+            </ul>
+            <button type="button" class="btn-primary" style="width: 100%; justify-content: center;" onclick="startBunkerpayCheckout('pro_monthly')">Assinar Mensal</button>
+          </div>
+
+          <div class="card" style="padding: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h2>Plano Pro Anual</h2>
+              <span class="badge badge-paid">Melhor Custo-Benefício</span>
+            </div>
+            <div class="tabular-nums" style="font-size: 2rem; font-weight: 700; margin: 16px 0; color: var(--text-primary);">R$ 179,00<span style="font-size: 0.95rem; color: var(--text-muted); font-weight: 500;">/ano</span></div>
+            <ul style="list-style: none; padding: 0; margin-bottom: 24px; line-height: 2; color: var(--text-secondary);">
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 25% de Economia</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Todos os recursos do Pro</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Suporte VIP Prioritário</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Pagamento PIX via BunkerPay</li>
+            </ul>
+            <button type="button" class="btn-secondary" style="width: 100%;" onclick="startBunkerpayCheckout('pro_annual')">Assinar Anual</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 8: REPORTS & BACKUP -->
       <section class="tab-pane" id="pane-reports">
         <div class="grid-2-col">
-          <!-- Backup e Exportação -->
           <div class="card">
             <div class="card-header">
               <div class="card-header-title">
-                <h3>Exportação & Backup de Dados</h3>
+                <h2>Exportação &amp; Backup de Dados</h2>
                 <span class="card-subtitle">Baixe e preserve suas informações com segurança</span>
               </div>
             </div>
             <div class="card-body">
               <div class="action-tiles-grid">
                 <div class="action-tile">
-                  <div class="tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg></div>
+                  <div class="tile-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg></div>
                   <div class="tile-info">
-                    <h4>Exportar Relatório Financeiro (CSV)</h4>
+                    <h3>Exportar Relatório Financeiro (CSV)</h3>
                     <p>Compatível com Excel, LibreOffice Calc e Google Sheets.</p>
                   </div>
-                  <button class="btn-secondary" onclick="exportData('csv')">Baixar CSV</button>
+                  <button type="button" class="btn-secondary" onclick="exportData('csv')">Baixar CSV</button>
                 </div>
 
                 <div class="action-tile">
-                  <div class="tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></div>
+                  <div class="tile-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></div>
                   <div class="tile-info">
-                    <h4>Backup Completo (JSON)</h4>
+                    <h3>Backup Completo (JSON)</h3>
                     <p>Exporta todas as tabelas, configurações, metas e histórico.</p>
                   </div>
-                  <button class="btn-secondary" onclick="exportData('json')">Baixar JSON</button>
+                  <button type="button" class="btn-secondary" onclick="exportData('json')">Baixar JSON</button>
                 </div>
 
                 <div class="action-tile">
-                  <div class="tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg></div>
+                  <div class="tile-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg></div>
                   <div class="tile-info">
-                    <h4>Imprimir Relatório / Salvar PDF</h4>
+                    <h3>Imprimir Relatório / Salvar PDF</h3>
                     <p>Gera visão consolidada pronta para impressão ou PDF.</p>
                   </div>
-                  <button class="btn-secondary" onclick="window.print()">Imprimir / PDF</button>
+                  <button type="button" class="btn-secondary" onclick="window.print()">Imprimir / PDF</button>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Importação e Gestão de Dados -->
           <div class="card">
             <div class="card-header">
               <div class="card-header-title">
-                <h3>Importação de Extrato Bancário</h3>
+                <h2>Importação de Extrato (CSV)</h2>
                 <span class="card-subtitle">Importe arquivos CSV exportados do seu banco</span>
               </div>
             </div>
             <div class="card-body">
               <div class="import-dropzone" id="import-dropzone">
-                <div class="dropzone-icon">📥</div>
-                <h4>Selecione ou Arraste o arquivo CSV</h4>
+                <div class="dropzone-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                </div>
+                <h3>Selecione ou Arraste o arquivo CSV</h3>
                 <p>Formato aceito: CSV com colunas Data, Descrição e Valor</p>
                 <input type="file" id="csv-file-input" accept=".csv" style="display:none;">
-                <button class="btn-secondary" onclick="document.getElementById('csv-file-input').click()">Escolher Arquivo CSV</button>
+                <button type="button" class="btn-secondary" onclick="document.getElementById('csv-file-input').click()">Escolher Arquivo CSV</button>
               </div>
 
               <div class="danger-zone-box mt-4">
-                <h4>Gerenciamento da Base</h4>
+                <h3>Gerenciamento da Base</h3>
                 <p>Restaurar a base com dados de demonstração ou limpar registros.</p>
-                <button class="btn-danger-outline" onclick="resetDemoData()">Restaurar Dados de Demonstração</button>
+                <button type="button" class="btn-danger-outline" onclick="resetDemoData()">Restaurar Dados de Demonstração</button>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 9: SAAS ADMIN PANEL -->
+      <section class="tab-pane" id="pane-saas-admin">
+        <div class="content-header-row">
+          <div>
+            <h2>Painel Administrativo do SaaS</h2>
+            <p>Métricas globais, receita recorrente (MRR), usuários cadastrados e controle de funções</p>
+          </div>
+          <button type="button" class="btn-secondary" onclick="loadAdminDashboard()">Atualizar Métricas</button>
+        </div>
+
+        <div class="stats-grid mt-4">
+          <div class="stat-card">
+            <span class="stat-label">Total de Usuários</span>
+            <div class="stat-value tabular-nums" id="admin-total-users">0</div>
+            <span class="stat-sub" id="admin-free-users">0 no plano gratuito</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="stat-label">Assinantes Pro</span>
+            <div class="stat-value tabular-nums" style="color: var(--accent-success);" id="admin-pro-users">0</div>
+            <span class="stat-sub">BunkerPay &amp; Pix</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="stat-label">MRR Estimado</span>
+            <div class="stat-value tabular-nums" style="color: var(--accent-warning);" id="admin-mrr">R$ 0,00</div>
+            <span class="stat-sub">Receita Mensal Recorrente</span>
+          </div>
+
+          <div class="stat-card">
+            <span class="stat-label">Volume de Transações</span>
+            <div class="stat-value tabular-nums" id="admin-tx-count">0</div>
+            <span class="stat-sub" id="admin-volume">R$ 0,00 transacionados</span>
+          </div>
+        </div>
+
+        <div class="card mt-4">
+          <div class="card-header">
+            <div>
+              <h2>Controles Globais do Sistema (Feature Toggles)</h2>
+              <span class="card-subtitle">Habilite ou suspenda funcionalidades do SaaS em tempo real sem deploy</span>
+            </div>
+            <button type="button" class="btn-ghost" onclick="loadAdminDashboard()" title="Recarregar Estados">Atualizar</button>
+          </div>
+          <div class="card-body">
+            <div id="admin-feature-flags" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+              <div class="text-muted">Carregando flags do sistema...</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mt-4">
+          <div class="card-header">
+            <h2>Gestão de Usuários e Acessos</h2>
+          </div>
+          <div class="card-body no-padding">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>NOME / E-MAIL</th>
+                    <th>PLANO</th>
+                    <th>PAPEL (ROLE)</th>
+                    <th>TRANSAÇÕES</th>
+                    <th>CADASTRO</th>
+                    <th class="text-right">AÇÕES</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-users-table-body"></tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -516,11 +662,11 @@
   </div>
 
   <!-- MODAL: NOVA / EDITAR TRANSAÇÃO -->
-  <div class="modal-overlay" id="modal-transaction" style="display:none;">
+  <div class="modal-overlay" id="modal-transaction" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-tx-title">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 id="modal-tx-title">Nova Transação</h3>
-        <button class="btn-close-modal" onclick="closeModal('modal-transaction')">✕</button>
+        <h2 id="modal-tx-title">Nova Transação</h2>
+        <button type="button" class="btn-close-modal" onclick="closeModal('modal-transaction')" aria-label="Fechar">✕</button>
       </div>
       <form id="form-transaction">
         <input type="hidden" id="tx-id">
@@ -535,30 +681,28 @@
           </div>
 
           <div class="form-group mt-3">
-            <label class="form-label">Descrição *</label>
+            <label class="form-label" for="tx-desc">Descrição *</label>
             <input type="text" id="tx-desc" class="form-input" placeholder="Ex: Supermercado, Salário, Internet" required>
           </div>
 
           <div class="form-row mt-3">
             <div class="form-group col-6">
-              <label class="form-label">Valor (R$) *</label>
+              <label class="form-label" for="tx-amount">Valor (R$) *</label>
               <input type="number" step="0.01" min="0.01" id="tx-amount" class="form-input" placeholder="0,00" required>
             </div>
             <div class="form-group col-6">
-              <label class="form-label">Data *</label>
+              <label class="form-label" for="tx-date">Data *</label>
               <input type="date" id="tx-date" class="form-input" required>
             </div>
           </div>
 
           <div class="form-row mt-3">
             <div class="form-group col-6">
-              <label class="form-label">Categoria</label>
-              <select id="tx-category" class="form-select">
-                <!-- Categorias dinâmicas -->
-              </select>
+              <label class="form-label" for="tx-category">Categoria</label>
+              <select id="tx-category" class="form-select"></select>
             </div>
             <div class="form-group col-6">
-              <label class="form-label">Forma de Pagamento</label>
+              <label class="form-label" for="tx-payment-method">Forma de Pagamento</label>
               <select id="tx-payment-method" class="form-select">
                 <option value="PIX">PIX</option>
                 <option value="Cartão de Crédito">Cartão de Crédito</option>
@@ -572,20 +716,20 @@
 
           <div class="form-row mt-3">
             <div class="form-group col-6">
-              <label class="form-label">Status</label>
+              <label class="form-label" for="tx-status">Status</label>
               <select id="tx-status" class="form-select">
                 <option value="paid">Pago / Concluído</option>
                 <option value="pending">Pendente / Agendado</option>
               </select>
             </div>
             <div class="form-group col-6">
-              <label class="form-label">Tags (Opcional)</label>
+              <label class="form-label" for="tx-tags">Tags (Opcional)</label>
               <input type="text" id="tx-tags" class="form-input" placeholder="Ex: lazer, família, fixo">
             </div>
           </div>
 
           <div class="form-group mt-3">
-            <label class="form-label">Observações / Detalhes</label>
+            <label class="form-label" for="tx-notes">Observações / Detalhes</label>
             <input type="text" id="tx-notes" class="form-input" placeholder="Anotações adicionais...">
           </div>
         </div>
@@ -598,22 +742,20 @@
   </div>
 
   <!-- MODAL: ORÇAMENTO -->
-  <div class="modal-overlay" id="modal-budget" style="display:none;">
+  <div class="modal-overlay" id="modal-budget" style="display:none;" role="dialog" aria-modal="true">
     <div class="modal-card modal-sm">
       <div class="modal-header">
-        <h3>Definir Teto de Gastos</h3>
-        <button class="btn-close-modal" onclick="closeModal('modal-budget')">✕</button>
+        <h2>Definir Teto de Gastos</h2>
+        <button type="button" class="btn-close-modal" onclick="closeModal('modal-budget')" aria-label="Fechar">✕</button>
       </div>
       <form id="form-budget">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Categoria de Despesa</label>
-            <select id="budget-category" class="form-select" required>
-              <!-- Categorias -->
-            </select>
+            <label class="form-label" for="budget-category">Categoria de Despesa</label>
+            <select id="budget-category" class="form-select" required></select>
           </div>
           <div class="form-group mt-3">
-            <label class="form-label">Limite Máximo Mensal (R$)</label>
+            <label class="form-label" for="budget-limit">Limite Máximo Mensal (R$)</label>
             <input type="number" step="0.01" min="1" id="budget-limit" class="form-input" placeholder="Ex: 1500.00" required>
           </div>
         </div>
@@ -626,53 +768,53 @@
   </div>
 
   <!-- MODAL: META DE ECONOMIA -->
-  <div class="modal-overlay" id="modal-goal" style="display:none;">
+  <div class="modal-overlay" id="modal-goal" style="display:none;" role="dialog" aria-modal="true">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 id="modal-goal-title">Nova Meta de Economia</h3>
-        <button class="btn-close-modal" onclick="closeModal('modal-goal')">✕</button>
+        <h2 id="modal-goal-title">Nova Meta de Economia</h2>
+        <button type="button" class="btn-close-modal" onclick="closeModal('modal-goal')" aria-label="Fechar">✕</button>
       </div>
       <form id="form-goal">
         <input type="hidden" id="goal-id">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Título da Meta *</label>
+            <label class="form-label" for="goal-title">Título da Meta *</label>
             <input type="text" id="goal-title" class="form-input" placeholder="Ex: Viagem de Férias, Reserva de Emergência" required>
           </div>
 
           <div class="form-row mt-3">
             <div class="form-group col-6">
-              <label class="form-label">Valor Alvo (R$) *</label>
+              <label class="form-label" for="goal-target">Valor Alvo (R$) *</label>
               <input type="number" step="0.01" min="1" id="goal-target" class="form-input" placeholder="Ex: 10000.00" required>
             </div>
             <div class="form-group col-6">
-              <label class="form-label">Valor Atual Acumulado (R$)</label>
+              <label class="form-label" for="goal-current">Valor Atual Acumulado (R$)</label>
               <input type="number" step="0.01" min="0" id="goal-current" class="form-input" placeholder="0.00" required>
             </div>
           </div>
 
           <div class="form-row mt-3">
             <div class="form-group col-6">
-              <label class="form-label">Data Limite Desejada</label>
+              <label class="form-label" for="goal-deadline">Data Limite Desejada</label>
               <input type="date" id="goal-deadline" class="form-input">
             </div>
             <div class="form-group col-6">
-              <label class="form-label">Ícone</label>
+              <label class="form-label" for="goal-icon">Categoria da Meta</label>
               <select id="goal-icon" class="form-select">
-                <option value="<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg>"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg> Alvo</option>
-                <option value="🛡️">🛡️ Reserva / Segurança</option>
-                <option value="✈️">✈️ Viagem</option>
-                <option value="🚗">🚗 Carro / Veículo</option>
-                <option value="🏠">🏠 Casa / Imóvel</option>
-                <option value="💻">💻 Tecnologia</option>
-                <option value="🎓">🎓 Estudos</option>
-                <option value="💍">💍 Casamento / Família</option>
+                <option value="target">Objetivo Geral</option>
+                <option value="shield">Reserva de Segurança</option>
+                <option value="plane">Viagem &amp; Lazer</option>
+                <option value="car">Veículo / Mobilidade</option>
+                <option value="home">Imóvel &amp; Patrimônio</option>
+                <option value="laptop">Tecnologia &amp; Equipamentos</option>
+                <option value="book">Educação &amp; Especialização</option>
+                <option value="heart">Família &amp; Projetos Pessoais</option>
               </select>
             </div>
           </div>
 
           <div class="form-group mt-3">
-            <label class="form-label">Observações</label>
+            <label class="form-label" for="goal-notes">Observações</label>
             <input type="text" id="goal-notes" class="form-input" placeholder="Ex: Guardar R$ 500 por mês...">
           </div>
         </div>
@@ -685,39 +827,37 @@
   </div>
 
   <!-- MODAL: CONTA FIXA RECORRENTE -->
-  <div class="modal-overlay" id="modal-recurring" style="display:none;">
+  <div class="modal-overlay" id="modal-recurring" style="display:none;" role="dialog" aria-modal="true">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>Nova Conta Fixa Recorrente</h3>
-        <button class="btn-close-modal" onclick="closeModal('modal-recurring')">✕</button>
+        <h2>Nova Conta Fixa Recorrente</h2>
+        <button type="button" class="btn-close-modal" onclick="closeModal('modal-recurring')" aria-label="Fechar">✕</button>
       </div>
       <form id="form-recurring">
         <div class="modal-body">
           <div class="form-group">
-            <label class="form-label">Descrição da Conta *</label>
+            <label class="form-label" for="rec-desc">Descrição da Conta *</label>
             <input type="text" id="rec-desc" class="form-input" placeholder="Ex: Aluguel, Conta de Luz, Internet Fibra" required>
           </div>
 
           <div class="form-row mt-3">
             <div class="form-group col-6">
-              <label class="form-label">Valor Estimado (R$) *</label>
+              <label class="form-label" for="rec-amount">Valor Estimado (R$) *</label>
               <input type="number" step="0.01" min="0.01" id="rec-amount" class="form-input" placeholder="0.00" required>
             </div>
             <div class="form-group col-6">
-              <label class="form-label">Dia do Vencimento (1 a 31) *</label>
+              <label class="form-label" for="rec-day">Dia do Vencimento (1 a 31) *</label>
               <input type="number" min="1" max="31" id="rec-day" class="form-input" placeholder="Ex: 10" required>
             </div>
           </div>
 
           <div class="form-row mt-3">
             <div class="form-group col-6">
-              <label class="form-label">Categoria</label>
-              <select id="rec-category" class="form-select">
-                <!-- Categorias de despesa -->
-              </select>
+              <label class="form-label" for="rec-category">Categoria</label>
+              <select id="rec-category" class="form-select"></select>
             </div>
             <div class="form-group col-6">
-              <label class="form-label">Forma de Pagamento Padrão</label>
+              <label class="form-label" for="rec-payment">Forma de Pagamento Padrão</label>
               <select id="rec-payment" class="form-select">
                 <option value="PIX">PIX</option>
                 <option value="Boleto">Boleto</option>
@@ -729,7 +869,7 @@
           </div>
 
           <div class="form-group mt-3">
-            <label class="form-label">Notas Adicionais</label>
+            <label class="form-label" for="rec-notes">Notas Adicionais</label>
             <input type="text" id="rec-notes" class="form-input" placeholder="Ex: Código do cliente ou link de pagamento">
           </div>
         </div>
@@ -741,305 +881,91 @@
     </div>
   </div>
 
-      <!-- ABA: CONTAS E CARTÕES -->
-      <section class="tab-pane" id="pane-accounts-cards" style="display:none;">
-        <div class="content-header-row">
-          <div>
-            <h2>Contas Bancárias & Cartões de Crédito</h2>
-            <p>Gerencie suas instituições financeiras, carteiras e limites</p>
-          </div>
-          <div class="header-btns">
-            <button class="btn-primary" onclick="openModal('modal-account')">+ Nova Conta</button>
-            <button class="btn-secondary" onclick="openModal('modal-card')">+ Novo Cartão</button>
-          </div>
-        </div>
-
-        <div class="cards-grid mt-4">
-          <div class="card">
-            <div class="card-header">
-              <h3>Contas Bancárias & Saldos</h3>
-            </div>
-            <div class="card-body" id="accounts-list">
-              <!-- Lista dinâmica de contas -->
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              <h3>Cartões de Crédito</h3>
-            </div>
-            <div class="card-body" id="cards-list">
-              <!-- Lista dinâmica de cartões -->
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABA: PAINEL ADMIN DO SAAS -->
-      <section class="tab-pane" id="pane-saas-admin" style="display:none;">
-        <div class="content-header-row">
-          <div>
-            <h2>Painel Administrativo do SaaS</h2>
-            <p>Métricas globais, receita recorrente (MRR), usuários cadastrados e controle de planos</p>
-          </div>
-          <button class="btn-secondary" onclick="loadAdminDashboard()">↻ Atualizar Métricas</button>
-        </div>
-
-        <!-- Cards de Métricas SaaS -->
-        <div class="stats-grid mt-4" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
-          <div class="stat-card">
-            <span class="stat-label">Total de Usuários</span>
-            <div class="stat-value tabular-nums" id="admin-total-users">0</div>
-            <span class="stat-sub" id="admin-free-users">0 no plano gratuito</span>
-          </div>
-
-          <div class="stat-card" style="border-color: var(--accent-success);">
-            <span class="stat-label">Assinantes Pro</span>
-            <div class="stat-value tabular-nums" style="color: var(--accent-success);" id="admin-pro-users">0</div>
-            <span class="stat-sub">BunkerPay & Pix</span>
-          </div>
-
-          <div class="stat-card" style="border-color: var(--accent-warning);">
-            <span class="stat-label">MRR Estimado</span>
-            <div class="stat-value tabular-nums" style="color: var(--accent-warning);" id="admin-mrr">R$ 0,00</div>
-            <span class="stat-sub">Receita Mensal Recorrente</span>
-          </div>
-
-          <div class="stat-card">
-            <span class="stat-label">Volume de Transações</span>
-            <div class="stat-value tabular-nums" id="admin-tx-count">0</div>
-            <span class="stat-sub" id="admin-volume">R$ 0,00 transacionados</span>
-          </div>
-        </div>
-
-        
-        <!-- CONTROLE GLOBAL DE RECURSOS (SUPER ADMIN FEATURE FLAGS / SHIFT ON-OFF) -->
-        <div class="card mt-4">
-          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <h3>Controles Globais do Sistema (Feature Toggles)</h3>
-              <span class="card-subtitle">Habilite ou suspenda funcionalidades do SaaS em tempo real sem deploy</span>
-            </div>
-            <button class="btn-ghost" onclick="loadAdminOverview()" title="Recarregar Estados">Atualizar</button>
-          </div>
-          <div class="card-body">
-            <div id="admin-feature-flags" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
-              <div class="loading-state">Carregando flags do sistema...</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tabela de Gestão de Usuários -->
-        <div class="card mt-4">
-          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-            <h3>Gestão de Usuários e Acessos</h3>
-          </div>
-          <div class="card-body" style="overflow-x: auto; padding: 0;">
-            <table class="data-table" style="width: 100%; border-collapse: collapse;">
-              <thead>
-                <tr style="border-bottom: 1px solid var(--border-color); text-align: left; font-size: 0.8rem; color: var(--text-muted);">
-                  <th style="padding: 12px 16px;">ID</th>
-                  <th style="padding: 12px 16px;">NOME / E-MAIL</th>
-                  <th style="padding: 12px 16px;">PLANO</th>
-                  <th style="padding: 12px 16px;">PAPEL (ROLE)</th>
-                  <th style="padding: 12px 16px;">TRANSAÇÕES</th>
-                  <th style="padding: 12px 16px;">CADASTRO</th>
-                  <th style="padding: 12px 16px; text-align: right;">AÇÕES</th>
-                </tr>
-              </thead>
-              <tbody id="admin-users-table-body">
-                <!-- Linhas dinâmicas -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABA: IMPORTADOR OFX -->
-      <section class="tab-pane" id="pane-import-ofx" style="display:none;">
-        <div class="content-header-row">
-          <div>
-            <h2>Importação de Extrato Bancário (.OFX)</h2>
-            <p>Importe faturas e extratos de bancos brasileiros (Nubank, Itaú, Inter, Bradesco) em segundos</p>
-          </div>
-        </div>
-
-        <div class="card mt-4" style="max-width: 700px; margin: 24px auto;">
-          <div class="card-body text-center" style="padding: 40px 24px;">
-            <div style="font-size: 3rem; margin-bottom: 16px;"></div>
-            <h3>Selecione seu arquivo .OFX</h3>
-            <p style="color: var(--text-muted); margin-bottom: 24px;">Exporte o extrato no app do seu banco ou internet banking e faça upload aqui.</p>
-            <input type="file" id="ofx-file-input" accept=".ofx" style="display: none;" onchange="handleOfxFileSelected(event)">
-            <button class="btn-primary" style="padding: 12px 28px; font-size: 1rem;" onclick="document.getElementById('ofx-file-input').click()">
-              Selecionar Arquivo .OFX
-            </button>
-            <div id="ofx-result" style="margin-top: 24px; display: none;"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABA: BUNKERPAY ASSINATURA -->
-      <section class="tab-pane" id="pane-bunkerpay-sub" style="display:none;">
-        <div class="content-header-row">
-          <div>
-            <h2>Plano Pro com BunkerPay</h2>
-            <p>Liquidação instantânea via PIX, privacidade e recursos ilimitados</p>
-          </div>
-        </div>
-
-        <div class="pricing-grid mt-4" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 800px; margin: 24px auto;">
-          <div class="card" style="border: 2px solid var(--accent); padding: 24px;">
-            <h3>Plano Pro Mensal</h3>
-            <div style="font-size: 2.2rem; font-weight: 700; margin: 16px 0; color: var(--accent);">R$ 19,90<span style="font-size: 1rem; color: var(--text-muted);">/mês</span></div>
-            <ul style="list-style: none; padding: 0; margin-bottom: 24px; line-height: 2;">
-              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Importação OFX ilimitada</li>
-              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Múltiplas Contas & Cartões</li>
-              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Metas e Tetos de Gastos</li>
-              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Pagamento PIX via BunkerPay</li>
-            </ul>
-            <button class="btn-primary" style="width: 100%;" onclick="startBunkerpayCheckout('pro_monthly')">Assinar Mensal</button>
-          </div>
-
-          <div class="card" style="padding: 24px;">
-            <span style="background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">Melhor Custo-Benefício</span>
-            <h3 style="margin-top: 8px;">Plano Pro Anual</h3>
-            <div style="font-size: 2.2rem; font-weight: 700; margin: 16px 0; color: var(--accent);">R$ 179,00<span style="font-size: 1rem; color: var(--text-muted);">/ano</span></div>
-            <ul style="list-style: none; padding: 0; margin-bottom: 24px; line-height: 2;">
-              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 25% de Economia</li>
-              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Todos os recursos do Pro</li>
-              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Suporte VIP Prioritário</li>
-              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Pagamento PIX via BunkerPay</li>
-            </ul>
-            <button class="btn-secondary" style="width: 100%;" onclick="startBunkerpayCheckout('pro_annual')">Assinar Anual</button>
-          </div>
-        </div>
-
-        <div id="bunkerpay-pix-modal" class="modal-overlay" style="display:none;">
-          <div class="modal-card modal-sm">
-            <div class="modal-header">
-              <h3>Pagar Assinatura com PIX</h3>
-              <button class="btn-close-modal" onclick="closeModal('bunkerpay-pix-modal')">✕</button>
-            </div>
-            <div class="modal-body text-center" id="bunkerpay-pix-content">
-              <!-- Conteúdo do PIX -->
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- MODAL: NOVA CONTA -->
-      <div class="modal-overlay" id="modal-account" style="display:none;">
-        <div class="modal-card modal-sm">
-          <div class="modal-header">
-            <h3>Nova Conta Bancária</h3>
-            <button class="btn-close-modal" onclick="closeModal('modal-account')">✕</button>
-          </div>
-          <form id="form-account">
-            <div class="modal-body">
-              <div class="form-group">
-                <label class="form-label">Nome da Conta / Banco *</label>
-                <input type="text" id="acc-name" class="form-input" placeholder="Ex: Nubank, Itaú, Carteira" required>
-              </div>
-              <div class="form-group mt-3">
-                <label class="form-label">Tipo de Conta</label>
-                <select id="acc-type" class="form-select">
-                  <option value="checking">Conta Corrente</option>
-                  <option value="savings">Poupança</option>
-                  <option value="investment">Investimentos</option>
-                  <option value="cash">Dinheiro em Espécie</option>
-                </select>
-              </div>
-              <div class="form-group mt-3">
-                <label class="form-label">Saldo Inicial (R$)</label>
-                <input type="number" step="0.01" id="acc-balance" class="form-input" placeholder="0,00" value="0.00">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn-ghost" onclick="closeModal('modal-account')">Cancelar</button>
-              <button type="submit" class="btn-primary">Criar Conta</button>
-            </div>
-          </form>
-        </div>
+  <!-- MODAL: NOVA CONTA BANCÁRIA -->
+  <div class="modal-overlay" id="modal-account" style="display:none;" role="dialog" aria-modal="true">
+    <div class="modal-card modal-sm">
+      <div class="modal-header">
+        <h2>Nova Conta Bancária</h2>
+        <button type="button" class="btn-close-modal" onclick="closeModal('modal-account')" aria-label="Fechar">✕</button>
       </div>
-
-      <!-- MODAL: NOVO CARTÃO -->
-      <div class="modal-overlay" id="modal-card" style="display:none;">
-        <div class="modal-card modal-sm">
-          <div class="modal-header">
-            <h3>Novo Cartão de Crédito</h3>
-            <button class="btn-close-modal" onclick="closeModal('modal-card')">✕</button>
+      <form id="form-account">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="acc-name">Nome da Conta / Banco *</label>
+            <input type="text" id="acc-name" class="form-input" placeholder="Ex: Nubank, Itaú, Carteira" required>
           </div>
-          <form id="form-card">
-            <div class="modal-body">
-              <div class="form-group">
-                <label class="form-label">Nome do Cartão *</label>
-                <input type="text" id="card-name" class="form-input" placeholder="Ex: Nubank Ultravioleta, C6 Carbon" required>
-              </div>
-              <div class="form-group mt-3">
-                <label class="form-label">Limite de Crédito (R$) *</label>
-                <input type="number" step="0.01" min="1" id="card-limit" class="form-input" placeholder="5000.00" required>
-              </div>
-              <div class="form-row mt-3">
-                <div class="form-group col-6">
-                  <label class="form-label">Dia Fechamento *</label>
-                  <input type="number" min="1" max="31" id="card-closing" class="form-input" value="25" required>
-                </div>
-                <div class="form-group col-6">
-                  <label class="form-label">Dia Vencimento *</label>
-                  <input type="number" min="1" max="31" id="card-due" class="form-input" value="5" required>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn-ghost" onclick="closeModal('modal-card')">Cancelar</button>
-              <button type="submit" class="btn-primary">Criar Cartão</button>
-            </div>
-          </form>
+          <div class="form-group mt-3">
+            <label class="form-label" for="acc-type">Tipo de Conta</label>
+            <select id="acc-type" class="form-select">
+              <option value="checking">Conta Corrente</option>
+              <option value="savings">Poupança</option>
+              <option value="investment">Investimentos</option>
+              <option value="cash">Dinheiro em Espécie</option>
+            </select>
+          </div>
+          <div class="form-group mt-3">
+            <label class="form-label" for="acc-balance">Saldo Inicial (R$)</label>
+            <input type="number" step="0.01" id="acc-balance" class="form-input" placeholder="0,00" value="0.00">
+          </div>
         </div>
-      </div>
-
-      <!-- MODAL: AUTENTICAÇÃO SEGURA (LOGIN / CADASTRO) -->
-      <div class="modal-overlay" id="modal-auth" style="display:none;">
-        <div class="modal-card modal-sm" style="max-width: 420px;">
-          <div class="modal-header">
-            <h3 id="auth-modal-title">Acessar Minha Conta</h3>
-            <button class="btn-close-modal" onclick="closeModal('modal-auth')">✕</button>
-          </div>
-          
-          <div style="display: flex; gap: 8px; margin: 16px 20px 0; background: var(--bg-primary); padding: 4px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
-            <button id="auth-tab-login" class="btn-ghost active" style="flex: 1; padding: 8px; font-weight: 600; font-size: 0.85rem;" onclick="switchAuthMode('login')">Entrar</button>
-            <button id="auth-tab-register" class="btn-ghost" style="flex: 1; padding: 8px; font-weight: 600; font-size: 0.85rem;" onclick="switchAuthMode('register')">Cadastrar</button>
-          </div>
-
-          <form id="form-auth" onsubmit="handleAuthSubmit(event)">
-            <div class="modal-body" style="padding-top: 16px;">
-              <div class="form-group" id="auth-group-name" style="display: none;">
-                <label class="form-label">Nome Completo *</label>
-                <input type="text" id="auth-name" class="form-input" placeholder="Seu nome">
-              </div>
-
-              <div class="form-group mt-3">
-                <label class="form-label">E-mail *</label>
-                <input type="email" id="auth-email" class="form-input" placeholder="seu@email.com" required autocomplete="email">
-              </div>
-
-              <div class="form-group mt-3">
-                <label class="form-label">Senha *</label>
-                <input type="password" id="auth-password" class="form-input" placeholder="Mínimo 8 caracteres" required minlength="8" autocomplete="current-password">
-                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">Proteção avançada de ponta a ponta com criptografia segura.</div>
-              </div>
-            </div>
-
-            <div class="modal-footer" style="flex-direction: column; gap: 8px;">
-              <button type="submit" id="auth-submit-btn" class="btn-primary" style="width: 100%; padding: 12px;">Entrar com Segurança</button>
-              <div style="font-size: 0.75rem; color: var(--text-muted); text-align: center;">Ambiente Criptografado & Sessões Seguras</div>
-            </div>
-          </form>
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost" onclick="closeModal('modal-account')">Cancelar</button>
+          <button type="submit" class="btn-primary">Criar Conta</button>
         </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: NOVO CARTÃO -->
+  <div class="modal-overlay" id="modal-card" style="display:none;" role="dialog" aria-modal="true">
+    <div class="modal-card modal-sm">
+      <div class="modal-header">
+        <h2>Novo Cartão de Crédito</h2>
+        <button type="button" class="btn-close-modal" onclick="closeModal('modal-card')" aria-label="Fechar">✕</button>
       </div>
+      <form id="form-card">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="card-name">Nome do Cartão *</label>
+            <input type="text" id="card-name" class="form-input" placeholder="Ex: Nubank Ultravioleta, C6 Carbon" required>
+          </div>
+          <div class="form-group mt-3">
+            <label class="form-label" for="card-limit">Limite de Crédito (R$) *</label>
+            <input type="number" step="0.01" min="1" id="card-limit" class="form-input" placeholder="5000.00" required>
+          </div>
+          <div class="form-row mt-3">
+            <div class="form-group col-6">
+              <label class="form-label" for="card-closing">Dia Fechamento *</label>
+              <input type="number" min="1" max="31" id="card-closing" class="form-input" value="25" required>
+            </div>
+            <div class="form-group col-6">
+              <label class="form-label" for="card-due">Dia Vencimento *</label>
+              <input type="number" min="1" max="31" id="card-due" class="form-input" value="5" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost" onclick="closeModal('modal-card')">Cancelar</button>
+          <button type="submit" class="btn-primary">Criar Cartão</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-      <!-- Toast Notification Container -->
-  <div class="toast-container" id="toast-container"></div>
+  <!-- MODAL: BUNKERPAY PIX -->
+  <div id="bunkerpay-pix-modal" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true">
+    <div class="modal-card modal-sm">
+      <div class="modal-header">
+        <h2>Pagar Assinatura com PIX</h2>
+        <button type="button" class="btn-close-modal" onclick="closeModal('bunkerpay-pix-modal')" aria-label="Fechar">✕</button>
+      </div>
+      <div class="modal-body text-center" id="bunkerpay-pix-content"></div>
+    </div>
+  </div>
 
-  <script src="app.js?v=1795322515"></script>
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <script src="app.js?v=1795365000"></script>
 </body>
 </html>

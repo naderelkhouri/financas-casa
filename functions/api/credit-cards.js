@@ -12,12 +12,17 @@ export async function onRequestGet(context) {
 
   const secret = env.JWT_SECRET || "cf-financas-pessoais-admx-jwt-super-secret-key-2026-edge";
   const authUser = await authenticateRequest(request, secret);
-  const userId = authUser ? authUser.user_id : 1;
+  if (!authUser) {
+    return new Response(JSON.stringify({ error: "Não autenticado" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
 
   try {
     const res = await env.DB.prepare(`
       SELECT * FROM credit_cards WHERE user_id = ? AND is_active = 1 ORDER BY name ASC
-    `).bind(userId).all();
+    `).bind(authUser.user_id).all();
 
     return new Response(JSON.stringify(res.results || []), {
       headers: { "Content-Type": "application/json" }
@@ -42,7 +47,12 @@ export async function onRequestPost(context) {
 
   const secret = env.JWT_SECRET || "cf-financas-pessoais-admx-jwt-super-secret-key-2026-edge";
   const authUser = await authenticateRequest(request, secret);
-  const userId = authUser ? authUser.user_id : 1;
+  if (!authUser) {
+    return new Response(JSON.stringify({ error: "Não autenticado" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
 
   try {
     const data = await request.json();
@@ -52,7 +62,7 @@ export async function onRequestPost(context) {
       INSERT INTO credit_cards (user_id, name, credit_limit, closing_day, due_day, color)
       VALUES (?, ?, ?, ?, ?, ?)
     `).bind(
-      userId,
+      authUser.user_id,
       name,
       parseFloat(credit_limit) || 0,
       parseInt(closing_day) || 25,

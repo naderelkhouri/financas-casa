@@ -1,10 +1,10 @@
 /**
- * Finanças de Casa - Frontend SPA Logic & SVG Chart Engine
- * Zero dependências externas (Vanilla JavaScript).
+ * Finanças SaaS — Enterprise Frontend SPA Logic & SVG Chart Engine
+ * Zero external dependencies • Strict Zero-Trust Auth Flow • Pure SVG Icons
  */
 
 const state = {
-  currentMonth: new Date().toISOString().slice(0, 7), // YYYY-MM
+  currentMonth: new Date().toISOString().slice(0, 7),
   activeTab: 'dashboard',
   categories: [],
   transactions: [],
@@ -14,19 +14,49 @@ const state = {
   recurringBills: []
 };
 
+let authState = {
+  mode: 'login',
+  user: null
+};
+
+let gateMode = 'login';
+
+const SVG_ICONS = {
+  folder: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>',
+  target: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+  shield: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+  plane: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>',
+  car: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>',
+  home: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+  laptop: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="12" x="3" y="4" rx="2"/><line x1="2" x2="22" y1="20" y2="20"/></svg>',
+  book: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>',
+  heart: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+  edit: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>',
+  trash: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
+  check: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>',
+  alert: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>',
+  logout: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>',
+  login: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>'
+};
+
+function renderGoalIcon(iconKey) {
+  return SVG_ICONS[iconKey] || SVG_ICONS.target;
+}
+
 // ==========================================================================
 // Inicialização
 // ==========================================================================
 
-
-
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   initTheme();
   initMonthSelector();
   initEventListeners();
-  checkAuthSession();
-  loadInitialData();
   registerServiceWorker();
+
+  const isAuthenticated = await checkAuthSession();
+  if (isAuthenticated) {
+    await loadInitialData();
+  }
 });
 
 function registerServiceWorker() {
@@ -39,8 +69,6 @@ function registerServiceWorker() {
   }
 }
 
-
-
 function initTheme() {
   const savedTheme = localStorage.getItem('financas_theme') || 'dark';
   document.documentElement.setAttribute('data-theme', savedTheme);
@@ -50,7 +78,9 @@ function initTheme() {
 function updateThemeButton(theme) {
   const btn = document.getElementById('btn-theme-toggle');
   if (btn) {
-    btn.innerHTML = theme === 'dark' ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>';
+    btn.innerHTML = theme === 'dark'
+      ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>'
+      : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>';
   }
 }
 
@@ -64,6 +94,7 @@ function toggleTheme() {
 
 function initMonthSelector() {
   const monthInput = document.getElementById('selected-month');
+  if (!monthInput) return;
   monthInput.value = state.currentMonth;
 
   monthInput.addEventListener('change', (e) => {
@@ -71,92 +102,87 @@ function initMonthSelector() {
     refreshCurrentView();
   });
 
-  document.getElementById('btn-prev-month').addEventListener('click', () => {
-    changeMonth(-1);
-  });
-
-  document.getElementById('btn-next-month').addEventListener('click', () => {
-    changeMonth(1);
-  });
+  document.getElementById('btn-prev-month')?.addEventListener('click', () => changeMonth(-1));
+  document.getElementById('btn-next-month')?.addEventListener('click', () => changeMonth(1));
 }
 
 function changeMonth(delta) {
   const [year, month] = state.currentMonth.split('-').map(Number);
   const d = new Date(year, month - 1 + delta, 1);
   state.currentMonth = d.toISOString().slice(0, 7);
-  document.getElementById('selected-month').value = state.currentMonth;
+  const monthInput = document.getElementById('selected-month');
+  if (monthInput) monthInput.value = state.currentMonth;
   refreshCurrentView();
 }
 
 function initEventListeners() {
-  // Navegação por abas
   document.querySelectorAll('.nav-item').forEach(btn => {
     btn.addEventListener('click', () => {
-      const tab = btn.dataset.tab;
-      switchTab(tab);
+      switchTab(btn.dataset.tab);
     });
   });
 
-  // Mobile menu toggle
-  const mobileBtn = document.getElementById('mobile-menu-btn');
-  if (mobileBtn) {
-    mobileBtn.addEventListener('click', () => {
-      document.getElementById('sidebar').classList.toggle('open');
-    });
-  }
+  document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+    document.getElementById('sidebar')?.classList.toggle('open');
+  });
 
-  // Theme toggle
-  document.getElementById('btn-theme-toggle').addEventListener('click', toggleTheme);
+  document.getElementById('btn-theme-toggle')?.addEventListener('click', toggleTheme);
 
-  // Botões de Abrir Modal
-  document.getElementById('btn-open-tx-modal').addEventListener('click', () => openTransactionModal());
-  document.getElementById('btn-open-budget-modal').addEventListener('click', () => openModal('modal-budget'));
-  document.getElementById('btn-open-goal-modal').addEventListener('click', () => openGoalModal());
-  document.getElementById('btn-open-recurring-modal').addEventListener('click', () => openModal('modal-recurring'));
+  document.getElementById('btn-open-tx-modal')?.addEventListener('click', () => openTransactionModal());
+  document.getElementById('btn-open-budget-modal')?.addEventListener('click', () => openModal('modal-budget'));
+  document.getElementById('btn-open-goal-modal')?.addEventListener('click', () => openGoalModal());
+  document.getElementById('btn-open-recurring-modal')?.addEventListener('click', () => openModal('modal-recurring'));
 
-  // Transações Filtros & Busca
-  document.getElementById('tx-search-input').addEventListener('input', debounce(() => loadTransactions(), 300));
-  document.getElementById('tx-filter-type').addEventListener('change', () => loadTransactions());
-  document.getElementById('tx-filter-category').addEventListener('change', () => loadTransactions());
-  document.getElementById('btn-export-csv-direct').addEventListener('click', () => exportData('csv'));
+  document.getElementById('tx-search-input')?.addEventListener('input', debounce(() => loadTransactions(), 300));
+  document.getElementById('tx-filter-type')?.addEventListener('change', () => loadTransactions());
+  document.getElementById('tx-filter-category')?.addEventListener('change', () => loadTransactions());
+  document.getElementById('btn-export-csv-direct')?.addEventListener('click', () => exportData('csv'));
 
-  // Forms Submit
-  document.getElementById('form-transaction').addEventListener('submit', handleTransactionSubmit);
-  document.getElementById('form-budget').addEventListener('submit', handleBudgetSubmit);
-  document.getElementById('form-goal').addEventListener('submit', handleGoalSubmit);
-  document.getElementById('form-recurring').addEventListener('submit', handleRecurringSubmit);
+  document.getElementById('form-transaction')?.addEventListener('submit', handleTransactionSubmit);
+  document.getElementById('form-budget')?.addEventListener('submit', handleBudgetSubmit);
+  document.getElementById('form-goal')?.addEventListener('submit', handleGoalSubmit);
+  document.getElementById('form-recurring')?.addEventListener('submit', handleRecurringSubmit);
 
-  // Toggle tipo despesa/receita no modal
   document.querySelectorAll('input[name="tx-type"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
       const isExpense = e.target.value === 'expense';
-      document.getElementById('type-btn-expense').classList.toggle('active', isExpense);
-      document.getElementById('type-btn-income').classList.toggle('active', !isExpense);
+      document.getElementById('type-btn-expense')?.classList.toggle('active', isExpense);
+      document.getElementById('type-btn-income')?.classList.toggle('active', !isExpense);
       populateCategorySelect('tx-category', e.target.value);
     });
   });
 
-  // Drag & Drop Importação CSV
   const dropzone = document.getElementById('import-dropzone');
   const fileInput = document.getElementById('csv-file-input');
 
-  dropzone.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    dropzone.style.borderColor = 'var(--accent-primary)';
-  });
-  dropzone.addEventListener('dragleave', () => {
-    dropzone.style.borderColor = 'var(--border-light)';
-  });
-  dropzone.addEventListener('drop', (e) => {
-    e.preventDefault();
-    dropzone.style.borderColor = 'var(--border-light)';
-    if (e.dataTransfer.files.length) {
-      handleCsvFileUpload(e.dataTransfer.files[0]);
-    }
-  });
-  fileInput.addEventListener('change', (e) => {
-    if (e.target.files.length) {
-      handleCsvFileUpload(e.target.files[0]);
+  if (dropzone && fileInput) {
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.style.borderColor = 'var(--accent-text)';
+    });
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.style.borderColor = 'var(--border-light)';
+    });
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.style.borderColor = 'var(--border-light)';
+      if (e.dataTransfer.files.length) {
+        handleCsvFileUpload(e.dataTransfer.files[0]);
+      }
+    });
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length) {
+        handleCsvFileUpload(e.target.files[0]);
+      }
+    });
+  }
+
+  // Fechar modais com tecla Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay').forEach(m => {
+        m.style.display = 'none';
+      });
     }
   });
 }
@@ -167,20 +193,17 @@ function initEventListeners() {
 
 function switchTab(tabId) {
   state.activeTab = tabId;
-  
-  // Atualizar botões da sidebar
+
   document.querySelectorAll('.nav-item').forEach(b => {
     b.classList.toggle('active', b.dataset.tab === tabId);
   });
 
-  // Atualizar painéis visíveis
-  document.querySelectorAll('.tab-pane, .tab-content').forEach(pane => {
-    const isTarget = pane.id === `pane-${tabId}` || pane.id === `tab-${tabId}`;
+  document.querySelectorAll('.tab-pane').forEach(pane => {
+    const isTarget = pane.id === `pane-${tabId}`;
     pane.classList.toggle('active', isTarget);
     pane.style.display = isTarget ? 'block' : 'none';
   });
 
-  // Atualizar títulos
   const titles = {
     'dashboard': { title: 'Dashboard Financeiro', sub: 'Visão consolidada do fluxo de caixa e despesas' },
     'transactions': { title: 'Extrato de Transações', sub: 'Controle detalhado de entradas e saídas' },
@@ -194,17 +217,19 @@ function switchTab(tabId) {
   };
 
   if (titles[tabId]) {
-    document.getElementById('page-title').textContent = titles[tabId].title;
-    document.getElementById('page-subtitle').textContent = titles[tabId].sub;
+    const titleEl = document.getElementById('page-title');
+    const subEl = document.getElementById('page-subtitle');
+    if (titleEl) titleEl.textContent = titles[tabId].title;
+    if (subEl) subEl.textContent = titles[tabId].sub;
   }
 
-  // Fechar sidebar mobile se aberta
-  document.getElementById('sidebar').classList.remove('open');
-
+  document.getElementById('sidebar')?.classList.remove('open');
   refreshCurrentView();
 }
 
 function refreshCurrentView() {
+  if (!authState.user) return;
+
   loadCategories().then(() => {
     if (state.activeTab === 'dashboard') {
       loadDashboard();
@@ -235,6 +260,7 @@ async function loadInitialData() {
 async function loadCategories() {
   try {
     const res = await fetch('/api/categories');
+    if (!res.ok) return;
     state.categories = await res.json();
     populateCategorySelect('tx-category', 'expense');
     populateCategorySelect('tx-filter-category', '');
@@ -260,31 +286,49 @@ function populateCategorySelect(selectId, filterType) {
     .forEach(c => {
       const opt = document.createElement('option');
       opt.value = c.id;
-      opt.textContent = `${c.icon} ${c.name}`;
+      opt.textContent = c.name;
       select.appendChild(opt);
     });
 
   if (currentVal) select.value = currentVal;
 }
 
-// Dashboard
 async function loadDashboard() {
   try {
     const res = await fetch(`/api/dashboard?month=${state.currentMonth}`);
+    if (res.status === 401) return;
     const data = await res.json();
     state.summary = data;
 
-    // Atualizar Métricas Topo
-    document.getElementById('dash-income').textContent = formatCurrency(data.totals.total_income);
-    document.getElementById('dash-expense').textContent = formatCurrency(data.totals.total_expense);
-    document.getElementById('dash-balance').textContent = formatCurrency(data.totals.balance);
-    
-    document.getElementById('dash-pending-income').textContent = `Pendente: ${formatCurrency(data.totals.pending_income)}`;
-    document.getElementById('dash-pending-expense').textContent = `Pendente: ${formatCurrency(data.totals.pending_expense)}`;
-    document.getElementById('dash-savings-rate').textContent = `Taxa de Poupança: ${data.totals.savings_rate}%`;
+    // Suporte híbrido ao contrato JSON (totals aninhado ou raiz)
+    const totals = data.totals || {
+      total_income: data.total_income || 0,
+      total_expense: data.total_expense || 0,
+      balance: data.net_balance ?? ((data.total_income || 0) - (data.total_expense || 0)),
+      pending_income: data.pending_income || 0,
+      pending_expense: data.pending_expense || 0,
+      savings_rate: Math.round((data.savings_rate || 0) * 10) / 10
+    };
 
-    // Status Orçamentos
-    const exceeded = data.budgets_status.filter(b => b.spent_amount > b.monthly_limit).length;
+    const expensesByCategory = data.expenses_by_category || (data.category_distribution || []).map(c => ({
+      name: c.name,
+      color: c.color,
+      icon: c.icon,
+      total_amount: Number(c.total_amount ?? c.total) || 0
+    }));
+
+    const budgetsStatus = data.budgets_status || [];
+    const monthlyHistory = data.monthly_history || [];
+
+    document.getElementById('dash-income').textContent = formatCurrency(totals.total_income);
+    document.getElementById('dash-expense').textContent = formatCurrency(totals.total_expense);
+    document.getElementById('dash-balance').textContent = formatCurrency(totals.balance);
+
+    document.getElementById('dash-pending-income').textContent = `Pendente: ${formatCurrency(totals.pending_income)}`;
+    document.getElementById('dash-pending-expense').textContent = `Pendente: ${formatCurrency(totals.pending_expense)}`;
+    document.getElementById('dash-savings-rate').textContent = `Taxa de Poupança: ${totals.savings_rate}%`;
+
+    const exceeded = budgetsStatus.filter(b => b.spent_amount > b.monthly_limit).length;
     const alertEl = document.getElementById('dash-budget-status');
     const alertDetEl = document.getElementById('dash-budget-details');
     if (exceeded > 0) {
@@ -292,24 +336,20 @@ async function loadDashboard() {
       alertEl.style.color = 'var(--accent-danger)';
       alertDetEl.textContent = 'Atenção aos tetos de gastos';
     } else {
-      alertEl.textContent = 'Dentro do Limite';
-      alertEl.style.color = 'var(--accent-success)';
+      alertEl.textContent = 'Em dia';
+      alertEl.style.color = 'var(--text-primary)';
       alertDetEl.textContent = 'Orçamentos controlados';
     }
 
-    // Renderizar Gráficos SVG
-    renderCategoryDonut(data.expenses_by_category);
-    renderMonthlyHistoryBarChart(data.monthly_history);
-
-    // Mini Listas
-    renderDashboardBudgetsMini(data.budgets_status);
+    renderCategoryDonut(expensesByCategory);
+    renderMonthlyHistoryBarChart(monthlyHistory);
+    renderDashboardBudgetsMini(budgetsStatus);
     loadDashboardRecentTx();
   } catch (err) {
     console.error('Erro ao carregar dashboard:', err);
   }
 }
 
-// Transações
 async function loadTransactions() {
   const type = document.getElementById('tx-filter-type')?.value || '';
   const catId = document.getElementById('tx-filter-category')?.value || '';
@@ -322,6 +362,7 @@ async function loadTransactions() {
 
   try {
     const res = await fetch(url);
+    if (!res.ok) return;
     const transactions = await res.json();
     state.transactions = transactions;
 
@@ -351,26 +392,26 @@ async function loadTransactions() {
         <td>
           <div style="font-weight:600;">${escapeHtml(t.description)}</div>
           ${t.notes ? `<small class="text-muted">${escapeHtml(t.notes)}</small>` : ''}
-          ${t.tags ? `<span class="badge" style="background:var(--bg-secondary); font-size:0.7rem;">#${escapeHtml(t.tags)}</span>` : ''}
+          ${t.tags ? `<span class="badge" style="background:var(--bg-secondary); margin-left:4px;">#${escapeHtml(t.tags)}</span>` : ''}
         </td>
         <td>
-          <span style="display:inline-flex; align-items:center; gap:6px;">
-            <span>${t.category_icon || '📁'}</span>
+          <span style="display:inline-flex; align-items:center; gap:8px;">
+            <span class="legend-color-dot" style="background:${t.category_color || 'var(--accent-text)'};"></span>
             <span>${escapeHtml(t.category_name || 'Geral')}</span>
           </span>
         </td>
         <td><span class="text-muted">${escapeHtml(t.payment_method || '-')}</span></td>
         <td>
           <span class="badge ${t.status === 'paid' ? 'badge-paid' : 'badge-pending'}">
-            ${t.status === 'paid' ? '● Concluído' : '○ Pendente'}
+            ${t.status === 'paid' ? 'Concluído' : 'Pendente'}
           </span>
         </td>
-        <td class="text-right" style="font-weight:700; color:${amountColor}; font-size:0.95rem;">
+        <td class="text-right tabular-nums" style="font-weight:700; color:${amountColor};">
           ${amountPrefix}${formatCurrency(t.amount)}
         </td>
         <td class="text-center">
-          <button class="btn-action-icon" onclick="editTransaction(${t.id})" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button>
-          <button class="btn-action-icon delete" onclick="deleteTransaction(${t.id})" title="Excluir"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+          <button type="button" class="btn-action-icon" onclick="editTransaction(${t.id})" title="Editar">${SVG_ICONS.edit}</button>
+          <button type="button" class="btn-action-icon delete" onclick="deleteTransaction(${t.id})" title="Excluir">${SVG_ICONS.trash}</button>
         </td>
       `;
       tbody.appendChild(tr);
@@ -383,6 +424,7 @@ async function loadTransactions() {
 async function loadDashboardRecentTx() {
   try {
     const res = await fetch(`/api/transactions?month=${state.currentMonth}`);
+    if (!res.ok) return;
     const transactions = await res.json();
     const container = document.getElementById('dash-recent-tx');
     container.innerHTML = '';
@@ -401,13 +443,13 @@ async function loadDashboardRecentTx() {
       row.className = 'mini-tx-row';
       row.innerHTML = `
         <div class="mini-tx-info">
-          <span class="mini-tx-icon">${t.category_icon || '📁'}</span>
+          <span class="mini-tx-icon">${SVG_ICONS.folder}</span>
           <div>
             <div style="font-weight:600;">${escapeHtml(t.description)}</div>
             <small class="text-muted">${formatDate(t.date)} • ${escapeHtml(t.category_name || 'Geral')}</small>
           </div>
         </div>
-        <div style="font-weight:700; color:${color};">
+        <div class="tabular-nums" style="font-weight:700; color:${color};">
           ${prefix} ${formatCurrency(t.amount)}
         </div>
       `;
@@ -418,7 +460,6 @@ async function loadDashboardRecentTx() {
   }
 }
 
-// Orçamentos e Metas
 async function loadBudgetsAndGoals() {
   try {
     const [bRes, gRes, sRes] = await Promise.all([
@@ -426,28 +467,28 @@ async function loadBudgetsAndGoals() {
       fetch('/api/goals'),
       fetch(`/api/dashboard?month=${state.currentMonth}`)
     ]);
-    const budgets = await bRes.json();
-    const goals = await gRes.json();
-    const summary = await sRes.json();
+    const budgets = bRes.ok ? await bRes.json() : [];
+    const goals = gRes.ok ? await gRes.json() : [];
+    const summary = sRes.ok ? await sRes.json() : {};
 
     state.budgets = budgets;
     state.goals = goals;
+    const budgetsStatus = summary.budgets_status || [];
 
-    // Render Orçamentos
     const bList = document.getElementById('budgets-full-list');
     bList.innerHTML = '';
 
-    if (!summary.budgets_status.length) {
+    if (!budgetsStatus.length) {
       bList.innerHTML = `
         <div class="empty-state">
-          <div class="empty-icon">🎯</div>
-          <h4>Nenhum teto configurado</h4>
+          <div class="empty-icon">${SVG_ICONS.target}</div>
+          <h3>Nenhum teto configurado</h3>
           <p>Defina tetos mensais para controlar os gastos por categoria.</p>
-          <button class="btn-primary" onclick="openModal('modal-budget')">Criar Primeiro Teto</button>
+          <button type="button" class="btn-primary" onclick="openModal('modal-budget')">Criar Primeiro Teto</button>
         </div>
       `;
     } else {
-      summary.budgets_status.forEach(b => {
+      budgetsStatus.forEach(b => {
         const pct = Math.min(b.percentage, 100);
         let barClass = 'progress-fill-success';
         if (b.percentage > 90) barClass = 'progress-fill-danger';
@@ -458,62 +499,61 @@ async function loadBudgetsAndGoals() {
         item.innerHTML = `
           <div class="budget-item-header">
             <div style="display:flex; align-items:center; gap:8px;">
-              <span>${b.category_icon}</span>
+              <span class="legend-color-dot" style="background:${b.category_color || 'var(--accent-text)'};"></span>
               <span>${escapeHtml(b.category_name)}</span>
             </div>
-            <div>
-              <span style="font-weight:700;">${formatCurrency(b.spent_amount)}</span> / 
+            <div class="tabular-nums">
+              <span style="font-weight:700;">${formatCurrency(b.spent_amount)}</span> /
               <span class="text-muted">${formatCurrency(b.monthly_limit)}</span>
               <span style="font-size:0.8rem; margin-left:6px; color:${b.percentage > 100 ? 'var(--accent-danger)' : 'var(--text-secondary)'}">(${b.percentage}%)</span>
-              <button class="btn-action-icon delete" onclick="deleteBudget(${b.budget_id})" title="Remover Teto" style="margin-left:8px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+              <button type="button" class="btn-action-icon delete" onclick="deleteBudget(${b.budget_id})" title="Remover Teto" style="margin-left:8px;">${SVG_ICONS.trash}</button>
             </div>
           </div>
           <div class="progress-bar-bg">
             <div class="progress-bar-fill ${barClass}" style="width: ${pct}%;"></div>
           </div>
-          <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted);">
-            <span>${b.remaining >= 0 ? `Restante: ${formatCurrency(b.remaining)}` : `<strong style="color:var(--accent-danger)">Estourou por ${formatCurrency(Math.abs(b.remaining))}</strong>`}</span>
+          <div style="display:flex; justify-content:space-between; font-size:0.78rem; color:var(--text-muted);">
+            <span>${b.remaining >= 0 ? `Restante: ${formatCurrency(b.remaining)}` : `<strong style="color:var(--accent-danger)">Excedido em ${formatCurrency(Math.abs(b.remaining))}</strong>`}</span>
           </div>
         `;
         bList.appendChild(item);
       });
     }
 
-    // Render Metas
     const gList = document.getElementById('goals-list');
     gList.innerHTML = '';
 
     if (!goals.length) {
       gList.innerHTML = `
         <div class="empty-state" style="grid-column: 1 / -1;">
-          <div class="empty-icon">🏆</div>
-          <h4>Nenhuma meta cadastrada</h4>
-          <p>Crie metas de economia para acompanhar seus sonhos.</p>
-          <button class="btn-primary" onclick="openGoalModal()">Criar Meta</button>
+          <div class="empty-icon">${SVG_ICONS.shield}</div>
+          <h3>Nenhuma meta cadastrada</h3>
+          <p>Crie metas de economia para acompanhar a evolução do seu patrimônio.</p>
+          <button type="button" class="btn-primary" onclick="openGoalModal()">Criar Meta</button>
         </div>
       `;
     } else {
       goals.forEach(g => {
-        const pct = Math.min(g.percentage, 100);
+        const pct = Math.min(g.percentage || 0, 100);
         const card = document.createElement('div');
         card.className = 'goal-card';
         card.innerHTML = `
           <div class="goal-card-header">
             <div class="goal-title-wrapper">
-              <span class="goal-icon">${g.icon || '🎯'}</span>
+              <span class="goal-icon">${renderGoalIcon(g.icon)}</span>
               <div>
                 <div class="goal-title">${escapeHtml(g.title)}</div>
                 ${g.deadline ? `<small class="text-muted">Prazo: ${formatDate(g.deadline)}</small>` : ''}
               </div>
             </div>
             <div>
-              <button class="btn-action-icon" onclick="editGoal(${g.id})" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button>
-              <button class="btn-action-icon delete" onclick="deleteGoal(${g.id})" title="Excluir"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+              <button type="button" class="btn-action-icon" onclick="editGoal(${g.id})" title="Editar">${SVG_ICONS.edit}</button>
+              <button type="button" class="btn-action-icon delete" onclick="deleteGoal(${g.id})" title="Excluir">${SVG_ICONS.trash}</button>
             </div>
           </div>
 
-          <div style="display:flex; justify-content:space-between; font-size:0.9rem; font-weight:700; margin-top:4px;">
-            <span style="color:var(--accent-primary);">${formatCurrency(g.current_amount)}</span>
+          <div class="tabular-nums" style="display:flex; justify-content:space-between; font-size:0.9rem; font-weight:700; margin-top:4px;">
+            <span style="color:var(--accent-text);">${formatCurrency(g.current_amount)}</span>
             <span class="text-muted">${formatCurrency(g.target_amount)}</span>
           </div>
 
@@ -521,8 +561,8 @@ async function loadBudgetsAndGoals() {
             <div class="progress-bar-fill progress-fill-success" style="width: ${pct}%;"></div>
           </div>
 
-          <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-muted);">
-            <span>Progresso: <strong>${g.percentage}%</strong></span>
+          <div class="tabular-nums" style="display:flex; justify-content:space-between; font-size:0.78rem; color:var(--text-muted);">
+            <span>Progresso: <strong>${g.percentage || 0}%</strong></span>
             <span>Faltam: ${formatCurrency(Math.max(0, g.target_amount - g.current_amount))}</span>
           </div>
         `;
@@ -538,7 +578,7 @@ function renderDashboardBudgetsMini(budgets) {
   const container = document.getElementById('dash-budgets-list');
   container.innerHTML = '';
 
-  if (!budgets.length) {
+  if (!budgets || !budgets.length) {
     container.innerHTML = '<p class="text-muted" style="font-size:0.85rem;">Nenhum teto configurado.</p>';
     return;
   }
@@ -553,8 +593,8 @@ function renderDashboardBudgetsMini(budgets) {
     div.className = 'budget-item';
     div.innerHTML = `
       <div class="budget-item-header">
-        <span>${b.category_icon} ${escapeHtml(b.category_name)}</span>
-        <span>${formatCurrency(b.spent_amount)} / ${formatCurrency(b.monthly_limit)}</span>
+        <span>${escapeHtml(b.category_name)}</span>
+        <span class="tabular-nums">${formatCurrency(b.spent_amount)} / ${formatCurrency(b.monthly_limit)}</span>
       </div>
       <div class="progress-bar-bg">
         <div class="progress-bar-fill ${barClass}" style="width: ${pct}%;"></div>
@@ -564,10 +604,10 @@ function renderDashboardBudgetsMini(budgets) {
   });
 }
 
-// Contas Recorrentes
 async function loadRecurringBills() {
   try {
     const res = await fetch(`/api/recurring?month=${state.currentMonth}`);
+    if (!res.ok) return;
     const bills = await res.json();
     state.recurringBills = bills;
 
@@ -588,9 +628,9 @@ async function loadRecurringBills() {
           ${b.notes ? `<small class="text-muted">${escapeHtml(b.notes)}</small>` : ''}
         </td>
         <td>
-          <span>${b.category_icon || '📁'} ${escapeHtml(b.category_name || 'Geral')}</span>
+          <span>${escapeHtml(b.category_name || 'Geral')}</span>
         </td>
-        <td style="font-weight:700;">${formatCurrency(b.amount)}</td>
+        <td class="tabular-nums" style="font-weight:700;">${formatCurrency(b.amount)}</td>
         <td><span class="text-muted">${escapeHtml(b.payment_method || 'PIX')}</span></td>
         <td>
           <span class="badge badge-${b.status_class}">
@@ -598,11 +638,11 @@ async function loadRecurringBills() {
           </span>
         </td>
         <td class="text-center">
-          ${b.is_paid 
-            ? `<button class="btn-secondary" onclick="unpayRecurringBill(${b.id})" style="font-size:0.75rem; padding:4px 8px;">↩ Desmarcar</button>`
-            : `<button class="btn-primary" onclick="payRecurringBill(${b.id})" style="font-size:0.75rem; padding:4px 8px;">✓ Pagar no Mês</button>`
+          ${b.is_paid
+            ? `<button type="button" class="btn-secondary" onclick="unpayRecurringBill(${b.id})" style="font-size:0.78rem; padding:4px 10px;">Desmarcar</button>`
+            : `<button type="button" class="btn-primary" onclick="payRecurringBill(${b.id})" style="font-size:0.78rem; padding:4px 10px;">Pagar no Mês</button>`
           }
-          <button class="btn-action-icon delete" onclick="deleteRecurringBill(${b.id})" title="Excluir" style="margin-left:6px;">🗑️</button>
+          <button type="button" class="btn-action-icon delete" onclick="deleteRecurringBill(${b.id})" title="Excluir" style="margin-left:6px;">${SVG_ICONS.trash}</button>
         </td>
       `;
       tbody.appendChild(tr);
@@ -617,9 +657,11 @@ async function loadRecurringBills() {
 async function updateRecurringBadge() {
   try {
     const res = await fetch(`/api/recurring?month=${state.currentMonth}`);
+    if (!res.ok) return;
     const bills = await res.json();
     const pendingCount = bills.filter(b => !b.is_paid).length;
     const badge = document.getElementById('recurring-badge');
+    if (!badge) return;
     if (pendingCount > 0) {
       badge.textContent = pendingCount;
       badge.style.display = 'inline-block';
@@ -632,7 +674,7 @@ async function updateRecurringBadge() {
 }
 
 // ==========================================================================
-// Ações e Handlers
+// Handlers de Formulários & Ações
 // ==========================================================================
 
 async function handleTransactionSubmit(e) {
@@ -651,20 +693,17 @@ async function handleTransactionSubmit(e) {
   };
 
   try {
-    let res;
-    if (txId) {
-      res = await fetch(`/api/transactions/${txId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-    } else {
-      res = await fetch('/api/transactions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-    }
+    const res = txId
+      ? await fetch(`/api/transactions/${txId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        })
+      : await fetch('/api/transactions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
 
     if (res.ok) {
       closeModal('modal-transaction');
@@ -730,7 +769,6 @@ function openTransactionModal() {
   openModal('modal-transaction');
 }
 
-// Orçamentos
 async function handleBudgetSubmit(e) {
   e.preventDefault();
   const payload = {
@@ -767,7 +805,6 @@ async function deleteBudget(id) {
   }
 }
 
-// Metas
 function openGoalModal() {
   document.getElementById('form-goal').reset();
   document.getElementById('goal-id').value = '';
@@ -788,20 +825,17 @@ async function handleGoalSubmit(e) {
   };
 
   try {
-    let res;
-    if (goalId) {
-      res = await fetch(`/api/goals/${goalId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-    } else {
-      res = await fetch('/api/goals', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-    }
+    const res = goalId
+      ? await fetch(`/api/goals/${goalId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        })
+      : await fetch('/api/goals', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
 
     if (res.ok) {
       closeModal('modal-goal');
@@ -823,7 +857,7 @@ async function editGoal(id) {
   document.getElementById('goal-target').value = g.target_amount;
   document.getElementById('goal-current').value = g.current_amount;
   document.getElementById('goal-deadline').value = g.deadline || '';
-  document.getElementById('goal-icon').value = g.icon || '🎯';
+  document.getElementById('goal-icon').value = SVG_ICONS[g.icon] ? g.icon : 'target';
   document.getElementById('goal-notes').value = g.notes || '';
 
   openModal('modal-goal');
@@ -842,7 +876,6 @@ async function deleteGoal(id) {
   }
 }
 
-// Contas Fixas
 async function handleRecurringSubmit(e) {
   e.preventDefault();
   const payload = {
@@ -915,7 +948,6 @@ async function deleteRecurringBill(id) {
   }
 }
 
-// Exportação / Importação / Reset
 function exportData(type) {
   if (type === 'csv') {
     window.location.href = `/api/export/csv?month=${state.currentMonth}`;
@@ -962,18 +994,20 @@ async function resetDemoData() {
 }
 
 // ==========================================================================
-// SVG Chart Rendering Engine (Pure Mathematical Vector Drawing)
+// SVG Chart Rendering Engine
 // ==========================================================================
 
 function renderCategoryDonut(categories) {
   const container = document.getElementById('category-donut-container');
   const legend = document.getElementById('category-legend');
+  if (!container || !legend) return;
   container.innerHTML = '';
   legend.innerHTML = '';
 
-  const total = categories.reduce((sum, c) => sum + c.total_amount, 0);
+  const list = categories || [];
+  const total = list.reduce((sum, c) => sum + (Number(c.total_amount) || 0), 0);
 
-  if (total === 0 || !categories.length) {
+  if (total === 0 || !list.length) {
     container.innerHTML = `
       <svg width="180" height="180" viewBox="0 0 180 180">
         <circle cx="90" cy="90" r="70" fill="none" stroke="var(--border-color)" stroke-width="20" />
@@ -994,34 +1028,34 @@ function renderCategoryDonut(categories) {
   let currentOffset = 0;
   let svgPaths = '';
 
-  categories.forEach(c => {
-    const percentage = c.total_amount / total;
+  list.forEach(c => {
+    const amount = Number(c.total_amount) || 0;
+    const percentage = amount / total;
     const strokeDasharray = `${percentage * circumference} ${circumference}`;
     const strokeDashoffset = -currentOffset;
 
     svgPaths += `
-      <circle cx="${cx}" cy="${cy}" r="${radius}" 
-        fill="none" 
-        stroke="${c.color || '#64748b'}" 
-        stroke-width="${strokeWidth}" 
-        stroke-dasharray="${strokeDasharray}" 
-        stroke-dashoffset="${strokeDashoffset}" 
+      <circle cx="${cx}" cy="${cy}" r="${radius}"
+        fill="none"
+        stroke="${c.color || '#3b82f6'}"
+        stroke-width="${strokeWidth}"
+        stroke-dasharray="${strokeDasharray}"
+        stroke-dashoffset="${strokeDashoffset}"
         style="transition: stroke-dasharray 0.5s ease;"
       />
     `;
 
     currentOffset += percentage * circumference;
 
-    // Legenda
     const pctLabel = (percentage * 100).toFixed(1);
     const item = document.createElement('div');
     item.className = 'legend-item';
     item.innerHTML = `
       <div class="legend-name">
-        <span class="legend-color-dot" style="background-color:${c.color};"></span>
-        <span>${c.icon} ${escapeHtml(c.name)}</span>
+        <span class="legend-color-dot" style="background-color:${c.color || '#3b82f6'};"></span>
+        <span>${escapeHtml(c.name)}</span>
       </div>
-      <div class="legend-value">${formatCurrency(c.total_amount)} <span class="text-muted" style="font-size:0.75rem; font-weight:normal;">(${pctLabel}%)</span></div>
+      <div class="legend-value tabular-nums">${formatCurrency(amount)} <span class="text-muted" style="font-size:0.78rem; font-weight:normal;">(${pctLabel}%)</span></div>
     `;
     legend.appendChild(item);
   });
@@ -1035,6 +1069,7 @@ function renderCategoryDonut(categories) {
 
 function renderMonthlyHistoryBarChart(history) {
   const container = document.getElementById('history-barchart-container');
+  if (!container) return;
   container.innerHTML = '';
 
   if (!history || !history.length) {
@@ -1046,7 +1081,7 @@ function renderMonthlyHistoryBarChart(history) {
   const height = 200;
   const padding = { top: 20, right: 20, bottom: 40, left: 40 };
 
-  const maxVal = Math.max(...history.flatMap(h => [h.income, h.expense]), 1000);
+  const maxVal = Math.max(...history.flatMap(h => [Number(h.income) || 0, Number(h.expense) || 0]), 1000);
   const chartWidth = width - padding.left - padding.right;
   const chartHeight = height - padding.top - padding.bottom;
 
@@ -1058,31 +1093,28 @@ function renderMonthlyHistoryBarChart(history) {
 
   history.forEach((h, idx) => {
     const groupX = padding.left + idx * barGroupWidth;
-    
-    // Bar Receitas
-    const incomeHeight = (h.income / maxVal) * chartHeight;
+
+    const incomeHeight = ((Number(h.income) || 0) / maxVal) * chartHeight;
     const incomeY = padding.top + (chartHeight - incomeHeight);
     const incomeX = groupX + (barGroupWidth / 2) - barWidth - 2;
 
-    // Bar Despesas
-    const expenseHeight = (h.expense / maxVal) * chartHeight;
+    const expenseHeight = ((Number(h.expense) || 0) / maxVal) * chartHeight;
     const expenseY = padding.top + (chartHeight - expenseHeight);
     const expenseX = groupX + (barGroupWidth / 2) + 2;
 
-    // Mês Label
-    const monthLabel = h.month_period.slice(5); // MM
+    const monthLabel = String(h.month_period || '').slice(5);
 
     barsSvg += `
-      <rect x="${incomeX}" y="${incomeY}" width="${barWidth}" height="${incomeHeight}" rx="4" fill="var(--accent-success)" opacity="0.9">
+      <rect x="${incomeX}" y="${incomeY}" width="${barWidth}" height="${Math.max(2, incomeHeight)}" rx="4" fill="var(--accent-success)" opacity="0.9">
         <title>Receitas (${h.month_period}): ${formatCurrency(h.income)}</title>
       </rect>
-      <rect x="${expenseX}" y="${expenseY}" width="${barWidth}" height="${expenseHeight}" rx="4" fill="var(--accent-danger)" opacity="0.9">
+      <rect x="${expenseX}" y="${expenseY}" width="${barWidth}" height="${Math.max(2, expenseHeight)}" rx="4" fill="var(--accent-danger)" opacity="0.9">
         <title>Despesas (${h.month_period}): ${formatCurrency(h.expense)}</title>
       </rect>
     `;
 
     labelsSvg += `
-      <text x="${groupX + barGroupWidth / 2}" y="${height - 12}" text-anchor="middle" fill="var(--text-muted)" font-size="11" font-weight="600">
+      <text x="${groupX + barGroupWidth / 2}" y="${height - 12}" text-anchor="middle" fill="var(--text-muted)" font-size="12" font-weight="600">
         ${monthLabel}
       </text>
     `;
@@ -1090,14 +1122,10 @@ function renderMonthlyHistoryBarChart(history) {
 
   container.innerHTML = `
     <svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}">
-      <!-- Linhas Guia de Fundo -->
       <line x1="${padding.left}" y1="${padding.top}" x2="${width - padding.right}" y2="${padding.top}" stroke="var(--border-color)" stroke-dasharray="3" />
       <line x1="${padding.left}" y1="${padding.top + chartHeight / 2}" x2="${width - padding.right}" y2="${padding.top + chartHeight / 2}" stroke="var(--border-color)" stroke-dasharray="3" />
       <line x1="${padding.left}" y1="${padding.top + chartHeight}" x2="${width - padding.right}" y2="${padding.top + chartHeight}" stroke="var(--border-color)" />
-      
-      <!-- Barras -->
       ${barsSvg}
-      <!-- Labels -->
       ${labelsSvg}
     </svg>
   `;
@@ -1142,9 +1170,10 @@ function escapeHtml(str) {
 
 function showToast(message, type = 'success') {
   const container = document.getElementById('toast-container');
+  if (!container) return;
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
-  toast.innerHTML = `<span>${type === 'success' ? '✓' : '⚠️'}</span> <span>${escapeHtml(message)}</span>`;
+  toast.innerHTML = `<span>${type === 'success' ? SVG_ICONS.check : SVG_ICONS.alert}</span> <span style="color:var(--text-primary);">${escapeHtml(message)}</span>`;
   container.appendChild(toast);
 
   setTimeout(() => {
@@ -1171,8 +1200,8 @@ async function loadAccountsAndCards() {
       fetch('/api/accounts'),
       fetch('/api/credit-cards')
     ]);
-    const accounts = await accRes.json();
-    const cards = await cardRes.json();
+    const accounts = accRes.ok ? await accRes.json() : [];
+    const cards = cardRes.ok ? await cardRes.json() : [];
 
     const accContainer = document.getElementById('accounts-list');
     if (accContainer) {
@@ -1180,15 +1209,15 @@ async function loadAccountsAndCards() {
         accContainer.innerHTML = '<p class="text-muted">Nenhuma conta cadastrada.</p>';
       } else {
         accContainer.innerHTML = accounts.map(a => `
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--border); margin-bottom: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--border-color); margin-bottom: 8px;">
             <div style="display: flex; align-items: center; gap: 12px;">
-              <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: ${a.color};"></span>
+              <span class="legend-color-dot" style="background: ${a.color || 'var(--accent-success)'};"></span>
               <div>
                 <strong>${escapeHtml(a.name)}</strong>
-                <div style="font-size: 0.8rem; color: var(--text-muted);">${a.account_type}</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(a.account_type)}</div>
               </div>
             </div>
-            <strong style="color: var(--accent);">${formatCurrency(a.current_balance)}</strong>
+            <strong class="tabular-nums" style="color: var(--text-primary);">${formatCurrency(a.current_balance)}</strong>
           </div>
         `).join('');
       }
@@ -1200,15 +1229,15 @@ async function loadAccountsAndCards() {
         cardsContainer.innerHTML = '<p class="text-muted">Nenhum cartão cadastrado.</p>';
       } else {
         cardsContainer.innerHTML = cards.map(c => `
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--border); margin-bottom: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--border-color); margin-bottom: 8px;">
             <div style="display: flex; align-items: center; gap: 12px;">
-              <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: ${c.color};"></span>
+              <span class="legend-color-dot" style="background: ${c.color || 'var(--accent-text)'};"></span>
               <div>
                 <strong>${escapeHtml(c.name)}</strong>
                 <div style="font-size: 0.8rem; color: var(--text-muted);">Fecha dia ${c.closing_day} | Vence dia ${c.due_day}</div>
               </div>
             </div>
-            <span style="font-size: 0.9rem;">Limite: <strong>${formatCurrency(c.credit_limit)}</strong></span>
+            <span class="tabular-nums" style="font-size: 0.9rem;">Limite: <strong>${formatCurrency(c.credit_limit)}</strong></span>
           </div>
         `).join('');
       }
@@ -1218,7 +1247,6 @@ async function loadAccountsAndCards() {
   }
 }
 
-// Criação de Conta
 document.getElementById('form-account')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const name = document.getElementById('acc-name').value;
@@ -1244,7 +1272,6 @@ document.getElementById('form-account')?.addEventListener('submit', async (e) =>
   }
 });
 
-// Criação de Cartão
 document.getElementById('form-card')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const name = document.getElementById('card-name').value;
@@ -1271,7 +1298,6 @@ document.getElementById('form-card')?.addEventListener('submit', async (e) => {
   }
 });
 
-// Processamento de OFX
 async function handleOfxFileSelected(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -1292,24 +1318,23 @@ async function handleOfxFileSelected(event) {
       const data = await res.json();
       if (data.success) {
         resultDiv.innerHTML = `
-          <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; padding: 16px; border-radius: 8px; color: #10b981;">
-            <h4>✓ Extrato Importado com Sucesso!</h4>
-            <p style="margin-top: 8px; color: var(--text);">Foram importadas <strong>${data.imported_count}</strong> transações do Banco (${data.bank_id || 'Brasileiro'}).</p>
+          <div style="background: var(--accent-success-bg); border: 1px solid var(--accent-success); padding: 16px; border-radius: 8px; color: var(--accent-success);">
+            <h3 style="font-size: 1rem;">Extrato Importado com Sucesso</h3>
+            <p style="margin-top: 8px; color: var(--text-primary);">Foram importadas <strong>${data.imported_count}</strong> transações (${escapeHtml(data.bank_id || 'Bancário')}).</p>
           </div>
         `;
         showToast(`${data.imported_count} lançamentos adicionados via OFX!`);
-        if (typeof loadTransactions === 'function') loadTransactions();
+        loadTransactions();
       } else {
-        resultDiv.innerHTML = `<p style="color: #ef4444;">Erro: ${data.error}</p>`;
+        resultDiv.innerHTML = `<p style="color: var(--accent-danger);">Erro: ${escapeHtml(data.error)}</p>`;
       }
     } catch (err) {
-      resultDiv.innerHTML = `<p style="color: #ef4444;">Erro ao enviar arquivo para o servidor.</p>`;
+      resultDiv.innerHTML = `<p style="color: var(--accent-danger);">Erro ao enviar arquivo para o servidor.</p>`;
     }
   };
   reader.readAsText(file);
 }
 
-// Checkout BunkerPay
 async function startBunkerpayCheckout(planKey) {
   try {
     const res = await fetch('/api/bunkerpay/checkout', {
@@ -1321,13 +1346,13 @@ async function startBunkerpayCheckout(planKey) {
     const contentDiv = document.getElementById('bunkerpay-pix-content');
 
     contentDiv.innerHTML = `
-      <div style="font-size: 1.1rem; margin-bottom: 12px;">Valor: <strong>R$ ${charge.amount.toFixed(2)}</strong></div>
-      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Escaneie o QR Code ou copie a chave Pix abaixo para liquidação direta via BunkerPay:</p>
-      <textarea readonly style="width: 100%; height: 90px; padding: 8px; font-family: monospace; font-size: 0.75rem; background: var(--bg-card); color: var(--text); border: 1px solid var(--border); border-radius: 4px; resize: none;">${charge.pix_copy_paste}</textarea>
-      <button class="btn-primary mt-3" style="width: 100%;" onclick="navigator.clipboard.writeText('${charge.pix_copy_paste}'); showToast('Código Pix copiado!');">
+      <div class="tabular-nums" style="font-size: 1.15rem; margin-bottom: 12px;">Valor: <strong>R$ ${Number(charge.amount || 0).toFixed(2)}</strong></div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">Copie a chave Pix abaixo para liquidação direta via BunkerPay:</p>
+      <textarea readonly style="width: 100%; height: 90px; padding: 10px; font-family: var(--font-mono); font-size: 0.78rem; background: var(--bg-input); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 8px; resize: none;">${escapeHtml(charge.pix_copy_paste)}</textarea>
+      <button type="button" class="btn-primary mt-3" style="width: 100%; justify-content: center;" onclick="navigator.clipboard.writeText('${escapeHtml(charge.pix_copy_paste)}'); showToast('Código Pix copiado!');">
         Copiar Código Pix
       </button>
-      <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 12px;">Liquidação instantânea & privacidade patrimonial garantida.</div>
+      <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 12px;">Liquidação instantânea &amp; privacidade patrimonial garantida.</div>
     `;
 
     openModal('bunkerpay-pix-modal');
@@ -1337,33 +1362,29 @@ async function startBunkerpayCheckout(planKey) {
 }
 
 // ==========================================================================
-// MÓDULO DE AUTENTICAÇÃO SEGURA (CLIENT-SIDE)
+// MÓDULO DE AUTENTICAÇÃO SEGURA (ZERO-TRUST GATE)
 // ==========================================================================
 
-let authState = {
-  mode: 'login', // 'login' ou 'register'
-  user: null
-};
-
 async function checkAuthSession() {
+  const gate = document.getElementById('auth-screen-gate');
   try {
     const res = await fetch('/api/auth/me');
-    const gate = document.getElementById('auth-screen-gate');
     if (res.ok) {
       const data = await res.json();
       if (data.authenticated && data.user) {
         authState.user = data.user;
         updateUserUI(data.user);
         if (gate) gate.style.display = 'none';
-        return;
+        return true;
       }
     }
     updateUserUI(null);
     if (gate) gate.style.display = 'flex';
+    return false;
   } catch (err) {
     updateUserUI(null);
-    const gate = document.getElementById('auth-screen-gate');
     if (gate) gate.style.display = 'flex';
+    return false;
   }
 }
 
@@ -1376,13 +1397,12 @@ function updateUserUI(user) {
 
   if (user) {
     if (nameEl) nameEl.textContent = user.name || user.email.split('@')[0];
-    if (planEl) planEl.textContent = (user.role === 'admin' ? '🛡️ Admin • ' : '') + (user.plan || 'Free');
+    if (planEl) planEl.textContent = (user.role === 'admin' ? 'Admin • ' : '') + (user.plan || 'Free');
     if (avatarEl) avatarEl.textContent = (user.name || user.email)[0].toUpperCase();
     if (btnAuth) {
-      btnAuth.textContent = '🚪';
+      btnAuth.innerHTML = SVG_ICONS.logout;
       btnAuth.title = 'Sair da Conta (Logout)';
     }
-    // Exibe o botão de Admin caso tenha role admin
     if (adminNav) {
       adminNav.style.display = user.role === 'admin' ? 'flex' : 'none';
     }
@@ -1391,146 +1411,10 @@ function updateUserUI(user) {
     if (planEl) planEl.textContent = 'Não Autenticado';
     if (avatarEl) avatarEl.textContent = '?';
     if (btnAuth) {
-      btnAuth.textContent = '🔑';
-      btnAuth.title = 'Entrar / Cadastrar';
+      btnAuth.innerHTML = SVG_ICONS.login;
+      btnAuth.title = 'Entrar na Conta';
     }
     if (adminNav) adminNav.style.display = 'none';
-  }
-}
-
-// ==========================================================================
-// PAINEL ADMINISTRATIVO DO SAAS (CARREGAMENTO & GESTÃO)
-// ==========================================================================
-
-async function loadAdminDashboard() {
-  try {
-    const res = await fetch('/api/admin/overview');
-    if (!res.ok) {
-      showToast('Acesso restrito a administradores.', 'error');
-      return;
-    }
-
-    const data = await res.json();
-    const m = data.metrics || {};
-
-    // Atualizar Métricas
-    document.getElementById('admin-total-users').textContent = m.total_users || 0;
-    document.getElementById('admin-free-users').textContent = `${m.free_users || 0} no plano gratuito`;
-    document.getElementById('admin-pro-users').textContent = m.pro_subscribers || 0;
-    document.getElementById('admin-mrr').textContent = formatCurrency(m.estimated_mrr || 0);
-    document.getElementById('admin-tx-count').textContent = m.total_transactions || 0;
-    document.getElementById('admin-volume').textContent = `${formatCurrency(m.total_financial_volume || 0)} movimentados`;
-
-    // Renderizar Tabela de Usuários
-    const tbody = document.getElementById('admin-users-table-body');
-    if (tbody) {
-      if (!data.users || data.users.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="padding: 24px; text-align: center; color: var(--text-muted);">Nenhum usuário cadastrado.</td></tr>';
-      } else {
-        tbody.innerHTML = data.users.map(u => `
-          <tr style="border-bottom: 1px solid var(--border-color); font-size: 0.85rem;">
-            <td style="padding: 12px 16px; font-weight: 600;">#${u.id}</td>
-            <td style="padding: 12px 16px;">
-              <strong>${escapeHtml(u.name)}</strong>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">${escapeHtml(u.email)}</div>
-            </td>
-            <td style="padding: 12px 16px;">
-              <span style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; background: ${u.plan.startsWith('pro') ? 'rgba(16, 185, 129, 0.2)' : 'rgba(148, 163, 184, 0.15)'}; color: ${u.plan.startsWith('pro') ? '#10b981' : 'var(--text-muted)'};">
-                ${u.plan.toUpperCase()}
-              </span>
-            </td>
-            <td style="padding: 12px 16px;">
-              <span style="font-weight: 600; color: ${u.role === 'admin' ? 'var(--accent-warning)' : 'inherit'};">
-                ${u.role === 'admin' ? 'Administrador' : 'Usuário'}
-              </span>
-            </td>
-            <td style="padding: 12px 16px;">
-              <span>${u.tx_count || 0} lançamentos</span>
-              <div style="font-size: 0.72rem; color: var(--text-muted);">${u.accounts_count || 0} contas</div>
-            </td>
-            <td style="padding: 12px 16px; color: var(--text-muted); font-size: 0.78rem;">
-              ${formatDate(String(u.created_at || '').slice(0, 10))}
-            </td>
-            <td style="padding: 12px 16px; text-align: right;">
-              <button class="btn-ghost" style="padding: 4px 8px; font-size: 0.75rem;" onclick="adminTogglePlan(${u.id}, '${u.plan}')">
-                ${u.plan.startsWith('pro') ? 'Rebaixar p/ Free' : 'Promover p/ Pro'}
-              </button>
-            </td>
-          </tr>
-        `).join('');
-      }
-    }
-
-    // Renderizar Feature Flags (Shift ON / OFF)
-    const flagsContainer = document.getElementById('admin-feature-flags');
-    if (flagsContainer && data.settings) {
-      flagsContainer.innerHTML = data.settings.map(s => {
-        const isEnabled = s.value === 'true';
-        return `
-          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
-            <div>
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <span style="font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700; color: var(--accent-primary);">${escapeHtml(s.key)}</span>
-                <span style="font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; font-weight: 700; background: ${isEnabled ? 'var(--accent-success-bg)' : 'var(--accent-danger-bg)'}; color: ${isEnabled ? 'var(--accent-success)' : 'var(--accent-danger)'};">
-                  ${isEnabled ? 'ATIVO (ON)' : 'INATIVO (OFF)'}
-                </span>
-              </div>
-              <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0;">${escapeHtml(s.description || '')}</p>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--border-color);">
-              <span style="font-size: 0.72rem; color: var(--text-muted);">Shift Control</span>
-              <button class="${isEnabled ? 'btn-danger-outline' : 'btn-primary'}" style="padding: 4px 12px; font-size: 0.78rem;" onclick="adminToggleSetting('${s.key}', ${!isEnabled})">
-                ${isEnabled ? 'Desativar' : 'Ativar'}
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-  } catch (err) {
-    showToast('Erro ao carregar dados administrativos.', 'error');
-  }
-}
-
-async function adminTogglePlan(userId, currentPlan) {
-  const newPlan = currentPlan.startsWith('pro') ? 'free' : 'pro_monthly';
-  if (!confirm(`Alterar plano do usuário #${userId} para ${newPlan.toUpperCase()}?`)) return;
-
-  try {
-    const res = await fetch('/api/admin/overview', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: userId, plan: newPlan })
-    });
-    const data = await res.json();
-    if (res.ok && data.success) {
-      showToast('Plano do usuário atualizado com sucesso!');
-      loadAdminDashboard();
-    } else {
-      showToast(data.error || 'Erro ao alterar plano.', 'error');
-    }
-  } catch (err) {
-    showToast('Erro de rede ao atualizar usuário.', 'error');
-  }
-}
-
-// Alternar Feature Flag do Super Admin (Shift ON / OFF)
-async function adminToggleSetting(key, newValue) {
-  try {
-    const res = await fetch('/api/admin/overview', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'toggle_setting', key, value: String(newValue) })
-    });
-    const data = await res.json();
-    if (res.ok && data.success) {
-      showToast(data.message || 'Configuração atualizada com sucesso!');
-      loadAdminDashboard();
-    } else {
-      showToast(data.error || 'Erro ao atualizar configuração.', 'error');
-    }
-  } catch (err) {
-    showToast('Erro de conexão ao alterar flag.', 'error');
   }
 }
 
@@ -1540,81 +1424,17 @@ function handleAuthClick() {
       logoutUser();
     }
   } else {
-    switchAuthMode('login');
-    openModal('modal-auth');
-  }
-}
-
-function switchAuthMode(mode) {
-  authState.mode = mode;
-  const isRegister = mode === 'register';
-
-  document.getElementById('auth-tab-login')?.classList.toggle('active', !isRegister);
-  document.getElementById('auth-tab-register')?.classList.toggle('active', isRegister);
-  
-  const title = document.getElementById('auth-modal-title');
-  const nameGroup = document.getElementById('auth-group-name');
-  const submitBtn = document.getElementById('auth-submit-btn');
-
-  if (title) title.textContent = isRegister ? 'Criar Nova Conta' : 'Acessar Minha Conta';
-  if (nameGroup) nameGroup.style.display = isRegister ? 'block' : 'none';
-  if (submitBtn) submitBtn.textContent = isRegister ? 'Criar Conta Segura' : 'Entrar com Segurança';
-}
-
-async function handleAuthSubmit(e) {
-  e.preventDefault();
-  const email = document.getElementById('auth-email').value;
-  const password = document.getElementById('auth-password').value;
-  const name = document.getElementById('auth-name').value;
-
-  const endpoint = authState.mode === 'register' ? '/api/auth/register' : '/api/auth/login';
-  const payload = authState.mode === 'register' ? { name, email, password } : { email, password };
-
-  try {
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const data = await res.json();
-
-    if (res.ok && data.success) {
-      showToast(authState.mode === 'register' ? 'Conta criada com sucesso!' : 'Login realizado com sucesso!');
-      authState.user = data.user;
-      updateUserUI(data.user);
-      closeModal('modal-auth');
-      refreshCurrentView();
-    } else {
-      showToast(data.error || 'Erro na autenticação.', 'error');
-    }
-  } catch (err) {
-    showToast('Erro de conexão ao autenticar.', 'error');
-  }
-}
-
-async function logoutUser() {
-  try {
-    await fetch('/api/auth/logout', { method: 'POST' });
-    authState.user = null;
-    updateUserUI(null);
-    showToast('Sessão encerrada com segurança.');
     const gate = document.getElementById('auth-screen-gate');
     if (gate) gate.style.display = 'flex';
-  } catch (err) {
-    showToast('Erro ao sair da conta.', 'error');
   }
 }
-
-
-
-let gateMode = 'login';
 
 function switchGateAuthMode(mode) {
   gateMode = mode;
   const isRegister = mode === 'register';
   document.getElementById('gate-tab-login')?.classList.toggle('active', !isRegister);
   document.getElementById('gate-tab-register')?.classList.toggle('active', isRegister);
-  
+
   const nameGroup = document.getElementById('gate-group-name');
   const submitBtn = document.getElementById('gate-submit-btn');
 
@@ -1645,11 +1465,159 @@ async function handleGateAuthSubmit(e) {
       updateUserUI(data.user);
       const gate = document.getElementById('auth-screen-gate');
       if (gate) gate.style.display = 'none';
+      await loadInitialData();
       refreshCurrentView();
     } else {
       showToast(data.error || 'Erro na autenticação.', 'error');
     }
   } catch (err) {
     showToast('Erro de conexão ao autenticar.', 'error');
+  }
+}
+
+async function logoutUser() {
+  try {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    authState.user = null;
+    updateUserUI(null);
+    showToast('Sessão encerrada com segurança.');
+    const gate = document.getElementById('auth-screen-gate');
+    if (gate) gate.style.display = 'flex';
+  } catch (err) {
+    showToast('Erro ao sair da conta.', 'error');
+  }
+}
+
+// ==========================================================================
+// PAINEL ADMINISTRATIVO DO SAAS (SUPER ADMIN)
+// ==========================================================================
+
+async function loadAdminDashboard() {
+  try {
+    const res = await fetch('/api/admin/overview');
+    if (!res.ok) {
+      showToast('Acesso restrito a administradores.', 'error');
+      return;
+    }
+
+    const data = await res.json();
+    const m = data.metrics || {};
+
+    document.getElementById('admin-total-users').textContent = m.total_users || 0;
+    document.getElementById('admin-free-users').textContent = `${m.free_users || 0} no plano gratuito`;
+    document.getElementById('admin-pro-users').textContent = m.pro_subscribers || 0;
+    document.getElementById('admin-mrr').textContent = formatCurrency(m.estimated_mrr || 0);
+    document.getElementById('admin-tx-count').textContent = m.total_transactions || 0;
+    document.getElementById('admin-volume').textContent = `${formatCurrency(m.total_financial_volume || 0)} movimentados`;
+
+    const tbody = document.getElementById('admin-users-table-body');
+    if (tbody) {
+      if (!data.users || data.users.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="padding: 24px; text-align: center; color: var(--text-muted);">Nenhum usuário cadastrado.</td></tr>';
+      } else {
+        tbody.innerHTML = data.users.map(u => `
+          <tr>
+            <td style="font-weight: 600;">#${u.id}</td>
+            <td>
+              <strong>${escapeHtml(u.name)}</strong>
+              <div style="font-size: 0.78rem; color: var(--text-muted);">${escapeHtml(u.email)}</div>
+            </td>
+            <td>
+              <span class="badge ${u.plan.startsWith('pro') ? 'badge-paid' : ''}" style="${!u.plan.startsWith('pro') ? 'background:var(--bg-secondary); color:var(--text-secondary);' : ''}">
+                ${escapeHtml(u.plan.toUpperCase())}
+              </span>
+            </td>
+            <td>
+              <span style="font-weight: 600; color: ${u.role === 'admin' ? 'var(--accent-warning)' : 'inherit'};">
+                ${u.role === 'admin' ? 'Administrador' : 'Usuário'}
+              </span>
+            </td>
+            <td>
+              <span>${u.tx_count || 0} lançamentos</span>
+              <div style="font-size: 0.78rem; color: var(--text-muted);">${u.accounts_count || 0} contas</div>
+            </td>
+            <td style="color: var(--text-muted); font-size: 0.8rem;">
+              ${formatDate(String(u.created_at || '').slice(0, 10))}
+            </td>
+            <td class="text-right">
+              <button type="button" class="btn-ghost" style="padding: 4px 10px; font-size: 0.78rem;" onclick="adminTogglePlan(${u.id}, '${u.plan}')">
+                ${u.plan.startsWith('pro') ? 'Rebaixar p/ Free' : 'Promover p/ Pro'}
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    const flagsContainer = document.getElementById('admin-feature-flags');
+    if (flagsContainer && data.settings) {
+      flagsContainer.innerHTML = data.settings.map(s => {
+        const isEnabled = s.value === 'true';
+        return `
+          <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700; color: var(--accent-text);">${escapeHtml(s.key)}</span>
+                <span class="badge ${isEnabled ? 'badge-paid' : ''}" style="${!isEnabled ? 'background:var(--accent-danger-bg); color:var(--accent-danger);' : ''}">
+                  ${isEnabled ? 'ATIVO (ON)' : 'INATIVO (OFF)'}
+                </span>
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0;">${escapeHtml(s.description || '')}</p>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--border-color);">
+              <span style="font-size: 0.78rem; color: var(--text-muted);">Shift Control</span>
+              <button type="button" class="${isEnabled ? 'btn-danger-outline' : 'btn-primary'}" style="padding: 5px 12px; font-size: 0.78rem;" onclick="adminToggleSetting('${s.key}', ${!isEnabled})">
+                ${isEnabled ? 'Desativar' : 'Ativar'}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  } catch (err) {
+    showToast('Erro ao carregar dados administrativos.', 'error');
+  }
+}
+
+const loadAdminOverview = loadAdminDashboard;
+
+async function adminTogglePlan(userId, currentPlan) {
+  const newPlan = currentPlan.startsWith('pro') ? 'free' : 'pro_monthly';
+  if (!confirm(`Alterar plano do usuário #${userId} para ${newPlan.toUpperCase()}?`)) return;
+
+  try {
+    const res = await fetch('/api/admin/overview', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: userId, plan: newPlan })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast('Plano do usuário atualizado com sucesso!');
+      loadAdminDashboard();
+    } else {
+      showToast(data.error || 'Erro ao alterar plano.', 'error');
+    }
+  } catch (err) {
+    showToast('Erro de rede ao atualizar usuário.', 'error');
+  }
+}
+
+async function adminToggleSetting(key, newValue) {
+  try {
+    const res = await fetch('/api/admin/overview', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'toggle_setting', key, value: String(newValue) })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast(data.message || 'Configuração atualizada com sucesso!');
+      loadAdminDashboard();
+    } else {
+      showToast(data.error || 'Erro ao atualizar configuração.', 'error');
+    }
+  } catch (err) {
+    showToast('Erro de conexão ao alterar flag.', 'error');
   }
 }

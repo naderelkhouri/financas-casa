@@ -1,16 +1,16 @@
-# Graph Report - financas-casa  (2026-11-21)
+# Graph Report - financas-casa  (2026-11-22)
 
 ## Corpus Check
-- 45 files · ~39,833 words
+- 40 files · ~25,325 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 347 nodes · 584 edges · 25 communities (18 shown, 7 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 24 edges (avg confidence: 0.75)
+- 240 nodes · 407 edges · 21 communities (18 shown, 3 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `12efa553`
+- Built from commit: `aa5c076a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -28,42 +28,39 @@
 - [[_COMMUNITY_Community 11|Community 11]]
 - [[_COMMUNITY_Community 14|Community 14]]
 - [[_COMMUNITY_Community 16|Community 16]]
+- [[_COMMUNITY_Community 17|Community 17]]
 - [[_COMMUNITY_Community 18|Community 18]]
 - [[_COMMUNITY_Community 19|Community 19]]
-- [[_COMMUNITY_Community 20|Community 20]]
-- [[_COMMUNITY_Community 21|Community 21]]
 - [[_COMMUNITY_Community 22|Community 22]]
-- [[_COMMUNITY_Community 23|Community 23]]
-- [[_COMMUNITY_Community 24|Community 24]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `get_connection()` - 31 edges
-2. `fetch()` - 21 edges
-3. `authenticateRequest()` - 18 edges
-4. `showToast()` - 18 edges
-5. `refreshCurrentView()` - 17 edges
-6. `authenticateRequest()` - 13 edges
-7. `FinanceRequestHandler` - 13 edges
-8. `authenticateRequest()` - 11 edges
-9. `ThreadedHTTPServer` - 8 edges
-10. `loadDashboard()` - 8 edges
+1. `authenticateRequest()` - 47 edges
+2. `get_connection()` - 31 edges
+3. `showToast()` - 19 edges
+4. `refreshCurrentView()` - 17 edges
+5. `FinanceRequestHandler` - 13 edges
+6. `ThreadedHTTPServer` - 8 edges
+7. `FinanceWindow` - 7 edges
+8. `loadDashboard()` - 7 edges
+9. `openModal()` - 7 edges
+10. `FinanceApp` - 6 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `loadAccountsAndCards()` --calls--> `fetch()`  [INFERRED]
-  static/app.js → .wrangler/tmp/pages-a2Fbgy/functionsWorker-0.20567011253490008.js
-- `loadBudgetsAndGoals()` --calls--> `fetch()`  [INFERRED]
-  static/app.js → .wrangler/tmp/pages-a2Fbgy/functionsWorker-0.20567011253490008.js
-- `loadTransactions()` --calls--> `fetch()`  [INFERRED]
-  static/app.js → .wrangler/tmp/pages-a2Fbgy/functionsWorker-0.20567011253490008.js
-- `deleteBudget()` --calls--> `fetch()`  [INFERRED]
-  static/app.js → .wrangler/tmp/pages-a2Fbgy/functionsWorker-0.20567011253490008.js
-- `deleteGoal()` --calls--> `fetch()`  [INFERRED]
-  static/app.js → .wrangler/tmp/pages-a2Fbgy/functionsWorker-0.20567011253490008.js
+- `FinanceApp` --uses--> `ThreadedHTTPServer`  [INFERRED]
+  gui.py → app.py
+- `FinanceWindow` --uses--> `ThreadedHTTPServer`  [INFERRED]
+  gui.py → app.py
+- `FinanceApp` --uses--> `FinanceRequestHandler`  [INFERRED]
+  gui.py → app.py
+- `FinanceWindow` --uses--> `FinanceRequestHandler`  [INFERRED]
+  gui.py → app.py
+- `start_backend_server()` --calls--> `ThreadedHTTPServer`  [EXTRACTED]
+  gui.py → app.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (25 total, 7 thin omitted)
+## Communities (21 total, 3 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.11
@@ -74,12 +71,12 @@ Cohesion: 0.14
 Nodes (11): FinanceRequestHandler, run_server(), ThreadedHTTPServer, FinanceApp, FinanceWindow, find_free_port(), main(), start_backend_server() (+3 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.07
-Nodes (59): fetch(), adminTogglePlan(), applyZoom(), authState, changeMonth(), checkAuthSession(), closeModal(), debounce() (+51 more)
+Cohesion: 0.12
+Nodes (8): authState, debounce(), initEventListeners(), initTheme(), state, SVG_ICONS, toggleTheme(), updateThemeButton()
 
 ### Community 3 - "Community 3"
-Cohesion: 0.12
-Nodes (12): arrayToRegexp(), escapeString(), flags(), lexer(), match(), onRequestPost3(), parse(), pathToRegexp() (+4 more)
+Cohesion: 0.23
+Nodes (16): changeMonth(), closeModal(), deleteBudget(), deleteGoal(), deleteRecurringBill(), deleteTransaction(), handleBudgetSubmit(), handleGoalSubmit() (+8 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.18
@@ -98,44 +95,46 @@ Cohesion: 0.33
 Nodes (6): parse_ofx_content(), parse_ofx_date(), Any, Parser Nativo de Extratos Bancários OFX (Open Financial Exchange). Lê extratos p, Converte datas OFX (ex: 20261115120000[-03:EST] ou 20261115) para YYYY-MM-DD., Analisa o conteúdo de um arquivo .OFX (SGML ou XML) e extrai metadados da conta
 
 ### Community 8 - "Community 8"
-Cohesion: 0.15
-Nodes (17): onRequestGet(), onRequestPost(), onRequestGet(), onRequestPost(), onRequestGet(), onRequestPost(), onRequestGet(), onRequestGet() (+9 more)
+Cohesion: 0.07
+Nodes (35): onRequestGet(), onRequestPost(), onRequestGet(), onRequestPost(), onRequestGet(), onRequestPost(), onRequestGet(), onRequestPost() (+27 more)
 
 ### Community 9 - "Community 9"
-Cohesion: 0.11
-Nodes (27): arrayToRegexp(), authenticateRequest(), createJWT(), escapeString(), flags(), hashPassword(), lexer(), match() (+19 more)
+Cohesion: 0.22
+Nodes (9): adminTogglePlan(), adminToggleSetting(), formatCurrency(), loadAdminDashboard(), loadDashboard(), loadDashboardRecentTx(), renderCategoryDonut(), renderDashboardBudgetsMini() (+1 more)
+
+### Community 14 - "Community 14"
+Cohesion: 0.29
+Nodes (8): editGoal(), editTransaction(), escapeHtml(), openGoalModal(), openModal(), openTransactionModal(), populateCategorySelect(), startBunkerpayCheckout()
+
+### Community 17 - "Community 17"
+Cohesion: 0.40
+Nodes (5): checkAuthSession(), handleAuthClick(), handleGateAuthSubmit(), logoutUser(), updateUserUI()
 
 ### Community 18 - "Community 18"
 Cohesion: 0.20
 Nodes (9): background_color, description, display, icons, name, orientation, short_name, start_url (+1 more)
 
-### Community 20 - "Community 20"
-Cohesion: 0.12
-Nodes (12): arrayToRegexp(), escapeString(), flags(), lexer(), match(), onRequestPost3(), parse(), pathToRegexp() (+4 more)
-
-### Community 21 - "Community 21"
-Cohesion: 0.10
-Nodes (29): arrayToRegexp(), authenticateRequest(), createJWT(), escapeString(), flags(), hashPassword(), lexer(), match() (+21 more)
+### Community 19 - "Community 19"
+Cohesion: 0.50
+Nodes (4): loadCategories(), loadInitialData(), loadRecurringBills(), updateRecurringBadge()
 
 ## Knowledge Gaps
-- **27 isolated node(s):** `routes`, `routes`, `routes`, `routes`, `Any` (+22 more)
+- **24 isolated node(s):** `Any`, `deploy-cloudflare.sh script`, `KEYWORD_RULES`, `iniciar.sh script`, `Any` (+19 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **3 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `fetch()` connect `Community 2` to `Community 20`?**
-  _High betweenness centrality (0.028) - this node is a cross-community bridge._
-- **Are the 20 inferred relationships involving `fetch()` (e.g. with `deleteBudget()` and `deleteGoal()`) actually correct?**
-  _`fetch()` has 20 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `routes`, `routes`, `routes` to the rest of the system?**
-  _41 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Are the 2 inferred relationships involving `FinanceRequestHandler` (e.g. with `FinanceApp` and `FinanceWindow`) actually correct?**
+  _`FinanceRequestHandler` has 2 INFERRED edges - model-reasoned connections that need verification._
+- **What connects `Any`, `Módulo de Autenticação e Gestão de Usuários (SaaS). Implementa Hash seguro (PBKD`, `Gera hash PBKDF2 com salt aleatório de 16 bytes.` to the rest of the system?**
+  _38 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.1066066066066066 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
   _Cohesion score 0.13538461538461538 - nodes in this community are weakly interconnected._
 - **Should `Community 2` be split into smaller, more focused modules?**
-  _Cohesion score 0.07179487179487179 - nodes in this community are weakly interconnected._
-- **Should `Community 3` be split into smaller, more focused modules?**
-  _Cohesion score 0.11692307692307692 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11578947368421053 - nodes in this community are weakly interconnected._
+- **Should `Community 8` be split into smaller, more focused modules?**
+  _Cohesion score 0.07077922077922078 - nodes in this community are weakly interconnected._

@@ -4,6 +4,9 @@ export async function onRequestGet(context) {
   const { env, request } = context;
   const url = new URL(request.url);
   const month = url.searchParams.get("month");
+  const type = url.searchParams.get("type");
+  const categoryId = url.searchParams.get("category_id");
+  const search = url.searchParams.get("search");
 
   if (!env.DB) {
     return new Response(JSON.stringify({ error: "Banco Cloudflare D1 não vinculado" }), {
@@ -14,7 +17,13 @@ export async function onRequestGet(context) {
 
   const secret = env.JWT_SECRET || "cf-financas-pessoais-admx-jwt-super-secret-key-2026-edge";
   const authUser = await authenticateRequest(request, secret);
-  const userId = authUser ? authUser.user_id : 1;
+  if (!authUser) {
+    return new Response(JSON.stringify({ error: "Não autenticado" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+  const userId = authUser.user_id;
 
   try {
     let query = `
@@ -28,6 +37,19 @@ export async function onRequestGet(context) {
     if (month) {
       query += ` AND t.date LIKE ?`;
       params.push(`${month}%`);
+    }
+    if (type) {
+      query += ` AND t.type = ?`;
+      params.push(type);
+    }
+    if (categoryId) {
+      query += ` AND t.category_id = ?`;
+      params.push(Number(categoryId));
+    }
+    if (search) {
+      query += ` AND (t.description LIKE ? OR t.tags LIKE ? OR t.notes LIKE ?)`;
+      const term = `%${search}%`;
+      params.push(term, term, term);
     }
 
     query += ` ORDER BY t.date DESC, t.id DESC`;
@@ -58,7 +80,13 @@ export async function onRequestPost(context) {
 
   const secret = env.JWT_SECRET || "cf-financas-pessoais-admx-jwt-super-secret-key-2026-edge";
   const authUser = await authenticateRequest(request, secret);
-  const userId = authUser ? authUser.user_id : 1;
+  if (!authUser) {
+    return new Response(JSON.stringify({ error: "Não autenticado" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+  const userId = authUser.user_id;
 
   try {
     const data = await request.json();
