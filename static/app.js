@@ -50,7 +50,7 @@ function initTheme() {
 function updateThemeButton(theme) {
   const btn = document.getElementById('btn-theme-toggle');
   if (btn) {
-    btn.innerHTML = theme === 'dark' ? '<span class="theme-icon">🌙</span>' : '<span class="theme-icon">☀️</span>';
+    btn.innerHTML = theme === 'dark' ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>';
   }
 }
 
@@ -369,8 +369,8 @@ async function loadTransactions() {
           ${amountPrefix}${formatCurrency(t.amount)}
         </td>
         <td class="text-center">
-          <button class="btn-action-icon" onclick="editTransaction(${t.id})" title="Editar">✏️</button>
-          <button class="btn-action-icon delete" onclick="deleteTransaction(${t.id})" title="Excluir">🗑️</button>
+          <button class="btn-action-icon" onclick="editTransaction(${t.id})" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button>
+          <button class="btn-action-icon delete" onclick="deleteTransaction(${t.id})" title="Excluir"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
         </td>
       `;
       tbody.appendChild(tr);
@@ -465,7 +465,7 @@ async function loadBudgetsAndGoals() {
               <span style="font-weight:700;">${formatCurrency(b.spent_amount)}</span> / 
               <span class="text-muted">${formatCurrency(b.monthly_limit)}</span>
               <span style="font-size:0.8rem; margin-left:6px; color:${b.percentage > 100 ? 'var(--accent-danger)' : 'var(--text-secondary)'}">(${b.percentage}%)</span>
-              <button class="btn-action-icon delete" onclick="deleteBudget(${b.budget_id})" title="Remover Teto" style="margin-left:8px;">🗑️</button>
+              <button class="btn-action-icon delete" onclick="deleteBudget(${b.budget_id})" title="Remover Teto" style="margin-left:8px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
             </div>
           </div>
           <div class="progress-bar-bg">
@@ -507,8 +507,8 @@ async function loadBudgetsAndGoals() {
               </div>
             </div>
             <div>
-              <button class="btn-action-icon" onclick="editGoal(${g.id})" title="Editar">✏️</button>
-              <button class="btn-action-icon delete" onclick="deleteGoal(${g.id})" title="Excluir">🗑️</button>
+              <button class="btn-action-icon" onclick="editGoal(${g.id})" title="Editar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></button>
+              <button class="btn-action-icon delete" onclick="deleteGoal(${g.id})" title="Excluir"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
             </div>
           </div>
 

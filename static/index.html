@@ -82,7 +82,7 @@
             </div>
           </div>
           <button id="btn-auth-action" onclick="handleAuthClick()" style="background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 0.85rem;" title="Entrar / Sair">
-            🔑
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 1.5L14 9l-1.5-1.5L11 9l-1.5-1.5L8 9l-1.5-1.5-4 4a5 5 0 1 0 7 7l4-4 1.5 1.5L16 14.5l1.5-1.5 1.5 1.5 2-2z"/></svg>
           </button>
         </div>
 
@@ -92,7 +92,7 @@
             <span style="font-size:0.75rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted);">ADMX Enterprise Cloud</span>
           </div>
           <button class="btn-theme-toggle" id="btn-theme-toggle" title="Alternar Tema Claro/Escuro">
-            <span class="theme-icon">🌙</span>
+            <span class="theme-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></span>
           </button>
         </div>
       </div>
@@ -126,6 +126,39 @@
 
       <!-- TAB 1: DASHBOARD -->
       <section class="tab-pane active" id="pane-dashboard">
+        
+        <!-- GUIA DE CONFIGURACAO DA CONTA (ONBOARDING PADRAO WACRM) -->
+        <div class="card mb-4" id="onboarding-guide-card" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(15, 23, 42, 0.6) 100%); border-color: rgba(139, 92, 246, 0.25);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(139, 92, 246, 0.2); display: flex; align-items: center; justify-content: center; color: #a78bfa;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div>
+                <div style="font-size: 0.95rem; font-weight: 700; color: #f8fafc;">Guia de Inicialização do SaaS <span style="font-size: 0.75rem; background: rgba(139, 92, 246, 0.2); color: #c4b5fd; padding: 2px 8px; border-radius: 20px; font-weight: 600; margin-left: 6px;">Passos Essenciais</span></div>
+                <div style="font-size: 0.8rem; color: #94a3b8;">Configure suas contas, orçamentos e importe seu extrato para atingir a máxima eficácia patrimonial.</div>
+              </div>
+            </div>
+            <button class="btn-close-modal" onclick="document.getElementById('onboarding-guide-card').style.display='none'" style="color: #64748b; background: none; border: none; cursor: pointer; font-size: 1.1rem;">✕</button>
+          </div>
+          
+          <div style="width: 100%; height: 5px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; margin: 10px 0 16px;">
+            <div style="width: 65%; height: 100%; background: linear-gradient(90deg, #8b5cf6, #10b981); border-radius: 4px;"></div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+            <button class="btn-ghost" style="justify-content: flex-start; padding: 10px 14px; background: var(--bg-card); font-size: 0.82rem;" onclick="switchTab('accounts-cards')">
+              <span style="color: #10b981; font-weight: 700; margin-right: 6px;">✓</span> 1. Cadastrar Contas & Cartões
+            </button>
+            <button class="btn-ghost" style="justify-content: flex-start; padding: 10px 14px; background: var(--bg-card); font-size: 0.82rem;" onclick="switchTab('budgets-goals')">
+              <span style="color: #10b981; font-weight: 700; margin-right: 6px;">✓</span> 2. Definir Tetos de Gastos
+            </button>
+            <button class="btn-ghost" style="justify-content: flex-start; padding: 10px 14px; background: var(--bg-card); font-size: 0.82rem;" onclick="switchTab('import-ofx')">
+              <span style="color: #a78bfa; font-weight: 700; margin-right: 6px;">→</span> 3. Importar Extrato Bancário
+            </button>
+          </div>
+        </div>
+
         <!-- Metric Cards -->
         <div class="metrics-grid">
           <div class="metric-card income-card">
@@ -244,7 +277,7 @@
         <div class="card">
           <div class="card-header filter-bar">
             <div class="search-box">
-              <span class="search-icon">🔍</span>
+              <span class="search-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
               <input type="text" id="tx-search-input" placeholder="Buscar por descrição, tag ou observação..." class="form-input search-input">
             </div>
 
@@ -286,7 +319,7 @@
               </table>
             </div>
             <div class="empty-state" id="tx-empty-state" style="display: none;">
-              <div class="empty-icon">💸</div>
+              <div class="empty-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></div>
               <h4>Nenhuma transação encontrada</h4>
               <p>Registre suas receitas e despesas para acompanhar seu dinheiro.</p>
               <button class="btn-primary" onclick="openTransactionModal()">Adicionar Transação</button>
@@ -379,16 +412,16 @@
             <div class="card-body">
               <div class="action-tiles-grid">
                 <div class="action-tile">
-                  <div class="tile-icon"></div>
+                  <div class="tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg></div>
                   <div class="tile-info">
-                    <h4>Exportar Extrato (CSV)</h4>
+                    <h4>Exportar Relatório Financeiro (CSV)</h4>
                     <p>Compatível com Excel, LibreOffice Calc e Google Sheets.</p>
                   </div>
                   <button class="btn-secondary" onclick="exportData('csv')">Baixar CSV</button>
                 </div>
 
                 <div class="action-tile">
-                  <div class="tile-icon">💾</div>
+                  <div class="tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></div>
                   <div class="tile-info">
                     <h4>Backup Completo (JSON)</h4>
                     <p>Exporta todas as tabelas, configurações, metas e histórico.</p>
@@ -397,7 +430,7 @@
                 </div>
 
                 <div class="action-tile">
-                  <div class="tile-icon">🖨️</div>
+                  <div class="tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg></div>
                   <div class="tile-info">
                     <h4>Imprimir Relatório / Salvar PDF</h4>
                     <p>Gera visão consolidada pronta para impressão ou PDF.</p>
@@ -581,7 +614,7 @@
             <div class="form-group col-6">
               <label class="form-label">Ícone</label>
               <select id="goal-icon" class="form-select">
-                <option value="🎯">🎯 Alvo</option>
+                <option value="<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg>"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg> Alvo</option>
                 <option value="🛡️">🛡️ Reserva / Segurança</option>
                 <option value="✈️">✈️ Viagem</option>
                 <option value="🚗">🚗 Carro / Veículo</option>
@@ -813,10 +846,10 @@
             <h3>Plano Pro Mensal</h3>
             <div style="font-size: 2.2rem; font-weight: 700; margin: 16px 0; color: var(--accent);">R$ 19,90<span style="font-size: 1rem; color: var(--text-muted);">/mês</span></div>
             <ul style="list-style: none; padding: 0; margin-bottom: 24px; line-height: 2;">
-              <li>✓ Importação OFX ilimitada</li>
-              <li>✓ Múltiplas Contas & Cartões</li>
-              <li>✓ Metas e Tetos de Gastos</li>
-              <li>✓ Pagamento PIX via BunkerPay</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Importação OFX ilimitada</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Múltiplas Contas & Cartões</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Metas e Tetos de Gastos</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Pagamento PIX via BunkerPay</li>
             </ul>
             <button class="btn-primary" style="width: 100%;" onclick="startBunkerpayCheckout('pro_monthly')">Assinar Mensal</button>
           </div>
@@ -826,10 +859,10 @@
             <h3 style="margin-top: 8px;">Plano Pro Anual</h3>
             <div style="font-size: 2.2rem; font-weight: 700; margin: 16px 0; color: var(--accent);">R$ 179,00<span style="font-size: 1rem; color: var(--text-muted);">/ano</span></div>
             <ul style="list-style: none; padding: 0; margin-bottom: 24px; line-height: 2;">
-              <li>✓ 25% de Economia</li>
-              <li>✓ Todos os recursos do Pro</li>
-              <li>✓ Suporte VIP Prioritário</li>
-              <li>✓ Pagamento PIX via BunkerPay</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 25% de Economia</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Todos os recursos do Pro</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Suporte VIP Prioritário</li>
+              <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Pagamento PIX via BunkerPay</li>
             </ul>
             <button class="btn-secondary" style="width: 100%;" onclick="startBunkerpayCheckout('pro_annual')">Assinar Anual</button>
           </div>
